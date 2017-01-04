@@ -19,10 +19,7 @@ namespace GOL
         //private int[,] _lastGeneration;
         //private int _generationCount;
 
-        public Point Coords { get; set; }
-
         //public int GenerationCount { get { return _generationCount; } }
-
 
         public Cell(int x,int y)
         {
@@ -30,8 +27,5 @@ namespace GOL
             X = x;
             Y = y;
         }
-
-
-
     }
 }
