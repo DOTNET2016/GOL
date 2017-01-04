@@ -1,4 +1,4 @@
-
+﻿
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +21,8 @@ namespace GOL
     /// </summary>
     public partial class MainWindow : Window
     {
+        Cell cell = new Cell();
+        
         public MainWindow()
         {
             InitializeComponent();
@@ -47,6 +49,8 @@ namespace GOL
             Canvas.SetLeft(e, x);
             Canvas.SetTop(e, y);
             gameBoardCanvas.Children.Add(e);
+
+           
             
         }
     }

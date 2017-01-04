@@ -19,5 +19,11 @@ namespace GOL
 
         public int GenerationCount { get { return _generationCount; } }
 
+        public Cell()
+        {
+            
+
+        }
+
     }
 }
