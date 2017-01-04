@@ -20,6 +20,7 @@ namespace GOL
     /// </summary>
     public partial class MainWindow : Window
     {
+
         public MainWindow()
         {
             InitializeComponent();
@@ -48,5 +49,7 @@ namespace GOL
             gameBoardCanvas.Children.Add(e);
             
         }
+
+        
     }
 }
