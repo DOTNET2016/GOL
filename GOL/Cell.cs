@@ -13,5 +13,11 @@ namespace GOL
 
         public bool IsAlive { get; set; }
 
+        private int[,] _generation;
+        private int[,] _lastGeneration;
+        private int _generationCount;
+
+        public int GenerationCount { get { return _generationCount; } }
+
     }
 }
