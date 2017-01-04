@@ -42,7 +42,7 @@ namespace GOL
             Ellipse e = new Ellipse();
             e.Width = 5;
             e.Height = 5;
-            e.Fill = (Brushes.Red);
+            e.Fill = (Brushes.Black);
             Canvas.SetLeft(e, x);
             Canvas.SetTop(e, y);
             gameBoardCanvas.Children.Add(e);
