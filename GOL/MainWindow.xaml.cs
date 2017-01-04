@@ -23,6 +23,30 @@ namespace GOL
         public MainWindow()
         {
             InitializeComponent();
+            Paint();
+        }
+        private void Paint()
+        {
+            int[,] gameBoard = new int[800,600];
+            
+            for (int i = 0;i < 800; i += 10)
+            {
+                for(int j = 0; j < 600; j += 10)
+                {
+                    DrawPoint(i, j);
+                }
+            }
+        }
+        private void DrawPoint(int x,int y)
+        {
+            Ellipse e = new Ellipse();
+            e.Width = 5;
+            e.Height = 5;
+            e.Fill = (Brushes.Red);
+            Canvas.SetLeft(e, x);
+            Canvas.SetTop(e, y);
+            gameBoardCanvas.Children.Add(e);
+            
         }
     }
 }
