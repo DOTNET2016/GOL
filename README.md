@@ -26,4 +26,4 @@ A game first made by Gonway
 
 Thanks to
  
-* all [contributors](https://github.com/DOTNET2016/graphs/contributors)
+* all [contributors](https://github.com/DOTNET2016/GOL/graphs/contributors)
