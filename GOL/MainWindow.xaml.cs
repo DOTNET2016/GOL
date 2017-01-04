@@ -21,11 +21,13 @@ namespace GOL
     /// </summary>
     public partial class MainWindow : Window
     {
+        Grid grid = new Grid();
         public MainWindow()
         {
             InitializeComponent();
+            initializeGameBoard();
         }
-        private void Paint()
+        private void initializeGameBoard()
         {
             int[,] gameBoard = new int[800,600];
             
@@ -33,6 +35,7 @@ namespace GOL
             {
                 for(int j = 0; j < 600; j += 10)
                 {
+                    grid.AddCell(new Cell(i, j));
                     DrawPoint(i, j);
                 }
             }
@@ -40,13 +43,13 @@ namespace GOL
         private void DrawPoint(int x,int y)
         {
             Random rnd = new Random();
-            gameBoardCanvas.Background = Brushes.Gray;
+            gameBoardCanvas.Background = Brushes.White;
             Ellipse e = new Ellipse();
-            e.Width = 8;
-            e.Height = 8;
-            e.Fill = (Brushes.Black);
-            Canvas.SetLeft(e, x = rnd.Next(800) - 8);
-            Canvas.SetTop(e, y = rnd.Next(600)- 8);
+            e.Width = 10;
+            e.Height = 10;
+            e.Fill = (Brushes.WhiteSmoke);
+            Canvas.SetLeft(e,x + 1);
+            Canvas.SetTop(e,y + 1);
             gameBoardCanvas.Children.Add(e);
             
         }

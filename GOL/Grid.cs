@@ -8,7 +8,13 @@ namespace GOL
 {
     class Grid
     {
+        private List<Cell> cellList = new List<Cell>();
 
+        public void AddCell(Cell cell)
+        {
+            cellList.Add(cell);
+        }
+            
 
     }
 }

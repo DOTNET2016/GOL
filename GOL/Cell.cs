@@ -8,8 +8,8 @@ namespace GOL
 {
     class Cell
     {
-        public int Width { get; set; }
-        public int Height { get; set; }
+        public int X { get; set; }
+        public int Y { get; set; }
 
         public bool IsAlive { get; set; }
 
@@ -18,6 +18,15 @@ namespace GOL
         private int _generationCount;
 
         public int GenerationCount { get { return _generationCount; } }
+
+        public Cell(int x,int y)
+        {
+            IsAlive = false;
+            X = x;
+            Y = y;
+        }
+
+
 
     }
 }
