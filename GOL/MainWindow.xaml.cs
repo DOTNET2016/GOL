@@ -22,6 +22,11 @@ namespace GOL
     public partial class MainWindow : Window
     {
         Grid grid = new Grid();
+        Cell cell = new Cell();
+
+        
+
+        int[,] gameBoard = new int[800, 600];
         public MainWindow()
         {
             InitializeComponent();
@@ -60,6 +65,17 @@ namespace GOL
             int x = 0;
             int y = 0;
             DrawPoint(x,y);
+        }
+
+        public void CheckCellState()
+        {       
+            for (int i = 0; i < cell.X; i++)
+            {
+                for (int j = 0; j < cell.Y; j++)
+                {
+                   //check if alive etc....
+                }
+            }
         }
     }
 }
