@@ -48,8 +48,8 @@ namespace GOL
             e.Width = 10;
             e.Height = 10;
             e.Fill = (Brushes.WhiteSmoke);
-            Canvas.SetLeft(e,x + 1);
-            Canvas.SetTop(e,y + 1);
+            Canvas.SetLeft(e,x);
+            Canvas.SetTop(e,y);
             gameBoardCanvas.Children.Add(e);
           
             
