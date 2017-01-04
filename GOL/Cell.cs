@@ -23,14 +23,6 @@ namespace GOL
 
         //public int GenerationCount { get { return _generationCount; } }
 
-        public Cell(Point coords)
-        {
-            Coords = coords;
-
-            Width = coords.X;
-            Height = coords.Y;
-
-            IsAlive = false;
 
         public Cell(int x,int y)
         {
