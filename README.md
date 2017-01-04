@@ -22,7 +22,7 @@ A game first made by Gonway
   - (c) 2017 FiveEYZ et al
   - [![License](https://img.shields.io/badge/License-MIT-red.svg?style=flat-square)](http://opensource.org/licenses/MIT)
   
- ## Credits
+## Credits
 
 Thanks to
  
