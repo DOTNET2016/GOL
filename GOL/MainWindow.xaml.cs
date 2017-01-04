@@ -26,7 +26,6 @@ namespace GOL
         public MainWindow()
         {
             InitializeComponent();
-            Paint();
         }
         private void Paint()
         {
@@ -42,16 +41,25 @@ namespace GOL
         }
         private void DrawPoint(int x,int y)
         {
+            Random rnd = new Random();
+            gameBoardCanvas.Background = Brushes.Gray;
             Ellipse e = new Ellipse();
-            e.Width = 5;
-            e.Height = 5;
+            e.Width = 8;
+            e.Height = 8;
             e.Fill = (Brushes.Black);
-            Canvas.SetLeft(e, x);
-            Canvas.SetTop(e, y);
+            Canvas.SetLeft(e, x = rnd.Next(800) - 8);
+            Canvas.SetTop(e, y = rnd.Next(600)- 8);
             gameBoardCanvas.Children.Add(e);
 
            
             
+        }
+
+        private void button_Click(object sender, RoutedEventArgs e)
+        {
+            int x = 0;
+            int y = 0;
+            DrawPoint(x,y);
         }
     }
 }
