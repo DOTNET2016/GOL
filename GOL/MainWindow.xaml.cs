@@ -61,6 +61,14 @@ namespace GOL
             int y = 0;
             DrawPoint(x,y);
         }
+
+        private void gameBoardCanvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+
+            int tempY = (int)(e.GetPosition(gameBoardCanvas).Y);
+            int tempX = (int)(e.GetPosition(gameBoardCanvas).X);
+            MessageBox.Show(tempX + " " + tempY);
+        }
     }
 }
 
