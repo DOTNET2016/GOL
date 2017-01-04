@@ -9,37 +9,31 @@ namespace GOL
 {
     class GOLHandler
     {
-        private List<Cell> ActualGeneration = new List<Cell>();
+        private Cell[,] ActualGeneration = new Cell[80, 60];
         private List<Cell> NextGeneration = new List<Cell>();
         public void AddCell(Cell cell)
         {
-            ActualGeneration.Add(cell);
+            ActualGeneration.SetValue(cell, cell.X, cell.Y);
         }
-        public void ChoosenCell(Point cellCoordXY)
+        public void KillOrMakeCell(int X_index,int Y_index)
         {
-            var cellClicked = from c in ActualGeneration
-                                 where c.X >= cellCoordXY.X - 10 && c.X <= cellCoordXY.X
-                                 where c.Y >= cellCoordXY.Y - 10 && c.Y <= cellCoordXY.Y
-                                 select c;
 
-            var cellToChange = cellClicked.FirstOrDefault();
-
-            if (cellToChange.IsAlive == true)
+            if (ActualGeneration[X_index, Y_index].IsAlive == true)
             {
-                cellToChange.IsAlive = false;
+                ActualGeneration[X_index, Y_index].IsAlive = false;
             }
             else
             {
-                cellToChange.IsAlive = true;
+                ActualGeneration[X_index, Y_index].IsAlive = true;
             }
         }
 
         public void calculateNextGeneration()
         {
-            
+
         }
 
-        public List<Cell> GetCellList()
+        public Cell[,] GetCellArray()
         {
             return ActualGeneration;
         }

@@ -1,5 +1,5 @@
 ﻿
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,13 +29,19 @@ namespace GOL
         }
         private void initializeGameBoard()
         {
-            int[,] gameBoard = new int[800,600];
-            
-            for (int i = 0;i < 800; i += 10)
+            int[,] gameBoard = new int[800, 600];
+            int xPosition = 0;
+            int YPosition = 0;
+
+            for (int i = 0; i < 800; i += 10)
             {
-                for(int j = 0; j < 600; j += 10)
+                for (int j = 0; j < 600; j += 10)
                 {
-                    handler.AddCell(new Cell(i, j));
+
+                    xPosition = ((int)Math.Round(i / 10.0)) * 10;
+                    YPosition = ((int)Math.Round(j / 10.0)) * 10;
+
+                    handler.AddCell(new Cell(xPosition / 10, YPosition / 10));
                     Rectangle r = new Rectangle();
                     r.Width = 8;
                     r.Height = 8;
@@ -47,16 +53,16 @@ namespace GOL
             }
         }
 
-        private void UpdatePoint(int x,int y, bool IsAlive)
+        private void UpdatePoint(int x, int y, bool IsAlive)
         {
-            if(IsAlive == true)
+            if (IsAlive == true)
             {
                 Rectangle r = new Rectangle();
                 r.Width = 10;
                 r.Height = 10;
                 r.Fill = (Brushes.Black);
-                Canvas.SetLeft(r, x);
-                Canvas.SetTop(r, y);
+                Canvas.SetLeft(r, x * 10);
+                Canvas.SetTop(r, y * 10);
                 gameBoardCanvas.Children.Add(r);
             }
             else
@@ -65,36 +71,44 @@ namespace GOL
                 r.Width = 8;
                 r.Height = 8;
                 r.Fill = (Brushes.WhiteSmoke);
-                Canvas.SetLeft(r, x);
-                Canvas.SetTop(r, y);
+                Canvas.SetLeft(r, x * 10);
+                Canvas.SetTop(r, y * 10);
                 gameBoardCanvas.Children.Add(r);
             }
         }
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            
-          
+
+
         }
 
         private void gameBoardCanvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             gameBoardCanvas.Children.Clear();
-            int tempY = (int)(e.GetPosition(gameBoardCanvas).Y);
-            int tempX = (int)(e.GetPosition(gameBoardCanvas).X);
-            handler.ChoosenCell(new Point(tempX, tempY));
+            int tempY = (int)(e.GetPosition(gameBoardCanvas).Y) - 5;
+            int tempX = (int)(e.GetPosition(gameBoardCanvas).X) - 5;
+            tempX = ((int)Math.Round(tempX / 10.0));
+            tempY = ((int)Math.Round(tempY / 10.0));
 
-            foreach (var cell in handler.GetCellList())
+            handler.KillOrMakeCell(tempX, tempY);
+            var arrayToUpdateFrom = handler.GetCellArray();
+
+            for (int i = 0; i < arrayToUpdateFrom.GetLength(0); i++)
             {
-                if (cell.IsAlive == true)
+                for (int j = 0; j < arrayToUpdateFrom.GetLength(1); j++)
                 {
-                    UpdatePoint(cell.X, cell.Y, true);
-                }
-                else
-                {
-                    UpdatePoint(cell.X, cell.Y, false);
+                    if (arrayToUpdateFrom[i, j].IsAlive == true)
+                    {
+                        UpdatePoint(i, j, true);
+                    }
+                    else
+                    {
+                        UpdatePoint(i, j, false);
+                    }
                 }
             }
+
         }
     }
 }
