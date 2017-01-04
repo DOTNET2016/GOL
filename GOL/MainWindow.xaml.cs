@@ -21,10 +21,12 @@ namespace GOL
     /// </summary>
     public partial class MainWindow : Window
     {
-        Grid grid = new Grid();
+        GOLHandler handler = new GOLHandler();
         public MainWindow()
         {
+            
             InitializeComponent();
+            gameBoardCanvas.Background = Brushes.White;
             initializeGameBoard();
         }
         private void initializeGameBoard()
@@ -35,39 +37,66 @@ namespace GOL
             {
                 for(int j = 0; j < 600; j += 10)
                 {
-                    grid.AddCell(new Cell(i, j));
-                    DrawPoint(i, j);
+                    handler.AddCell(new Cell(i, j));
+                    Rectangle r = new Rectangle();
+                    r.Width = 8;
+                    r.Height = 8;
+                    r.Fill = (Brushes.WhiteSmoke);
+                    Canvas.SetLeft(r, i);
+                    Canvas.SetTop(r, j);
+                    gameBoardCanvas.Children.Add(r);
                 }
             }
         }
-        private void DrawPoint(int x,int y)
+
+        private void UpdatePoint(int x,int y, bool IsAlive)
         {
-            Random rnd = new Random();
-            gameBoardCanvas.Background = Brushes.White;
-            Ellipse e = new Ellipse();
-            e.Width = 10;
-            e.Height = 10;
-            e.Fill = (Brushes.WhiteSmoke);
-            Canvas.SetLeft(e,x);
-            Canvas.SetTop(e,y);
-            gameBoardCanvas.Children.Add(e);
-          
-            
+            if(IsAlive == true)
+            {
+                Rectangle r = new Rectangle();
+                r.Width = 10;
+                r.Height = 10;
+                r.Fill = (Brushes.Black);
+                Canvas.SetLeft(r, x);
+                Canvas.SetTop(r, y);
+                gameBoardCanvas.Children.Add(r);
+            }
+            else
+            {
+                Rectangle r = new Rectangle();
+                r.Width = 8;
+                r.Height = 8;
+                r.Fill = (Brushes.WhiteSmoke);
+                Canvas.SetLeft(r, x);
+                Canvas.SetTop(r, y);
+                gameBoardCanvas.Children.Add(r);
+            }
         }
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            int x = 0;
-            int y = 0;
-            DrawPoint(x,y);
+            
+          
         }
 
         private void gameBoardCanvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-
+            gameBoardCanvas.Children.Clear();
             int tempY = (int)(e.GetPosition(gameBoardCanvas).Y);
             int tempX = (int)(e.GetPosition(gameBoardCanvas).X);
-            MessageBox.Show(tempX + " " + tempY);
+            handler.ChoosenCell(new Point(tempX, tempY));
+
+            foreach (var cell in handler.GetCellList())
+            {
+                if (cell.IsAlive == true)
+                {
+                    UpdatePoint(cell.X, cell.Y, true);
+                }
+                else
+                {
+                    UpdatePoint(cell.X, cell.Y, false);
+                }
+            }
         }
     }
 }
