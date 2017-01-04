@@ -50,8 +50,7 @@ namespace GOL
             Canvas.SetLeft(e, x = rnd.Next(800) - 8);
             Canvas.SetTop(e, y = rnd.Next(600)- 8);
             gameBoardCanvas.Children.Add(e);
-
-           
+          
             
         }
 
