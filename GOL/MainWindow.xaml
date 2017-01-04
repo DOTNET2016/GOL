@@ -7,6 +7,16 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="720" Width="1280">
     <Grid>
-        <Canvas x:Name="gameBoardCanvas" HorizontalAlignment="Left" Height="600" Margin="10,10,0,0" VerticalAlignment="Top" Width="800" MouseLeftButtonDown="gameBoardCanvas_MouseLeftButtonDown"/>
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="Black" Offset="0"/>
+                <GradientStop Color="#FFFF3F00" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        <Canvas x:Name="gameBoardCanvas" HorizontalAlignment="Left" Height="600" Margin="10,10,0,0" VerticalAlignment="Top" Width="800" MouseLeftButtonDown="gameBoardCanvas_MouseLeftButtonDown">
+            <Canvas.Background>
+                <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.WindowColorKey}}"/>
+            </Canvas.Background>
+        </Canvas>
     </Grid>
 </Window>

@@ -24,9 +24,7 @@ namespace GOL
         GOLHandler handler = new GOLHandler();
         public MainWindow()
         {
-            
             InitializeComponent();
-            gameBoardCanvas.Background = Brushes.White;
             initializeGameBoard();
         }
         private void initializeGameBoard()
