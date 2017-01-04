@@ -38,7 +38,5 @@ namespace GOL
         {
             return cellList;
         }
-            
-
     }
 }
