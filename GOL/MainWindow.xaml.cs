@@ -1,4 +1,4 @@
-
+﻿
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,6 +51,7 @@ namespace GOL
             Canvas.SetLeft(e,x + 1);
             Canvas.SetTop(e,y + 1);
             gameBoardCanvas.Children.Add(e);
+          
             
         }
 
