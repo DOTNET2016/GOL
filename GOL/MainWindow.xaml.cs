@@ -1,10 +1,8 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -14,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace GOL
 {
@@ -22,20 +21,40 @@ namespace GOL
     /// </summary>
     public partial class MainWindow : Window
     {
+        private bool _IsOn;
         GOLHandler handler;
+        DispatcherTimer timer = new DispatcherTimer();
         public MainWindow()
         {
             InitializeComponent();
             handler = new GOLHandler();
             initializeGameBoard();
-            handler.Timer_Ticked += Handler_Timer_Ticked;
+
+            timer.Interval = new TimeSpan(500);
+            timer.Tick += Timer_Tick;
         }
 
-        private void Handler_Timer_Ticked(object sender, EventArgs e)
+        private void Timer_Tick(object sender, EventArgs e)
         {
-            SetNextGeneration();
+            handler.calculateNextGeneration();
+            gameBoardCanvas.Children.Clear();
+            Cell[,] arrayToUpdateFrom = handler.GetNextGeneration();
+            //Loops through all the Cells from the Array, So we can populate the Canvas with the Actual Generation. 
+            for (int i = 0; i < arrayToUpdateFrom.GetLength(0); i++)
+            {
+                for (int j = 0; j < arrayToUpdateFrom.GetLength(1); j++)
+                {
+                    if (arrayToUpdateFrom[i, j].IsAlive == true)
+                    {
+                        UpdatePoint(i, j, true);
+                    }
+                    else
+                    {
+                        UpdatePoint(i, j, false);
+                    }
+                }
+            }
         }
-
 
         /// <summary>
         /// Method for Set-up the gameboard(canvas). it's 800x600 pixlar/points. It setting one cell at every 10x10 coordinates. 
@@ -64,8 +83,8 @@ namespace GOL
                     r.Width = 8;
                     r.Height = 8;
                     r.Fill = (Brushes.WhiteSmoke);
-                    Canvas.SetLeft(r, i);
-                    Canvas.SetTop(r, j);
+                    Canvas.SetLeft(r, i + 1);
+                    Canvas.SetTop(r, j + 1);
                     gameBoardCanvas.Children.Add(r);
                 }
             }
@@ -102,8 +121,8 @@ namespace GOL
                 r.Width = 8;
                 r.Height = 8;
                 r.Fill = (Brushes.WhiteSmoke);
-                Canvas.SetLeft(r, x * 10);
-                Canvas.SetTop(r, y * 10);
+                Canvas.SetLeft(r, x * 10+1);
+                Canvas.SetTop(r, y * 10+1);
                 gameBoardCanvas.Children.Add(r);
             }
             #endregion
@@ -150,7 +169,7 @@ namespace GOL
            
         }
 
-        private void SetNextGeneration()
+        private void buttonGetNxtGen_Click(object sender, RoutedEventArgs e)
         {
             handler.calculateNextGeneration();
             gameBoardCanvas.Children.Clear();
@@ -170,21 +189,30 @@ namespace GOL
                     }
                 }
             }
-        }
-        private void buttonGetNxtGen_Click(object sender, RoutedEventArgs e)
-        {
-            SetNextGeneration();
 
+        }
+
+        public bool IsOn
+        {
+            get
+            {
+                return _IsOn;
+            }
+            set
+            {
+                _IsOn = value;
+                StartTimer.Content = _IsOn ? "Stop Timer" : "Start Timer";
+            }
         }
 
         private void StartTimer_Click(object sender, RoutedEventArgs e)
         {
-            handler.Start_Timer();
-        }
+            IsOn = !IsOn;
+            if (IsOn)
+                timer.Start();
 
-        private void StopTimer_Click(object sender, RoutedEventArgs e)
-        {
-            handler.Stop_Timer();
+            if (!IsOn)
+                timer.Stop();
         }
     }
 }
