@@ -94,8 +94,8 @@ namespace GOL
                 r.Width = 8;
                 r.Height = 8;
                 r.Fill = (Brushes.WhiteSmoke);
-                Canvas.SetLeft(r, x * 10);
-                Canvas.SetTop(r, y * 10);
+                Canvas.SetLeft(r, x * 10+1);
+                Canvas.SetTop(r, y * 10+1);
                 gameBoardCanvas.Children.Add(r);
             }
             #endregion
