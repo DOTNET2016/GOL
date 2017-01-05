@@ -12,6 +12,7 @@ namespace GOL
     {
         private Cell[,] ActualGeneration = new Cell[80, 60];
         private Cell[,] NextGeneration = new Cell[80, 60];
+        
         public void AddCell(Cell cell)
         {
             ActualGeneration.SetValue(cell, cell.X, cell.Y);
@@ -35,7 +36,7 @@ namespace GOL
             {
                 for (int j = 0; j < ActualGeneration.GetLength(1); j++)
                 {
-                    switch (CountConnectingCells(new Point(i, j)))
+                    switch (CheckLivingCells(i,j))
                     {
                         case 0:
                             {
@@ -133,7 +134,7 @@ namespace GOL
         }
 
         //Checks the surrounding cells of a single cell
-        public int CheckLivingCells(Cell cell, int x, int y)
+        public int CheckLivingCells(int x, int y)
         {
             int count = 0;
             //right
@@ -172,16 +173,21 @@ namespace GOL
                     return count;
         }
 
-        public void TimerToCheckState()
+        public Cell[,] GetNextGeneration()
         {
-            timer.Tick += Timer_Tick;
-            timer.Interval = new TimeSpan(500); //half a second? Too fast?
-            timer.Start();
+            return NextGeneration;
         }
 
-        private void Timer_Tick(object sender, EventArgs e)
-        {
-           
-        }
+        //public void TimerToCheckState()
+        //{
+        //    timer.Tick += Timer_Tick;
+        //    timer.Interval = new TimeSpan(500); //half a second? Too fast?
+        //    timer.Start();
+        //}
+
+        //private void Timer_Tick(object sender, EventArgs e)
+        //{
+
+        //}
     }
 }
