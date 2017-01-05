@@ -146,7 +146,7 @@ namespace GOL
                 }
             }
             #endregion
-           
+
         }
 
         private void LoadNextGeneration()
@@ -197,7 +197,7 @@ namespace GOL
 
             if (!IsOn)
                 handler.Stop_Timer();
-        }
+        }      
     }
 }
 

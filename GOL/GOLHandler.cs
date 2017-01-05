@@ -14,13 +14,13 @@ namespace GOL
         private Cell[,] NextGeneration = new Cell[80, 60];
         DispatcherTimer timer;
         
-
+        
         public event EventHandler Timer_Ticked;
 
         public GOLHandler()
         {
             timer = new DispatcherTimer();
-            timer.Interval = (new TimeSpan(0, 0, 2));//
+            timer.Interval = (new TimeSpan(600));
             timer.IsEnabled = true;
             timer.Stop();
             timer.Tick += Timer_Tick;
