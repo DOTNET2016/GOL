@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +21,7 @@ namespace GOL
     /// </summary>
     public partial class MainWindow : Window
     {
+        private bool _IsOn;
         GOLHandler handler;
         DispatcherTimer timer = new DispatcherTimer();
         public MainWindow()
@@ -192,14 +192,27 @@ namespace GOL
 
         }
 
-        private void StartTimer_Click(object sender, RoutedEventArgs e)
+        public bool IsOn
         {
-            timer.Start();
+            get
+            {
+                return _IsOn;
+            }
+            set
+            {
+                _IsOn = value;
+                StartTimer.Content = _IsOn ? "Stop Timer" : "Start Timer";
+            }
         }
 
-        private void StopTimer_Click(object sender, RoutedEventArgs e)
+        private void StartTimer_Click(object sender, RoutedEventArgs e)
         {
-            timer.Stop();
+            IsOn = !IsOn;
+            if (IsOn)
+                timer.Start();
+
+            if (!IsOn)
+                timer.Stop();
         }
     }
 }
