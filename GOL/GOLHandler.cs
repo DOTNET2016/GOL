@@ -12,7 +12,8 @@ namespace GOL
     {
         private Cell[,] ActualGeneration = new Cell[80, 60];
         private Cell[,] NextGeneration = new Cell[80, 60];
-        
+        DispatcherTimer timer = new DispatcherTimer();
+
         public void AddCell(Cell cell)
         {
             ActualGeneration.SetValue(cell, cell.X, cell.Y);
@@ -136,21 +137,25 @@ namespace GOL
         //Checks the surrounding cells of a single cell
         public int CheckLivingCells(int x, int y)
         {
+            int TempMaxX = ActualGeneration.GetLength(0);
+            int TempMaxY = ActualGeneration.GetLength(1);
+
             int count = 0;
+       
             //right
-            if (x != cell.X - 1)
+            if (x != TempMaxX - 1)
                 if (ActualGeneration[x + 1, y].IsAlive)
                     count++;
             //bottom right
-            if (x != cell.X - 1 && y != cell.Y - 1)
+            if (x != TempMaxX - 1 && y != TempMaxY - 1)
                 if (ActualGeneration[x + 1, y + 1].IsAlive)
                     count++;
             //bottom
-            if (y != cell.Y - 1)
+            if (y != TempMaxX - 1)
                 if (ActualGeneration[x, y + 1].IsAlive)
                     count++;
             //bottom left
-            if (x != 0 && y != cell.Y - 1)
+            if (x != 0 && y != TempMaxY - 1)
                 if (ActualGeneration[x - 1, y + 1].IsAlive)
                     count++;
             //left
@@ -166,7 +171,7 @@ namespace GOL
                 if (ActualGeneration[x, y - y].IsAlive)
                     count++;
             //top right
-            if (x != cell.X - 1 && y != 0)
+            if (x != TempMaxX - 1 && y != 0)
                 if (ActualGeneration[x + 1, y - 1].IsAlive)
                     count++;
 
