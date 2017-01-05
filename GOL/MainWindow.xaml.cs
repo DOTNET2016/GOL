@@ -13,7 +13,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Windows.Threading;
 
 namespace GOL
 {
@@ -22,39 +21,12 @@ namespace GOL
     /// </summary>
     public partial class MainWindow : Window
     {
-        DispatcherTimer timer = new DispatcherTimer();
         GOLHandler handler;
         public MainWindow()
         {
             InitializeComponent();
             handler = new GOLHandler();
             initializeGameBoard();
-
-            timer.Interval = new TimeSpan(0, 0, 1);
-            timer.Tick += Timer_Tick;
-
-        }
-
-        private void Timer_Tick(object sender, EventArgs e)
-        {
-            handler.calculateNextGeneration();
-            gameBoardCanvas.Children.Clear();
-            Cell[,] arrayToUpdateFrom = handler.GetNextGeneration();
-            //Loops through all the Cells from the Array, So we can populate the Canvas with the Actual Generation. 
-            for (int i = 0; i < arrayToUpdateFrom.GetLength(0); i++)
-            {
-                for (int j = 0; j < arrayToUpdateFrom.GetLength(1); j++)
-                {
-                    if (arrayToUpdateFrom[i, j].IsAlive == true)
-                    {
-                        UpdatePoint(i, j, true);
-                    }
-                    else
-                    {
-                        UpdatePoint(i, j, false);
-                    }
-                }
-            }
         }
 
         /// <summary>
@@ -65,14 +37,14 @@ namespace GOL
         private void initializeGameBoard()
         {
             int[,] gameBoard = new int[800, 600];
-            int xPosition = 0;
-            int YPosition = 0;
 
             //loop through all the Canvas-Coordinates.
             for (int i = 0; i < 800; i += 10)
             {
                 for (int j = 0; j < 600; j += 10)
                 {
+                    int xPosition = 0;
+                    int YPosition = 0;
                     //Algorithm for get the nearest value with 10.
                     xPosition = ((int)Math.Round(i / 10.0)) * 10;
                     YPosition = ((int)Math.Round(j / 10.0)) * 10;
@@ -89,6 +61,8 @@ namespace GOL
                     gameBoardCanvas.Children.Add(r);
                 }
             }
+            //Fill The NextGeneration With Dead Cell by Default.
+            handler.calculateNextGeneration();
         }
 
         /// <summary>
@@ -171,10 +145,6 @@ namespace GOL
         private void buttonGetNxtGen_Click(object sender, RoutedEventArgs e)
         {
             handler.calculateNextGeneration();
-        }
-
-        private void button_Click(object sender, RoutedEventArgs e)
-        {
             gameBoardCanvas.Children.Clear();
             Cell[,] arrayToUpdateFrom = handler.GetNextGeneration();
             //Loops through all the Cells from the Array, So we can populate the Canvas with the Actual Generation. 
@@ -192,16 +162,7 @@ namespace GOL
                     }
                 }
             }
-        }
 
-        private void StartTimer_Click(object sender, RoutedEventArgs e)
-        {
-            timer.Start();
-        }
-
-        private void StopTimer_Click(object sender, RoutedEventArgs e)
-        {
-            timer.Stop();
         }
     }
 }
