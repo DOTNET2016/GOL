@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -27,7 +28,14 @@ namespace GOL
             InitializeComponent();
             handler = new GOLHandler();
             initializeGameBoard();
+            handler.Timer_Ticked += Handler_Timer_Ticked;
         }
+
+        private void Handler_Timer_Ticked(object sender, EventArgs e)
+        {
+            SetNextGeneration();
+        }
+
 
         /// <summary>
         /// Method for Set-up the gameboard(canvas). it's 800x600 pixlar/points. It setting one cell at every 10x10 coordinates. 
@@ -94,8 +102,8 @@ namespace GOL
                 r.Width = 8;
                 r.Height = 8;
                 r.Fill = (Brushes.WhiteSmoke);
-                Canvas.SetLeft(r, x * 10+1);
-                Canvas.SetTop(r, y * 10+1);
+                Canvas.SetLeft(r, x * 10);
+                Canvas.SetTop(r, y * 10);
                 gameBoardCanvas.Children.Add(r);
             }
             #endregion
@@ -142,7 +150,7 @@ namespace GOL
            
         }
 
-        private void buttonGetNxtGen_Click(object sender, RoutedEventArgs e)
+        private void SetNextGeneration()
         {
             handler.calculateNextGeneration();
             gameBoardCanvas.Children.Clear();
@@ -162,7 +170,21 @@ namespace GOL
                     }
                 }
             }
+        }
+        private void buttonGetNxtGen_Click(object sender, RoutedEventArgs e)
+        {
+            SetNextGeneration();
 
+        }
+
+        private void StartTimer_Click(object sender, RoutedEventArgs e)
+        {
+            handler.Start_Timer();
+        }
+
+        private void StopTimer_Click(object sender, RoutedEventArgs e)
+        {
+            handler.Stop_Timer();
         }
     }
 }

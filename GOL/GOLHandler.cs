@@ -12,7 +12,24 @@ namespace GOL
     {
         private Cell[,] ActualGeneration = new Cell[80, 60];
         private Cell[,] NextGeneration = new Cell[80, 60];
-        DispatcherTimer timer = new DispatcherTimer();
+        DispatcherTimer timer;
+        
+
+        public event EventHandler Timer_Ticked;
+
+        public GOLHandler()
+        {
+            timer = new DispatcherTimer();
+            timer.Interval = (new TimeSpan(0, 0, 2));//
+            timer.IsEnabled = true;
+            timer.Stop();
+            timer.Tick += Timer_Tick;
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            Timer_Ticked.Invoke(this, new EventArgs());
+        }
 
         public void AddCell(Cell cell)
         {
@@ -91,6 +108,21 @@ namespace GOL
             return ActualGeneration;
         }
 
+        public void Start_Timer()
+        {
+            timer.Start();
+        }
+
+        public void Stop_Timer()
+        {
+            timer.Stop();
+        }
+
+        public Cell[,] GetNextGeneration()
+        {
+            return NextGeneration;
+        }
+
         //Checks the surrounding cells of a single cell
         public int CheckLivingCells(int x, int y)
         {
@@ -133,16 +165,6 @@ namespace GOL
                     count++;
 
                     return count;
-        }
-
-        public Cell[,] GetNextGeneration()
-        {
-            return NextGeneration;
-        }
-
-        private void Timer_Tick(object sender, EventArgs e)
-        {
-           
         }
     }
 }
