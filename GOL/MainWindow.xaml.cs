@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace GOL
 {
@@ -22,11 +23,37 @@ namespace GOL
     public partial class MainWindow : Window
     {
         GOLHandler handler;
+        DispatcherTimer timer = new DispatcherTimer();
         public MainWindow()
         {
             InitializeComponent();
             handler = new GOLHandler();
             initializeGameBoard();
+
+            timer.Interval = new TimeSpan(500);
+            timer.Tick += Timer_Tick;
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            handler.calculateNextGeneration();
+            gameBoardCanvas.Children.Clear();
+            Cell[,] arrayToUpdateFrom = handler.GetNextGeneration();
+            //Loops through all the Cells from the Array, So we can populate the Canvas with the Actual Generation. 
+            for (int i = 0; i < arrayToUpdateFrom.GetLength(0); i++)
+            {
+                for (int j = 0; j < arrayToUpdateFrom.GetLength(1); j++)
+                {
+                    if (arrayToUpdateFrom[i, j].IsAlive == true)
+                    {
+                        UpdatePoint(i, j, true);
+                    }
+                    else
+                    {
+                        UpdatePoint(i, j, false);
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -163,6 +190,16 @@ namespace GOL
                 }
             }
 
+        }
+
+        private void StartTimer_Click(object sender, RoutedEventArgs e)
+        {
+            timer.Start();
+        }
+
+        private void StopTimer_Click(object sender, RoutedEventArgs e)
+        {
+            timer.Stop();
         }
     }
 }

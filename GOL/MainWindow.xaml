@@ -19,5 +19,7 @@
             </Canvas.Background>
         </Canvas>
         <Button x:Name="buttonGetNxtGen" Content="Get Next Generation" HorizontalAlignment="Left" Margin="881,140,0,0" VerticalAlignment="Top" Width="144" Height="39" Click="buttonGetNxtGen_Click"/>
+        <Button x:Name="StartTimer" Content="Start Timer" HorizontalAlignment="Left" Margin="881,265,0,0" VerticalAlignment="Top" Width="144" Height="45" Click="StartTimer_Click"/>
+        <Button x:Name="StopTimer" Content="Stop Timer" HorizontalAlignment="Left" Margin="881,385,0,0" VerticalAlignment="Top" Width="144" Height="45" Click="StopTimer_Click"/>
     </Grid>
 </Window>
