@@ -86,49 +86,6 @@ namespace GOL
             }
         }
 
-        //private int CountConnectingCells(Point ArrayindexXY)
-        //{
-        //    int ConnectedCells = 0;
-
-        //    var cell = ActualGeneration[(int)ArrayindexXY.X, (int)ArrayindexXY.Y];
-        //    var temp = ActualGeneration;
-
-        //    // Check cell on the right.
-        //    if (cell.X != temp.GetLength(0) - 1)
-        //        if (temp[cell.X + 1, cell.Y].IsAlive)
-        //            ConnectedCells++;
-
-        //    if (cell.X != temp.GetLength(0) - 1 && cell.Y != temp.GetLength(1) - 1)
-        //        if (temp[cell.X + 1, cell.Y + 1].IsAlive)
-        //            ConnectedCells++;
-
-        //    if (cell.Y != temp.GetLength(1) - 1)
-        //        if (temp[cell.X, cell.Y + 1].IsAlive)
-        //            ConnectedCells++;
-
-        //    if (cell.X != 0 && cell.Y != temp.GetLength(1) - 1)
-        //        if (temp[cell.X - 1, cell.Y + 1].IsAlive)
-        //            ConnectedCells++;
-
-        //    if (cell.X != 0)
-        //        if (temp[cell.X - 1, cell.Y].IsAlive)
-        //            ConnectedCells++;
-
-        //    if (cell.X != 0 && cell.Y != 0)
-        //        if (temp[cell.X - 1, cell.Y - 1].IsAlive)
-        //            ConnectedCells++;
-
-        //    if (cell.Y != 0)
-        //        if (temp[cell.X, cell.Y - 1].IsAlive)
-        //            ConnectedCells++;
-
-        //    if (cell.X != temp.GetLength(0) - 1 && cell.Y != 0)
-        //        if (temp[cell.X + 1, cell.Y - 1].IsAlive)
-        //            ConnectedCells++;
-
-        //    return ConnectedCells;
-        //}
-
         public Cell[,] GetActualGeneration()
         {
             return ActualGeneration;
