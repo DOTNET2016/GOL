@@ -183,16 +183,9 @@ namespace GOL
             return NextGeneration;
         }
 
-        //public void TimerToCheckState()
-        //{
-        //    timer.Tick += Timer_Tick;
-        //    timer.Interval = new TimeSpan(500); //half a second? Too fast?
-        //    timer.Start();
-        //}
-
-        //private void Timer_Tick(object sender, EventArgs e)
-        //{
-
-        //}
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+           
+        }
     }
 }
