@@ -22,7 +22,6 @@ namespace GOL
     /// </summary>
     public partial class MainWindow : Window
     {
-        private bool _IsOn;
         GOLHandler handler;
         DispatcherTimer timer = new DispatcherTimer();
         public MainWindow()
@@ -129,19 +128,6 @@ namespace GOL
             #endregion
         }
 
-        public bool IsOn
-        {
-            get
-            {
-                return _IsOn;
-            }
-            set
-            {
-                _IsOn = value;
-                StartTimer.Content = _IsOn ? "Stop Timer" : "Start Timer";
-            }
-        }
-
         /// <summary>
         /// Method for Choose the Cells you want alive or not before you save and get the next Generation.
         /// </summary>
@@ -208,15 +194,12 @@ namespace GOL
 
         private void StartTimer_Click(object sender, RoutedEventArgs e)
         {
-            IsOn = !IsOn;
-            if (IsOn)
-            {
-                timer.Start();
-            }
-            if (!IsOn)
-            {
-                timer.Stop();
-            }
+            timer.Start();
+        }
+
+        private void StopTimer_Click(object sender, RoutedEventArgs e)
+        {
+            timer.Stop();
         }
     }
 }
