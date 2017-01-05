@@ -12,7 +12,6 @@ namespace GOL
     {
         private Cell[,] ActualGeneration = new Cell[80, 60];
         private Cell[,] NextGeneration = new Cell[80, 60];
-        DispatcherTimer timer = new DispatcherTimer();
 
         public void AddCell(Cell cell)
         {
@@ -181,11 +180,6 @@ namespace GOL
         public Cell[,] GetNextGeneration()
         {
             return NextGeneration;
-        }
-
-        private void Timer_Tick(object sender, EventArgs e)
-        {
-           
         }
     }
 }
