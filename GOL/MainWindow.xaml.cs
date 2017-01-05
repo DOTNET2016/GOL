@@ -118,7 +118,7 @@ namespace GOL
             handler.KillOrMakeCell(tempX, tempY);
 
             //makes a temporary Array from the GolHandler with all the Cells.
-            var arrayToUpdateFrom = handler.GetCellArray();
+            var arrayToUpdateFrom = handler.GetActualGeneration();
 
             //Loops through all the Cells from the Array, So we can populate the Canvas with the Actual Generation. 
             #region LoopThroughTheGeneration
@@ -137,7 +137,34 @@ namespace GOL
                 }
             }
             #endregion
+           
+        }
 
+        private void buttonGetNxtGen_Click(object sender, RoutedEventArgs e)
+        {
+            handler.calculateNextGeneration();
+
+        }
+
+        private void button_Click(object sender, RoutedEventArgs e)
+        {
+            
+            Cell[,] arrayToUpdateFrom = handler.GetNextGeneration();
+            //Loops through all the Cells from the Array, So we can populate the Canvas with the Actual Generation. 
+            for (int i = 0; i < arrayToUpdateFrom.GetLength(0); i++)
+            {
+                for (int j = 0; j < arrayToUpdateFrom.GetLength(1); j++)
+                {
+                    if (arrayToUpdateFrom[i, j].IsAlive == true)
+                    {
+                        UpdatePoint(i, j, true);
+                    }
+                    else
+                    {
+                        UpdatePoint(i, j, false);
+                    }
+                }
+            }
         }
     }
 }
