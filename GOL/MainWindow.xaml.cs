@@ -83,8 +83,8 @@ namespace GOL
                     r.Width = 8;
                     r.Height = 8;
                     r.Fill = (Brushes.WhiteSmoke);
-                    Canvas.SetLeft(r, i);
-                    Canvas.SetTop(r, j);
+                    Canvas.SetLeft(r, i + 1);
+                    Canvas.SetTop(r, j + 1);
                     gameBoardCanvas.Children.Add(r);
                 }
             }
