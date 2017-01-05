@@ -148,7 +148,7 @@ namespace GOL
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            
+            gameBoardCanvas.Children.Clear();
             Cell[,] arrayToUpdateFrom = handler.GetNextGeneration();
             //Loops through all the Cells from the Array, So we can populate the Canvas with the Actual Generation. 
             for (int i = 0; i < arrayToUpdateFrom.GetLength(0); i++)
