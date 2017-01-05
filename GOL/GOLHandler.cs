@@ -151,7 +151,7 @@ namespace GOL
                 if (ActualGeneration[x + 1, y + 1].IsAlive)
                     count++;
             //bottom
-            if (y != TempMaxX - 1)
+            if (y != TempMaxY - 1)
                 if (ActualGeneration[x, y + 1].IsAlive)
                     count++;
             //bottom left
