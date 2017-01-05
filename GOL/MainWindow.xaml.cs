@@ -23,37 +23,17 @@ namespace GOL
     {
         private bool _IsOn;
         GOLHandler handler;
-        DispatcherTimer timer = new DispatcherTimer();
         public MainWindow()
         {
             InitializeComponent();
             handler = new GOLHandler();
             initializeGameBoard();
-
-            timer.Interval = new TimeSpan(500);
-            timer.Tick += Timer_Tick;
+            handler.Timer_Ticked += Handler_Timer_Ticked;
         }
 
-        private void Timer_Tick(object sender, EventArgs e)
+        private void Handler_Timer_Ticked(object sender, EventArgs e)
         {
-            handler.calculateNextGeneration();
-            gameBoardCanvas.Children.Clear();
-            Cell[,] arrayToUpdateFrom = handler.GetNextGeneration();
-            //Loops through all the Cells from the Array, So we can populate the Canvas with the Actual Generation. 
-            for (int i = 0; i < arrayToUpdateFrom.GetLength(0); i++)
-            {
-                for (int j = 0; j < arrayToUpdateFrom.GetLength(1); j++)
-                {
-                    if (arrayToUpdateFrom[i, j].IsAlive == true)
-                    {
-                        UpdatePoint(i, j, true);
-                    }
-                    else
-                    {
-                        UpdatePoint(i, j, false);
-                    }
-                }
-            }
+            LoadNextGeneration();
         }
 
         /// <summary>
@@ -121,8 +101,8 @@ namespace GOL
                 r.Width = 8;
                 r.Height = 8;
                 r.Fill = (Brushes.WhiteSmoke);
-                Canvas.SetLeft(r, x * 10+1);
-                Canvas.SetTop(r, y * 10+1);
+                Canvas.SetLeft(r, x * 10);
+                Canvas.SetTop(r, y * 10);
                 gameBoardCanvas.Children.Add(r);
             }
             #endregion
@@ -169,7 +149,7 @@ namespace GOL
            
         }
 
-        private void buttonGetNxtGen_Click(object sender, RoutedEventArgs e)
+        private void LoadNextGeneration()
         {
             handler.calculateNextGeneration();
             gameBoardCanvas.Children.Clear();
@@ -189,7 +169,11 @@ namespace GOL
                     }
                 }
             }
+        }
 
+        private void buttonGetNxtGen_Click(object sender, RoutedEventArgs e)
+        {
+            LoadNextGeneration();
         }
 
         public bool IsOn
@@ -209,10 +193,10 @@ namespace GOL
         {
             IsOn = !IsOn;
             if (IsOn)
-                timer.Start();
+                handler.Start_Timer();
 
             if (!IsOn)
-                timer.Stop();
+                handler.Stop_Timer();
         }
     }
 }
