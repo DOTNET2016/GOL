@@ -23,7 +23,7 @@ namespace GOL
         public GOLHandler()
         {
             timer = new DispatcherTimer();
-            timer.Interval = (new TimeSpan(600));
+            timer.Interval = (new TimeSpan(0,0,1));// Interval set to one second.
             timer.IsEnabled = true;
             timer.Stop();
             timer.Tick += Timer_Tick;
