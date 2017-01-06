@@ -10,20 +10,15 @@ namespace GOL
 {
     class Cell
     {
+        //Properties
         public int X { get; set; }
         public int Y { get; set; }
-
         public bool IsAlive { get; set; }
 
-        //private int[,] _generation;
-        //private int[,] _lastGeneration;
-        //private int _generationCount;
-
-        //public int GenerationCount { get { return _generationCount; } }
-
-        public Cell(int x,int y)
+        //constructor.
+        public Cell(int x,int y,bool isAlive = false)
         {
-            IsAlive = false;
+            IsAlive = isAlive;
             X = x;
             Y = y;
         }

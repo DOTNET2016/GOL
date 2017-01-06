@@ -21,8 +21,24 @@ namespace GOL
     /// </summary>
     public partial class MainWindow : Window
     {
+        //Fields
         private bool _IsOn;
         GOLHandler handler;
+
+        //propertie
+        public bool TimerIsOn
+        {
+            get
+            {
+                return _IsOn;
+            }
+            set
+            {
+                _IsOn = value;
+                StartTimer.Content = _IsOn ? "Stop Timer" : "Start Timer";
+            }
+        }
+        //constructor.
         public MainWindow()
         {
             InitializeComponent();
@@ -31,6 +47,7 @@ namespace GOL
             handler.Timer_Ticked += Handler_Timer_Ticked;
         }
 
+        //Eventhandler for the Timer_Ticked event in the handler class.
         private void Handler_Timer_Ticked(object sender, EventArgs e)
         {
             LoadNextGeneration();
@@ -45,7 +62,7 @@ namespace GOL
         {
             int[,] gameBoard = new int[800, 600];
 
-            //loop through all the Canvas-Coordinates.
+            #region LoopThroughTheCanvas
             for (int i = 0; i < 800; i += 10)
             {
                 for (int j = 0; j < 600; j += 10)
@@ -67,9 +84,8 @@ namespace GOL
                     Canvas.SetTop(r, j + 1);
                     gameBoardCanvas.Children.Add(r);
                 }
+                #endregion
             }
-            //Fill The NextGeneration With Dead Cell by Default.
-            handler.calculateNextGeneration();
         }
 
         /// <summary>
@@ -115,22 +131,20 @@ namespace GOL
         /// <param name="e"></param>
         private void gameBoardCanvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            gameBoardCanvas.Children.Clear();//Clear the canvas before updating it.
+            //Clear the canvas before updating it.
+            gameBoardCanvas.Children.Clear();
 
-            // Taking the position from the cursor and - 5 so we get the center of the cell.
-            int tempY = (int)(e.GetPosition(gameBoardCanvas).Y) - 5;
-            int tempX = (int)(e.GetPosition(gameBoardCanvas).X) - 5;
+            // Taking the position from the cursor.
+            double tempY = e.GetPosition(gameBoardCanvas).Y;
+            double tempX = e.GetPosition(gameBoardCanvas).X;
 
-            //rounds it to the nearest int and divide it with 10 so we get the actual index numbers we want before we send it for Kill or make it Alive.
-            tempX = ((int)Math.Round(tempX / 10.0));
-            tempY = ((int)Math.Round(tempY / 10.0));
-            handler.KillOrMakeCell(tempX, tempY);
+            handler.KillOrMakeCell(tempX, tempY,5);
 
-            //makes a temporary Array from the GolHandler with all the Cells.
+            //An Temporary holder for the ActualGeneration Array from the handler.
             var arrayToUpdateFrom = handler.GetActualGeneration();
 
             //Loops through all the Cells from the Array, So we can populate the Canvas with the Actual Generation. 
-            #region LoopThroughTheGeneration
+            #region LoopThroughTheActualGeneration
             for (int i = 0; i < arrayToUpdateFrom.GetLength(0); i++)
             {
                 for (int j = 0; j < arrayToUpdateFrom.GetLength(1); j++)
@@ -146,56 +160,60 @@ namespace GOL
                 }
             }
             #endregion
-           
         }
 
+       
         private void LoadNextGeneration()
         {
             handler.calculateNextGeneration();
             gameBoardCanvas.Children.Clear();
-            Cell[,] arrayToUpdateFrom = handler.GetNextGeneration();
-            //Loops through all the Cells from the Array, So we can populate the Canvas with the Actual Generation. 
+
+            //An Temporary holder for the NextGeneration Array from the handler.
+            var arrayToUpdateFrom = handler.GetNextGeneration();
+
+            //Loops through all the Cells from the Array, So we can populate the Canvas with the Next Generation. 
+            #region LoopThroughTheNextGeneration
             for (int i = 0; i < arrayToUpdateFrom.GetLength(0); i++)
             {
                 for (int j = 0; j < arrayToUpdateFrom.GetLength(1); j++)
                 {
                     if (arrayToUpdateFrom[i, j].IsAlive == true)
                     {
+                        handler.AddCell(new Cell(i, j, true));
                         UpdatePoint(i, j, true);
                     }
                     else
                     {
+                        handler.AddCell(new Cell(i, j));
                         UpdatePoint(i, j, false);
                     }
                 }
             }
+            #endregion
         }
 
+        /// <summary>
+        /// Handler for the NextGenerationButton.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void buttonGetNxtGen_Click(object sender, RoutedEventArgs e)
         {
             LoadNextGeneration();
         }
 
-        public bool IsOn
-        {
-            get
-            {
-                return _IsOn;
-            }
-            set
-            {
-                _IsOn = value;
-                StartTimer.Content = _IsOn ? "Stop Timer" : "Start Timer";
-            }
-        }
-
+        /// <summary>
+        /// Handler for start or stop the timer in the handler class.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void StartTimer_Click(object sender, RoutedEventArgs e)
         {
-            IsOn = !IsOn;
-            if (IsOn)
+            TimerIsOn = !TimerIsOn;
+            if (TimerIsOn)
                 handler.Start_Timer();
 
-            if (!IsOn)
+            if (!TimerIsOn)
                 handler.Stop_Timer();
         }
     }

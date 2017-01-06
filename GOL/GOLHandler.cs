@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,13 +11,15 @@ namespace GOL
 {
     class GOLHandler
     {
+        //Fields
         private Cell[,] ActualGeneration = new Cell[80, 60];
         private Cell[,] NextGeneration = new Cell[80, 60];
         DispatcherTimer timer;
-        
 
+        //Event
         public event EventHandler Timer_Ticked;
 
+        //Constructor
         public GOLHandler()
         {
             timer = new DispatcherTimer();
@@ -26,145 +29,196 @@ namespace GOL
             timer.Tick += Timer_Tick;
         }
 
+        //Tick handler that raises the timer_ticked event if it has subscribers.
         private void Timer_Tick(object sender, EventArgs e)
         {
-            Timer_Ticked.Invoke(this, new EventArgs());
+            //Check so the event have a subscriber.
+            if (Timer_Ticked != null)
+            {
+                Timer_Ticked.Invoke(this, new EventArgs());
+            }
+
         }
 
+        /// <summary>
+        /// Method for adding new cells to the ActualGeneration.
+        /// </summary>
+        /// <param name="cell">Send the cell you want to add.</param>
         public void AddCell(Cell cell)
         {
             ActualGeneration.SetValue(cell, cell.X, cell.Y);
         }
-        public void KillOrMakeCell(int X_index, int Y_index)
-        {
 
-            if (ActualGeneration[X_index, Y_index].IsAlive == true)
+        /// <summary>
+        /// Send the coordinates from the position you click in the canvas and the radius of the square the cells is in.
+        /// This method will divide the coordinates by 10 and rounds it to nearest even 10.
+        /// </summary>
+        /// <param name="X_index">send The X coordinate.</param>
+        /// <param name="Y_index">Send The Y coordinate</param>
+        /// <param name="RadiusOfTheSquare">Send the Radius of the Square</param>
+        public void KillOrMakeCell(double X_index, double Y_index,int RadiusOfTheSquare)
+        {
+            //Casting the values to an int.
+            int X = (int)X_index;
+            int Y = (int)Y_index;
+
+            //Substract the radius value so it will be the center point.
+            X -= RadiusOfTheSquare;
+            Y -= RadiusOfTheSquare;
+
+            //Rounds it to the nearest 10.
+            X = ((int)Math.Round(X / 10.0));
+            Y = ((int)Math.Round(Y / 10.0));
+
+            //Kill or make the cell alive.
+            if (ActualGeneration[X, Y].IsAlive == true)
             {
-                ActualGeneration[X_index, Y_index].IsAlive = false;
+                ActualGeneration[X, Y].IsAlive = false;
             }
             else
             {
-                ActualGeneration[X_index, Y_index].IsAlive = true;
+                ActualGeneration[X, Y].IsAlive = true;
             }
         }
-        
+
+        /// <summary>
+        /// Method that looping through the ActualGenerations MultiDimensionalArray,
+        /// And Checks how many neighboor every cell has and then make the new generation.
+        /// </summary>
         public void calculateNextGeneration()
         {
             for (int i = 0; i < ActualGeneration.GetLength(0); i++)
             {
                 for (int j = 0; j < ActualGeneration.GetLength(1); j++)
                 {
-                    switch (CheckLivingCells(i,j))
+                    //Method for count how many neighboor every cell has and then throw it into the switch.
+                    int neighboors = CheckLivingNeighboors(i, j);
+
+                    #region SwitchOnAllTheCells
+                    switch (neighboors)
                     {
                         case 0:
                             {
-
-                                NextGeneration[i,j] = ActualGeneration[i, j];
-                                NextGeneration[i, j].IsAlive = false;
+                                NextGeneration.SetValue(new Cell(i, j), i, j);
                                 break;
                             }
                         case 1:
                             {
-                                NextGeneration[i, j] = ActualGeneration[i, j];
-                                NextGeneration[i, j].IsAlive = false;
+                                NextGeneration.SetValue(new Cell(i, j), i, j);
                                 break;
                             }
                         case 2:
                             {
-                                if (ActualGeneration[i, j].IsAlive == true)
+                                if (ActualGeneration[i, j].IsAlive)
                                 {
-                                    NextGeneration[i, j] = ActualGeneration[i, j];
+                                    NextGeneration.SetValue(new Cell(i, j), i, j);
                                     NextGeneration[i, j].IsAlive = true;
+                                    break;
+                                }
+                                else
+                                {
+                                    NextGeneration.SetValue(new Cell(i, j), i, j);
                                 }
                                 break;
                             }
                         case 3:
                             {
-                                if(ActualGeneration[i,j].IsAlive == true)
-                                {
-                                    NextGeneration[i, j] = ActualGeneration[i, j];
-                                    NextGeneration[i, j].IsAlive = true;
-                                }
-                                else
-                                {
-                                    NextGeneration[i, j] = ActualGeneration[i, j];
-                                    NextGeneration[i, j].IsAlive = true;
-                                }
+                                NextGeneration.SetValue(new Cell(i, j), i, j);
+                                NextGeneration[i, j].IsAlive = true;
                                 break;
                             }
                         default:
                             {
-                                NextGeneration[i, j] = ActualGeneration[i, j];
-                                NextGeneration[i, j].IsAlive = false;
+                                NextGeneration.SetValue(new Cell(i, j), i, j);
                                 break;
                             }
+                            #endregion
                     }
                 }
             }
         }
 
+        /// <summary>
+        /// Method that returns the actualGeneration. 
+        /// </summary>
+        /// <returns>Actual generation MultiDimensionalArray with the cells.</returns>
         public Cell[,] GetActualGeneration()
         {
             return ActualGeneration;
         }
 
+        /// <summary>
+        /// Start the timer, The interval is 2 seconds by default.
+        /// </summary>
         public void Start_Timer()
         {
             timer.Start();
         }
 
+        /// <summary>
+        /// Stops the timer.
+        /// </summary>
         public void Stop_Timer()
         {
             timer.Stop();
         }
 
+        /// <summary>
+        /// Method that returns the NextGeneration MultiDimensionalArrat with the cells.
+        /// </summary>
+        /// <returns></returns>
         public Cell[,] GetNextGeneration()
         {
             return NextGeneration;
         }
 
-        //Checks the surrounding cells of a single cell
-        public int CheckLivingCells(int x, int y)
+        //Checks the surrounding Neighboor-Cells
+        public int CheckLivingNeighboors(int x, int y)
         {
-            int TempMaxX = ActualGeneration.GetLength(0);
-            int TempMaxY = ActualGeneration.GetLength(1);
+            //take the length of X and Y from ActualGeneration.
+            int Xlength = ActualGeneration.GetLength(0);
+            int Ylength = ActualGeneration.GetLength(1);
 
-            int count = 0;
-       
-            //right
-            if (x != TempMaxX - 1)
+            //Start counting from zero neighboors.
+            int neighboors = 0;
+
+            #region CountingNeighboors
+            //Right
+            if (x < Xlength - 1)
                 if (ActualGeneration[x + 1, y].IsAlive)
-                    count++;
-            //bottom right
-            if (x != TempMaxX - 1 && y != TempMaxY - 1)
+                    neighboors++;
+            //Bottom Right
+            if (x < Xlength - 1 && y < Ylength - 1)
                 if (ActualGeneration[x + 1, y + 1].IsAlive)
-                    count++;
-            //bottom
-            if (y != TempMaxY - 1)
+                    neighboors++;
+            //Bottom
+            if (y < Ylength - 1)
                 if (ActualGeneration[x, y + 1].IsAlive)
-                    count++;
-            //bottom left
-            if (x != 0 && y != TempMaxY - 1)
+                    neighboors++;
+            //Bottom Left
+            if (x > 0 && y < Ylength - 1)
                 if (ActualGeneration[x - 1, y + 1].IsAlive)
-                    count++;
-            //left
-            if (x != 0)
-                if (ActualGeneration[x -1, y].IsAlive)
-                    count++;
-            //top left
-            if (x != 0 && y != 0)
+                    neighboors++;
+            //Left
+            if (x > 0)
+                if (ActualGeneration[x - 1, y].IsAlive)
+                    neighboors++;
+            //Top Left
+            if (x > 0 && y > 0)
                 if (ActualGeneration[x - 1, y - 1].IsAlive)
-                    count++;
-            //top
-            if (x != 0)
-                if (ActualGeneration[x, y - y].IsAlive)
-                    count++;
-            //top right
-            if (x != TempMaxX - 1 && y != 0)
+                    neighboors++;
+            //Top
+            if (y > 0)
+                if (ActualGeneration[x, y - 1].IsAlive)
+                    neighboors++;
+            //Top Right
+            if (x < Xlength - 1 && y != 0)
                 if (ActualGeneration[x + 1, y - 1].IsAlive)
-                    count++;
+                    neighboors++;
+            #endregion
 
-                    return count;
+            return neighboors;
         }
+
     }
 }
