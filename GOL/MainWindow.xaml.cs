@@ -215,7 +215,7 @@ namespace GOL
 
             if (!TimerIsOn)
                 handler.Stop_Timer();
-        }
+        }      
     }
 }
 
