@@ -24,6 +24,8 @@ namespace GOL
         //Fields
         private bool _IsOn;
         GOLHandler handler;
+        PlayerNameIntro PlayerName =  new PlayerNameIntro();
+        //GOLContext golEntity = new GOLContext();
 
         //propertie
         public bool TimerIsOn
@@ -41,6 +43,7 @@ namespace GOL
         //constructor.
         public MainWindow()
         {
+            PlayerName.ShowDialog();
             InitializeComponent();
             handler = new GOLHandler();
             initializeGameBoard();
@@ -215,7 +218,12 @@ namespace GOL
 
             if (!TimerIsOn)
                 handler.Stop_Timer();
-        }      
+        }
+
+        private void buttonSaveToGenTable_Click(object sender, RoutedEventArgs e)
+        {
+            handler.SaveToGenerationTable();
+        }
     }
 }
 

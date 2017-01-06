@@ -8,7 +8,7 @@ using System.Windows.Shapes;
 
 namespace GOL
 {
-    class Cell
+    class Cell 
     {
         //Properties
         public int X { get; set; }
@@ -24,3 +24,13 @@ namespace GOL
         }
     }
 }
+
+//CREATE TABLE Generation
+//(
+//    Gen_Name varchar(20) NOT NULL,
+//	--Gen_id int IDENTITY(1,1) PRIMARY KEY,
+//   Index_X int NOT NULL,
+//	Index_Y int NOT NULL,
+//	PRIMARY KEY(Index_X, Index_Y)
+	
+//)
