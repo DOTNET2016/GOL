@@ -25,7 +25,6 @@ namespace GOL
         private bool _IsOn;
         GOLHandler handler;
         PlayerNameIntro PlayerName =  new PlayerNameIntro();
-        //GOLContext golEntity = new GOLContext();
 
         //propertie
         public bool TimerIsOn
@@ -48,6 +47,30 @@ namespace GOL
             handler = new GOLHandler();
             initializeGameBoard();
             handler.Timer_Ticked += Handler_Timer_Ticked;
+
+            using (GoLContext db = new GoLContext())
+            {
+                var players = from p in db.PlayersTables
+                              select p;
+                foreach (var player in players)
+                {
+                    comboBoxPlayers.Items.Add(player.PlayerName);
+                }
+
+                //var savedGame = from p in db.PlayersTables
+                //                join sav in db.SavedGames on p.Player_id equals sav.SavedGame_id
+                //                select new
+                //                {
+                //                    PlayerName = p.PlayerName,
+                //                    Index_X= sav.Index_X,
+                //                    Index_Y = sav.Index_Y,
+                //                    SavedGameNumber = sav.SavedGame_id
+                //                };
+                //foreach (var info in savedGame)
+                //{
+                //    listBoxPlayerInfo.Items.Add(info.PlayerName + " " + info.Index_X + " " + info.Index_Y);
+                //}
+            }
         }
 
         //Eventhandler for the Timer_Ticked event in the handler class.
@@ -165,7 +188,6 @@ namespace GOL
             #endregion
         }
 
-       
         private void LoadNextGeneration()
         {
             handler.calculateNextGeneration();
@@ -222,7 +244,7 @@ namespace GOL
 
         private void buttonSaveToGenTable_Click(object sender, RoutedEventArgs e)
         {
-            handler.SaveToGenerationTable();
+            //handler.SaveToGenerationTable();
         }
     }
 }

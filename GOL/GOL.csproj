@@ -69,6 +69,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="GameOfLifeDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GameOfLifeDataSet.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Generation.cs" />
     <Compile Include="GOLContext.cs" />
     <Compile Include="PlayerNameIntro.xaml.cs">
@@ -113,6 +118,17 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="GameOfLifeDataSet.xsc">
+      <DependentUpon>GameOfLifeDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="GameOfLifeDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>GameOfLifeDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="GameOfLifeDataSet.xss">
+      <DependentUpon>GameOfLifeDataSet.xsd</DependentUpon>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -128,6 +144,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Conways_game_of_life_breeder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Game_of_life_blinker.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="game-of-life.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

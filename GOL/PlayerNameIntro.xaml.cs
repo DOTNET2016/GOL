@@ -37,7 +37,7 @@ namespace GOL
             userName = textBoxEnterName.Text;
         }
 
-        //saves the players name to the player table
+        //saves the players name to the player table and gives them an id_number
         private void AddPlayer()
         {
             using (GoLContext db = new GoLContext())

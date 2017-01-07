@@ -16,6 +16,7 @@ namespace GOL
         private Cell[,] NextGeneration = new Cell[80, 60];
         DispatcherTimer timer;
         PlayerNameIntro Intro = new PlayerNameIntro();
+        Generation gen = new Generation();
 
         //Event
         public event EventHandler Timer_Ticked;
@@ -80,6 +81,9 @@ namespace GOL
             {
                 ActualGeneration[X, Y].IsAlive = true;
             }
+
+            gen.Index_X = X;
+            gen.Index_Y = Y;     
         }
 
         /// <summary>
@@ -220,19 +224,24 @@ namespace GOL
 
             return neighboors;
         }
-        //saves the coords to the gen table----needs some work as i entered some points in the game and checked the table in ssms and it was two rows with X=80 and Y=60
-        public void SaveToGenerationTable()
-        {        
-            using (GoLContext db = new GoLContext())
-            {
-                Generation gen = new Generation();
-                gen.Index_X = ActualGeneration.GetLength(0);
-                gen.Index_Y = ActualGeneration.GetLength(1);
+        
+        //public void SaveToGenerationTable()
+        //{
+        //    using (GoLContext db = new GoLContext())
+        //    {
+        //        var coords = GetActualGeneration();
 
-                db.Generations.Add(gen);
-
-                db.SaveChanges();
-            }
-        }
+        //        for (int i = 0; i < gen.Index_X; i++)
+        //        {
+        //            for (int j = 0; j < gen.Index_Y; j++)
+        //            {
+        //                if (coords[i,j].IsAlive)
+        //                    db.Generations.Add(gen);
+        //            }
+        //        }
+        //        db.SaveChanges();
+        //    }
+        //}
     }
 }
+
