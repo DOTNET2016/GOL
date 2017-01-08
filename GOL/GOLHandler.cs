@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Spatial;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -16,7 +17,6 @@ namespace GOL
         private Cell[,] NextGeneration = new Cell[80, 60];
         DispatcherTimer timer;
         PlayerNameIntro Intro = new PlayerNameIntro();
-        Generation gen = new Generation();
 
         //Event
         public event EventHandler Timer_Ticked;
@@ -81,9 +81,24 @@ namespace GOL
             {
                 ActualGeneration[X, Y].IsAlive = true;
             }
+        }
+        //Method to update the Gen table in the DB with the X and Y coords when they are entered by the user
+        public void SendToGenTable(double X_index, double Y_index)
+        {
+            using (GoLContext db = new GoLContext())
+            {
+                Generation gen = new Generation();
+                var coords = GetActualGeneration();
+                int X = (int)X_index;
+                int Y = (int)Y_index;
 
-            gen.Index_X = X;
-            gen.Index_Y = Y;     
+                gen.Cell_X = X;
+                gen.Cell_Y = Y;
+                gen.IsAlive = true;
+
+                db.Generation.Add(gen);
+                db.SaveChanges();
+            }
         }
 
         /// <summary>
@@ -224,24 +239,57 @@ namespace GOL
 
             return neighboors;
         }
-        
-        //public void SaveToGenerationTable()
-        //{
-        //    using (GoLContext db = new GoLContext())
-        //    {
-        //        var coords = GetActualGeneration();
-
-        //        for (int i = 0; i < gen.Index_X; i++)
-        //        {
-        //            for (int j = 0; j < gen.Index_Y; j++)
-        //            {
-        //                if (coords[i,j].IsAlive)
-        //                    db.Generations.Add(gen);
-        //            }
-        //        }
-        //        db.SaveChanges();
-        //    }
-        //}
     }
 }
 
+//public void SendToGenTable(double X_index, double Y_index)
+//{
+//    using (GoLContext db = new GoLContext())
+//    {
+//        Generation gen = new Generation();
+//        var coords = GetActualGeneration();
+//        int X = (int)X_index;
+//        int Y = (int)Y_index;
+
+//        gen.Cell_X = X;
+//        gen.Cell_Y = Y;
+//        gen.IsAlive = true;
+
+//        for (int i = 0; i < coords.GetLength(0); i++)
+//        {
+//            for (int j = 0; j < coords.GetLength(1); j++)
+//            {
+//                if (coords[i, j].IsAlive == true)
+//                {
+//                    db.Generation.Add(gen);
+//                }
+//            }
+//        }
+//        db.SaveChanges();
+//    }
+//}
+
+
+
+//--CREATE TABLE Generation
+//--(
+//--	Gen_id int IDENTITY(1,1) PRIMARY KEY,
+//--	Cell_X int NOT NULL,
+//--	Cell_Y int NOT NULL,
+//--	IsAlive bit DEFAULT(0) NOT NULL,
+//--	SavedGame_id int FOREIGN KEY REFERENCES SavedGames(SavedGame_id)
+//--)
+//--CREATE TABLE SavedGames
+//--(
+//--	SavedGame_id int IDENTITY(1,1) PRIMARY KEY,
+//--	Cell_X int NOT NULL,
+//--	Cell_Y int NOT NULL,
+//--	IsAlive bit DEFAULT(0) NOT NULL,
+//--	Player_id int FOREIGN KEY REFERENCES PlayersTable(Player_id)
+//--)
+//SELECT* FROM Generation
+//SELECT* FROM SavedGames
+//SELECT* FROM PlayersTable
+//--DROP TABLE Generation
+//--DROP TABLE SavedGames
+//--DELETE FROM Generation

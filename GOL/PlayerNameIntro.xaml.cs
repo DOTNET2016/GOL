@@ -28,6 +28,11 @@ namespace GOL
 
         private void buttonStartGame_Click(object sender, RoutedEventArgs e)
         {
+            if (textBoxEnterName.Text == null)
+            {
+                Close();
+            }
+            else 
             AddPlayer();
             Close();
         }
@@ -45,7 +50,7 @@ namespace GOL
                 PlayersTable player = new PlayersTable();
                 player.PlayerName = textBoxEnterName.Text;
 
-                db.PlayersTables.Add(player);
+                db.PlayersTable.Add(player);
                 db.SaveChanges();
             }
         }

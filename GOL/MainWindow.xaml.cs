@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Spatial;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -42,7 +43,7 @@ namespace GOL
         //constructor.
         public MainWindow()
         {
-            PlayerName.ShowDialog();
+            //PlayerName.ShowDialog();
             InitializeComponent();
             handler = new GOLHandler();
             initializeGameBoard();
@@ -50,7 +51,7 @@ namespace GOL
 
             using (GoLContext db = new GoLContext())
             {
-                var players = from p in db.PlayersTables
+                var players = from p in db.PlayersTable
                               select p;
                 foreach (var player in players)
                 {
@@ -109,8 +110,8 @@ namespace GOL
                     Canvas.SetLeft(r, i + 1);
                     Canvas.SetTop(r, j + 1);
                     gameBoardCanvas.Children.Add(r);
+                    #endregion
                 }
-                #endregion
             }
         }
 
@@ -165,6 +166,7 @@ namespace GOL
             double tempX = e.GetPosition(gameBoardCanvas).X;
 
             handler.KillOrMakeCell(tempX, tempY,5);
+            //handler.SendToGenTable(tempX, tempY);
 
             //An Temporary holder for the ActualGeneration Array from the handler.
             var arrayToUpdateFrom = handler.GetActualGeneration();
@@ -178,6 +180,7 @@ namespace GOL
                     if (arrayToUpdateFrom[i, j].IsAlive == true)
                     {
                         UpdatePoint(i, j, true);
+                        handler.SendToGenTable(tempX, tempY);
                     }
                     else
                     {

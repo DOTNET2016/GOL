@@ -75,11 +75,11 @@
       <DependentUpon>GameOfLifeDataSet.xsd</DependentUpon>
     </Compile>
     <Compile Include="Generation.cs" />
-    <Compile Include="GOLContext.cs" />
+    <Compile Include="GoLContext.cs" />
     <Compile Include="PlayerNameIntro.xaml.cs">
       <DependentUpon>PlayerNameIntro.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SavedGame.cs" />
+    <Compile Include="SavedGames.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

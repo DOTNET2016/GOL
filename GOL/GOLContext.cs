@@ -12,9 +12,9 @@ namespace GOL
         {
         }
 
-        public virtual DbSet<Generation> Generations { get; set; }
-        public virtual DbSet<PlayersTable> PlayersTables { get; set; }
-        public virtual DbSet<SavedGame> SavedGames { get; set; }
+        public virtual DbSet<Generation> Generation { get; set; }
+        public virtual DbSet<PlayersTable> PlayersTable { get; set; }
+        public virtual DbSet<SavedGames> SavedGames { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

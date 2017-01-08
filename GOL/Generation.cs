@@ -12,14 +12,14 @@ namespace GOL
         [Key]
         public int Gen_id { get; set; }
 
-        public int Index_X { get; set; }
+        public int Cell_X { get; set; }
 
-        public int Index_Y { get; set; }
+        public int Cell_Y { get; set; }
 
         public bool IsAlive { get; set; }
 
         public int? SavedGame_id { get; set; }
 
-        public virtual SavedGame SavedGame { get; set; }
+        public virtual SavedGames SavedGames { get; set; }
     }
 }
