@@ -291,7 +291,7 @@ namespace GOL
                 handler.Stop_Timer();
         }
 
-        private void buttonSaveToGenTable_Click(object sender, RoutedEventArgs e)
+        private void buttonLoadFromGenTable_Click(object sender, RoutedEventArgs e)
         {
             LoadGenFromDB();
         }
