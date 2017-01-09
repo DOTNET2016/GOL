@@ -169,7 +169,6 @@ namespace GOL
             double tempX = e.GetPosition(gameBoardCanvas).X;
 
             handler.KillOrMakeCell(tempX, tempY, 5);
-            handler.SendToGenTable(tempX, tempY);
             SendSaveGameTable(tempX, tempY);
 
 
@@ -259,10 +258,11 @@ namespace GOL
                         UpdatePoint(i, j, false);
                     }
                 }
-                //handler.UpdateDatabase();
+                
             }
 
             #endregion
+            handler.UpdateDatabase();
         }
 
         /// <summary>

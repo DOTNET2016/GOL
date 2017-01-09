@@ -83,28 +83,7 @@ namespace GOL
                 ActualGeneration[X, Y].IsAlive = true;
             }
         }
-        //Method to update the Gen table in the DB with the X and Y coords when they are entered by the user
-        public void SendToGenTable(double X_index, double Y_index)
-        {
-            using (GOLContext db = new GOLContext())
-            {
-                Generation gen = new Generation();
-
-                int X = (int)X_index;
-                int Y = (int)Y_index;
-
-                //Rounds it to the nearest 10.
-                X = ((int)Math.Round(X / 10.0));
-                Y = ((int)Math.Round(Y / 10.0));
-
-                gen.Cell_X = X;
-                gen.Cell_Y = Y;
-                gen.IsAlive = true;
-
-                db.Generations.Add(gen);
-                db.SaveChanges();                          
-            }
-        }
+      
 
         public void UpdateDatabase()
         {
@@ -122,8 +101,19 @@ namespace GOL
 
             using (GOLContext db = new GOLContext())
             {
-                int maxGen = db.Generations.Max(p => p.GenNumber + 1);
+                int maxGen;
 
+                if(db.Generations.Count() != 0)
+                {
+                maxGen = db.Generations.Max(p => p.GenNumber);
+                    maxGen += 1;
+                }
+                else
+                {
+                    maxGen = 0;
+                }
+               
+                
                 foreach (var item in AliveCells)
                 {
                     Generation gen = new Generation();
