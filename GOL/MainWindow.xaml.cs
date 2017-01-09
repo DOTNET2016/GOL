@@ -25,7 +25,9 @@ namespace GOL
         //Fields
         private bool _IsOn;
         GOLHandler handler;
-        PlayerNameIntro PlayerName =  new PlayerNameIntro();
+        PlayerNameIntro PlayerName = new PlayerNameIntro();
+        private int _X;
+        private int _Y;
 
         //propertie
         public bool TimerIsOn
@@ -103,6 +105,7 @@ namespace GOL
                     /*Add the cell to the ActualGeneration in the handler class, 
                     it divides the coordinates by 10 so we get the actual indexes in the Multidimensional Generation-Array.*/
                     handler.AddCell(new Cell(xPosition / 10, YPosition / 10));
+
                     Rectangle r = new Rectangle();
                     r.Width = 8;
                     r.Height = 8;
@@ -165,8 +168,10 @@ namespace GOL
             double tempY = e.GetPosition(gameBoardCanvas).Y;
             double tempX = e.GetPosition(gameBoardCanvas).X;
 
-            handler.KillOrMakeCell(tempX, tempY,5);
-            //handler.SendToGenTable(tempX, tempY);
+            handler.KillOrMakeCell(tempX, tempY, 5);
+            handler.SendToGenTable(tempX, tempY);
+            SendSaveGameTable(tempX, tempY);
+
 
             //An Temporary holder for the ActualGeneration Array from the handler.
             var arrayToUpdateFrom = handler.GetActualGeneration();
@@ -180,7 +185,6 @@ namespace GOL
                     if (arrayToUpdateFrom[i, j].IsAlive == true)
                     {
                         UpdatePoint(i, j, true);
-                        handler.SendToGenTable(tempX, tempY);
                     }
                     else
                     {
@@ -189,6 +193,45 @@ namespace GOL
                 }
             }
             #endregion
+        }
+        //Loads the latest gen from the db
+        private void LoadGenFromDB()
+        {
+            using (GoLContext db = new GoLContext())
+            {
+                Generation gen = new Generation();
+
+                var currentGen = (from g in db.Generation
+                                  where g.IsAlive == true
+                                  select g).ToList();
+
+                foreach (var item in currentGen)
+                {
+                    UpdatePoint(item.Cell_X, item.Cell_Y, true);
+                }
+            }
+        }
+
+        public void SendSaveGameTable(double X_index, double Y_index)
+        {
+            using (GoLContext db = new GoLContext())
+            {
+                SavedGames sav = new SavedGames();
+
+                _X = (int)X_index;
+                _Y = (int)Y_index;
+
+                //Rounds it to the nearest 10.
+                _X = ((int)Math.Round(_X / 10.0));
+                _Y = ((int)Math.Round(_Y / 10.0));
+
+                sav.Cell_X = _X;
+                sav.Cell_Y = _Y;
+                sav.IsAlive = true;
+
+                db.SavedGames.Add(sav);
+                db.SaveChanges();
+            }
         }
 
         private void LoadNextGeneration()
@@ -216,7 +259,9 @@ namespace GOL
                         UpdatePoint(i, j, false);
                     }
                 }
+                //handler.UpdateDatabase();
             }
+
             #endregion
         }
 
@@ -247,8 +292,15 @@ namespace GOL
 
         private void buttonSaveToGenTable_Click(object sender, RoutedEventArgs e)
         {
-            //handler.SaveToGenerationTable();
+            LoadGenFromDB();
         }
+
+        private void buttonSaveGen_Click(object sender, RoutedEventArgs e)
+        {
+            handler.UpdateDatabase();
+        }
+
+
     }
 }
 

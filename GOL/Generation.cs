@@ -12,6 +12,8 @@ namespace GOL
         [Key]
         public int Gen_id { get; set; }
 
+        public int GenNumber { get; set; }
+
         public int Cell_X { get; set; }
 
         public int Cell_Y { get; set; }

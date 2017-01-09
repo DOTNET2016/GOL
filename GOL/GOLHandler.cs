@@ -15,6 +15,7 @@ namespace GOL
         //Fields
         private Cell[,] ActualGeneration = new Cell[80, 60];
         private Cell[,] NextGeneration = new Cell[80, 60];
+        List<Cell> AliveCells = new List<Cell>();
         DispatcherTimer timer;
         PlayerNameIntro Intro = new PlayerNameIntro();
 
@@ -88,17 +89,54 @@ namespace GOL
             using (GoLContext db = new GoLContext())
             {
                 Generation gen = new Generation();
-                var coords = GetActualGeneration();
+
                 int X = (int)X_index;
                 int Y = (int)Y_index;
+
+                //Rounds it to the nearest 10.
+                X = ((int)Math.Round(X / 10.0));
+                Y = ((int)Math.Round(Y / 10.0));
 
                 gen.Cell_X = X;
                 gen.Cell_Y = Y;
                 gen.IsAlive = true;
 
                 db.Generation.Add(gen);
-                db.SaveChanges();
+                db.SaveChanges();                          
             }
+        }
+
+        public void UpdateDatabase()
+        {
+            for (int i = 0; i < ActualGeneration.GetLength(0); i++)
+            {
+                for (int j = 0; j < ActualGeneration.GetLength(1); j++)
+                {
+                    if (ActualGeneration[i, j].IsAlive)
+                    {
+                        var c = ActualGeneration[i, j];
+                        AliveCells.Add(new Cell(c.X, c.Y, true));
+                    }
+                }
+            }
+
+            using (GoLContext db = new GoLContext())
+            {
+                int maxGen = db.Generation.Max(p => p.GenNumber + 1);
+
+                foreach (var item in AliveCells)
+                {
+                    Generation gen = new Generation();
+
+                    gen.GenNumber = maxGen;
+                    gen.Cell_X = item.X;
+                    gen.Cell_Y = item.Y;
+                    db.Generation.Add(gen);
+                }
+                db.SaveChanges();
+                AliveCells.Clear();
+            }
+
         }
 
         /// <summary>
