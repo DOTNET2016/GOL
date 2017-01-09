@@ -194,7 +194,7 @@ namespace GOL
             }
             #endregion
         }
-        //Loads the latest gen from the db
+        //Loads the latest gen from the db.....
         private void LoadGenFromDB()
         {
             using (GOLContext db = new GOLContext())
