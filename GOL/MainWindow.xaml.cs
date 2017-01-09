@@ -51,9 +51,9 @@ namespace GOL
             initializeGameBoard();
             handler.Timer_Ticked += Handler_Timer_Ticked;
 
-            using (GoLContext db = new GoLContext())
+            using (GOLContext db = new GOLContext())
             {
-                var players = from p in db.PlayersTable
+                var players = from p in db.Players
                               select p;
                 foreach (var player in players)
                 {
@@ -197,11 +197,11 @@ namespace GOL
         //Loads the latest gen from the db
         private void LoadGenFromDB()
         {
-            using (GoLContext db = new GoLContext())
+            using (GOLContext db = new GOLContext())
             {
                 Generation gen = new Generation();
 
-                var currentGen = (from g in db.Generation
+                var currentGen = (from g in db.Generations
                                   where g.IsAlive == true
                                   select g).ToList();
 
@@ -214,9 +214,9 @@ namespace GOL
 
         public void SendSaveGameTable(double X_index, double Y_index)
         {
-            using (GoLContext db = new GoLContext())
+            using (GOLContext db = new GOLContext())
             {
-                SavedGames sav = new SavedGames();
+                SavedGame sav = new SavedGame();
 
                 _X = (int)X_index;
                 _Y = (int)Y_index;

@@ -45,15 +45,15 @@ namespace GOL
         //Saves the players name to the player table and gives them an id_number & Adds the players id to the SavedGames Table
         private void AddPlayer()
         {
-            using (GoLContext db = new GoLContext())
+            using (GOLContext db = new GOLContext())
             {
-                SavedGames myNewSaveGame = new SavedGames();
+                SavedGame myNewSaveGame = new SavedGame();
 
-                PlayersTable player = new PlayersTable();
+                Player player = new Player();
                 player.PlayerName = textBoxEnterName.Text;
                 player.SavedGames.Add(myNewSaveGame);
 
-                db.PlayersTable.Add(player);
+                db.Players.Add(player);
                 db.SaveChanges();
             }
         }

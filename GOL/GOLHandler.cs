@@ -86,7 +86,7 @@ namespace GOL
         //Method to update the Gen table in the DB with the X and Y coords when they are entered by the user
         public void SendToGenTable(double X_index, double Y_index)
         {
-            using (GoLContext db = new GoLContext())
+            using (GOLContext db = new GOLContext())
             {
                 Generation gen = new Generation();
 
@@ -101,7 +101,7 @@ namespace GOL
                 gen.Cell_Y = Y;
                 gen.IsAlive = true;
 
-                db.Generation.Add(gen);
+                db.Generations.Add(gen);
                 db.SaveChanges();                          
             }
         }
@@ -120,9 +120,9 @@ namespace GOL
                 }
             }
 
-            using (GoLContext db = new GoLContext())
+            using (GOLContext db = new GOLContext())
             {
-                int maxGen = db.Generation.Max(p => p.GenNumber + 1);
+                int maxGen = db.Generations.Max(p => p.GenNumber + 1);
 
                 foreach (var item in AliveCells)
                 {
@@ -131,7 +131,7 @@ namespace GOL
                     gen.GenNumber = maxGen;
                     gen.Cell_X = item.X;
                     gen.Cell_Y = item.Y;
-                    db.Generation.Add(gen);
+                    db.Generations.Add(gen);
                 }
                 db.SaveChanges();
                 AliveCells.Clear();

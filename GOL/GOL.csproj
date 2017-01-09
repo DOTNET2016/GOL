@@ -76,10 +76,11 @@
     </Compile>
     <Compile Include="Generation.cs" />
     <Compile Include="GoLContext.cs" />
+    <Compile Include="Player.cs" />
     <Compile Include="PlayerNameIntro.xaml.cs">
       <DependentUpon>PlayerNameIntro.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SavedGames.cs" />
+    <Compile Include="SavedGame.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -100,7 +101,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PlayersTable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

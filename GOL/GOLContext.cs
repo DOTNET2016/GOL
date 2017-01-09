@@ -5,20 +5,20 @@ namespace GOL
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
 
-    public partial class GoLContext : DbContext
+    public partial class GOLContext : DbContext
     {
-        public GoLContext()
-            : base("name=GoLContext")
+        public GOLContext()
+            : base("name=GOLContext")
         {
         }
 
-        public virtual DbSet<Generation> Generation { get; set; }
-        public virtual DbSet<PlayersTable> PlayersTable { get; set; }
-        public virtual DbSet<SavedGames> SavedGames { get; set; }
+        public virtual DbSet<Generation> Generations { get; set; }
+        public virtual DbSet<Player> Players { get; set; }
+        public virtual DbSet<SavedGame> SavedGames { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<PlayersTable>()
+            modelBuilder.Entity<Player>()
                 .Property(e => e.PlayerName)
                 .IsUnicode(false);
         }
