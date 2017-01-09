@@ -169,7 +169,7 @@ namespace GOL
             double tempX = e.GetPosition(gameBoardCanvas).X;
 
             handler.KillOrMakeCell(tempX, tempY, 5);
-            SendSaveGameTable(tempX, tempY);
+            //SendSaveGameTable(tempX, tempY);
 
 
             //An Temporary holder for the ActualGeneration Array from the handler.
@@ -213,6 +213,7 @@ namespace GOL
 
         public void SendSaveGameTable(double X_index, double Y_index)
         {
+            //TODO maybe change so the savedgametable so ut has only the savedgame_id and gennumber. Because the generation table already keep tracks on what cells alive for every gennumber. hmm???
             using (GOLContext db = new GOLContext())
             {
                 SavedGame sav = new SavedGame();
