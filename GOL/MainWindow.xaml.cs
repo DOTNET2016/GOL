@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Spatial;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,6 +25,9 @@ namespace GOL
         //Fields
         private bool _IsOn;
         GOLHandler handler;
+        PlayerNameIntro PlayerName = new PlayerNameIntro();
+        private int _X;
+        private int _Y;
 
         //propertie
         public bool TimerIsOn
@@ -41,10 +45,35 @@ namespace GOL
         //constructor.
         public MainWindow()
         {
+            //PlayerName.ShowDialog();
             InitializeComponent();
             handler = new GOLHandler();
             initializeGameBoard();
             handler.Timer_Ticked += Handler_Timer_Ticked;
+
+            using (GOLContext db = new GOLContext())
+            {
+                var players = from p in db.Players
+                              select p;
+                foreach (var player in players)
+                {
+                    comboBoxPlayers.Items.Add(player.PlayerName);
+                }
+
+                //var savedGame = from p in db.PlayersTables
+                //                join sav in db.SavedGames on p.Player_id equals sav.SavedGame_id
+                //                select new
+                //                {
+                //                    PlayerName = p.PlayerName,
+                //                    Index_X= sav.Index_X,
+                //                    Index_Y = sav.Index_Y,
+                //                    SavedGameNumber = sav.SavedGame_id
+                //                };
+                //foreach (var info in savedGame)
+                //{
+                //    listBoxPlayerInfo.Items.Add(info.PlayerName + " " + info.Index_X + " " + info.Index_Y);
+                //}
+            }
         }
 
         //Eventhandler for the Timer_Ticked event in the handler class.
@@ -76,6 +105,7 @@ namespace GOL
                     /*Add the cell to the ActualGeneration in the handler class, 
                     it divides the coordinates by 10 so we get the actual indexes in the Multidimensional Generation-Array.*/
                     handler.AddCell(new Cell(xPosition / 10, YPosition / 10));
+
                     Rectangle r = new Rectangle();
                     r.Width = 8;
                     r.Height = 8;
@@ -83,8 +113,8 @@ namespace GOL
                     Canvas.SetLeft(r, i + 1);
                     Canvas.SetTop(r, j + 1);
                     gameBoardCanvas.Children.Add(r);
+                    #endregion
                 }
-                #endregion
             }
         }
 
@@ -138,7 +168,10 @@ namespace GOL
             double tempY = e.GetPosition(gameBoardCanvas).Y;
             double tempX = e.GetPosition(gameBoardCanvas).X;
 
-            handler.KillOrMakeCell(tempX, tempY,5);
+            handler.KillOrMakeCell(tempX, tempY, 5);
+            handler.SendToGenTable(tempX, tempY);
+            SendSaveGameTable(tempX, tempY);
+
 
             //An Temporary holder for the ActualGeneration Array from the handler.
             var arrayToUpdateFrom = handler.GetActualGeneration();
@@ -161,8 +194,46 @@ namespace GOL
             }
             #endregion
         }
+        //Loads the latest gen from the db
+        private void LoadGenFromDB()
+        {
+            using (GOLContext db = new GOLContext())
+            {
+                Generation gen = new Generation();
 
-       
+                var currentGen = (from g in db.Generations
+                                  where g.IsAlive == true
+                                  select g).ToList();
+
+                foreach (var item in currentGen)
+                {
+                    UpdatePoint(item.Cell_X, item.Cell_Y, true);
+                }
+            }
+        }
+
+        public void SendSaveGameTable(double X_index, double Y_index)
+        {
+            using (GOLContext db = new GOLContext())
+            {
+                SavedGame sav = new SavedGame();
+
+                _X = (int)X_index;
+                _Y = (int)Y_index;
+
+                //Rounds it to the nearest 10.
+                _X = ((int)Math.Round(_X / 10.0));
+                _Y = ((int)Math.Round(_Y / 10.0));
+
+                sav.Cell_X = _X;
+                sav.Cell_Y = _Y;
+                sav.IsAlive = true;
+
+                db.SavedGames.Add(sav);
+                db.SaveChanges();
+            }
+        }
+
         private void LoadNextGeneration()
         {
             handler.calculateNextGeneration();
@@ -188,7 +259,9 @@ namespace GOL
                         UpdatePoint(i, j, false);
                     }
                 }
+                //handler.UpdateDatabase();
             }
+
             #endregion
         }
 
@@ -215,7 +288,19 @@ namespace GOL
 
             if (!TimerIsOn)
                 handler.Stop_Timer();
-        }      
+        }
+
+        private void buttonSaveToGenTable_Click(object sender, RoutedEventArgs e)
+        {
+            LoadGenFromDB();
+        }
+
+        private void buttonSaveGen_Click(object sender, RoutedEventArgs e)
+        {
+            handler.UpdateDatabase();
+        }
+
+
     }
 }
 

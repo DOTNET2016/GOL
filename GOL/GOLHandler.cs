@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Spatial;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -14,7 +15,9 @@ namespace GOL
         //Fields
         private Cell[,] ActualGeneration = new Cell[80, 60];
         private Cell[,] NextGeneration = new Cell[80, 60];
+        List<Cell> AliveCells = new List<Cell>();
         DispatcherTimer timer;
+        PlayerNameIntro Intro = new PlayerNameIntro();
 
         //Event
         public event EventHandler Timer_Ticked;
@@ -79,6 +82,61 @@ namespace GOL
             {
                 ActualGeneration[X, Y].IsAlive = true;
             }
+        }
+        //Method to update the Gen table in the DB with the X and Y coords when they are entered by the user
+        public void SendToGenTable(double X_index, double Y_index)
+        {
+            using (GOLContext db = new GOLContext())
+            {
+                Generation gen = new Generation();
+
+                int X = (int)X_index;
+                int Y = (int)Y_index;
+
+                //Rounds it to the nearest 10.
+                X = ((int)Math.Round(X / 10.0));
+                Y = ((int)Math.Round(Y / 10.0));
+
+                gen.Cell_X = X;
+                gen.Cell_Y = Y;
+                gen.IsAlive = true;
+
+                db.Generations.Add(gen);
+                db.SaveChanges();                          
+            }
+        }
+
+        public void UpdateDatabase()
+        {
+            for (int i = 0; i < ActualGeneration.GetLength(0); i++)
+            {
+                for (int j = 0; j < ActualGeneration.GetLength(1); j++)
+                {
+                    if (ActualGeneration[i, j].IsAlive)
+                    {
+                        var c = ActualGeneration[i, j];
+                        AliveCells.Add(new Cell(c.X, c.Y, true));
+                    }
+                }
+            }
+
+            using (GOLContext db = new GOLContext())
+            {
+                int maxGen = db.Generations.Max(p => p.GenNumber + 1);
+
+                foreach (var item in AliveCells)
+                {
+                    Generation gen = new Generation();
+
+                    gen.GenNumber = maxGen;
+                    gen.Cell_X = item.X;
+                    gen.Cell_Y = item.Y;
+                    db.Generations.Add(gen);
+                }
+                db.SaveChanges();
+                AliveCells.Clear();
+            }
+
         }
 
         /// <summary>
@@ -219,6 +277,57 @@ namespace GOL
 
             return neighboors;
         }
-
     }
 }
+
+//public void SendToGenTable(double X_index, double Y_index)
+//{
+//    using (GoLContext db = new GoLContext())
+//    {
+//        Generation gen = new Generation();
+//        var coords = GetActualGeneration();
+//        int X = (int)X_index;
+//        int Y = (int)Y_index;
+
+//        gen.Cell_X = X;
+//        gen.Cell_Y = Y;
+//        gen.IsAlive = true;
+
+//        for (int i = 0; i < coords.GetLength(0); i++)
+//        {
+//            for (int j = 0; j < coords.GetLength(1); j++)
+//            {
+//                if (coords[i, j].IsAlive == true)
+//                {
+//                    db.Generation.Add(gen);
+//                }
+//            }
+//        }
+//        db.SaveChanges();
+//    }
+//}
+
+
+
+//--CREATE TABLE Generation
+//--(
+//--	Gen_id int IDENTITY(1,1) PRIMARY KEY,
+//--	Cell_X int NOT NULL,
+//--	Cell_Y int NOT NULL,
+//--	IsAlive bit DEFAULT(0) NOT NULL,
+//--	SavedGame_id int FOREIGN KEY REFERENCES SavedGames(SavedGame_id)
+//--)
+//--CREATE TABLE SavedGames
+//--(
+//--	SavedGame_id int IDENTITY(1,1) PRIMARY KEY,
+//--	Cell_X int NOT NULL,
+//--	Cell_Y int NOT NULL,
+//--	IsAlive bit DEFAULT(0) NOT NULL,
+//--	Player_id int FOREIGN KEY REFERENCES PlayersTable(Player_id)
+//--)
+//SELECT* FROM Generation
+//SELECT* FROM SavedGames
+//SELECT* FROM PlayersTable
+//--DROP TABLE Generation
+//--DROP TABLE SavedGames
+//--DELETE FROM Generation
