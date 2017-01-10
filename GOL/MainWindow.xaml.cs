@@ -41,10 +41,10 @@ namespace GOL
             }
         }
         //constructor.
-        public MainWindow()
+        public MainWindow(int playerId)
         {
             InitializeComponent();
-            handler = new GOLHandler();
+            handler = new GOLHandler(playerId);
             initializeGameBoard();
             handler.Timer_Ticked += Handler_Timer_Ticked;
 
@@ -282,15 +282,12 @@ namespace GOL
 
         private void buttonSaveGen_Click(object sender, RoutedEventArgs e)
         {
-            handler.SetSavedGameId();
             handler.SaveToDatabase();
         }
 
-        private void buttonNewPlayer_Click(object sender, RoutedEventArgs e)
+        private void buttonGoBack_Click(object sender, RoutedEventArgs e)
         {
-            PlayerNameIntro playerwindow = new PlayerNameIntro();
-            playerwindow.ShowDialog();
-            handler.ChoosePlayer();
+            this.Close();
         }
     }
 }

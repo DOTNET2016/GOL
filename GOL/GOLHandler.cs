@@ -15,7 +15,7 @@ namespace GOL
         //Fields
         private Cell[,] ActualGeneration = new Cell[80, 60];
         private Cell[,] NextGeneration = new Cell[80, 60];
-        List<Cell> AliveCells = new List<Cell>();
+        private List<Cell> AliveCells = new List<Cell>();
         DispatcherTimer timer;
         private Player activePlayer;
         private SavedGame savedGame;
@@ -26,13 +26,14 @@ namespace GOL
         public event EventHandler Timer_Ticked;
 
         //Constructor
-        public GOLHandler()
+        public GOLHandler(int SetplayerId)
         {
             int value = 300;
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromMilliseconds(value);
             timer.IsEnabled = true;
             timer.Stop();
+            SetupPlayer(SetplayerId);
             timer.Tick += Timer_Tick;
         }
 
@@ -87,27 +88,25 @@ namespace GOL
                 ActualGeneration[X, Y].IsAlive = true;
             }
         }
-      
-        public void ChoosePlayer()
+
+        private void SetupPlayer(int playerId)
         {
             using (GContext g = new GContext())
             {
                 activePlayer = new Player();
                 var players = g.Players;
-                foreach(var player in players)
+                foreach (var player in players)
                 {
-                
+                    if (player.id == playerId)
+                    {
                         activePlayer = player;
+                        SetSavedGame_PlayerId();
+                    }
                 }
             }
         }
-            
-        public void ChoosePlayer(Player ChoosedPlayer)
-        {
-            activePlayer = ChoosedPlayer;
-        }
 
-        public void SetSavedGameId()
+        private void SetSavedGame_PlayerId()
         {
             savedGame = new SavedGame();
             savedGame.Player_id = activePlayer.id;
@@ -135,16 +134,13 @@ namespace GOL
         {
             using (GContext db = new GContext())
             {
-
+                db.SavedGames.Add(savedGame);
 
                 foreach (var item in AliveCells)
                 {
-                    
                     Generation g = new Generation();
-
                     g.GenNumber = item.GenNumber;
                     g.SavedGame_id = savedGame.id;
-                    db.SavedGames.Add(savedGame);
                     g.Cell_X = item.X;
                     g.Cell_Y = item.Y;
                     db.Generations.Add(g);
@@ -297,32 +293,7 @@ namespace GOL
     }
 }
 
-//public void SendToGenTable(double X_index, double Y_index)
-//{
-//    using (GoLContext db = new GoLContext())
-//    {
-//        Generation gen = new Generation();
-//        var coords = GetActualGeneration();
-//        int X = (int)X_index;
-//        int Y = (int)Y_index;
 
-//        gen.Cell_X = X;
-//        gen.Cell_Y = Y;
-//        gen.IsAlive = true;
-
-//        for (int i = 0; i < coords.GetLength(0); i++)
-//        {
-//            for (int j = 0; j < coords.GetLength(1); j++)
-//            {
-//                if (coords[i, j].IsAlive == true)
-//                {
-//                    db.Generation.Add(gen);
-//                }
-//            }
-//        }
-//        db.SaveChanges();
-//    }
-//}
 
 
 
