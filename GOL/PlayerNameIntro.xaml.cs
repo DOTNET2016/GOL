@@ -33,7 +33,7 @@ namespace GOL
                 Close();
             }
             else 
-            //AddPlayer();
+            AddPlayer();
             Close();
         }
 
@@ -41,23 +41,16 @@ namespace GOL
         {
             userName = textBoxEnterName.Text.ToLower();
         }
-
         //Saves the players name to the player table and gives them an id_number & Adds the players id to the SavedGames Table
-        //private void AddPlayer()
-        //{
-        //    using (GContext db = new GContext())
-        //    {
-        //        SavedGame myNewSaveGame = new SavedGame();
-
-        //        Player player = new Player();
-
-        //        player.PlayerName = textBoxEnterName.Text.ToLower();
-
-        //        //player.SavedGames.Add(myNewSaveGame);
-
-        //        db.Players.Add(player);
-        //        db.SaveChanges();
-        //    }
-        //}
+        private void AddPlayer()
+        {
+            using (GContext db = new GContext())
+            {
+                Player player = new Player();
+                player.PlayerName = textBoxEnterName.Text.ToLower();
+                db.Players.Add(player);
+                db.SaveChanges();
+            }
+        }
     }
 }

@@ -13,11 +13,14 @@ namespace GOL
         //Properties
         public int X { get; set; }
         public int Y { get; set; }
+
+        public int GenNumber { get; set; }
         public bool IsAlive { get; set; }
 
         //constructor.
-        public Cell(int x,int y,bool isAlive = false)
+        public Cell(int x,int y,bool isAlive = false, int genNumber = 0)
         {
+            GenNumber = genNumber;
             IsAlive = isAlive;
             X = x;
             Y = y;

@@ -17,7 +17,9 @@ namespace GOL
         private Cell[,] NextGeneration = new Cell[80, 60];
         List<Cell> AliveCells = new List<Cell>();
         DispatcherTimer timer;
-        PlayerNameIntro Intro = new PlayerNameIntro();
+        private Player activePlayer;
+        private SavedGame savedGame;
+        int GenNumber= 1;
 
 
         //Event
@@ -29,8 +31,8 @@ namespace GOL
             int value = 300;
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromMilliseconds(value);
-            //timer.IsEnabled = true;
-            //timer.Stop();
+            timer.IsEnabled = true;
+            timer.Stop();
             timer.Tick += Timer_Tick;
         }
 
@@ -86,8 +88,33 @@ namespace GOL
             }
         }
       
+        public void ChoosePlayer()
+        {
+            using (GContext g = new GContext())
+            {
+                activePlayer = new Player();
+                var players = g.Players;
+                foreach(var player in players)
+                {
+                
+                        activePlayer = player;
+                }
+            }
+        }
+            
+        public void ChoosePlayer(Player ChoosedPlayer)
+        {
+            activePlayer = ChoosedPlayer;
+        }
 
-        public void UpdateDatabase()
+        public void SetSavedGameId()
+        {
+            savedGame = new SavedGame();
+            savedGame.Player_id = activePlayer.id;
+
+        }
+
+        public void addGeneration()
         {
             for (int i = 0; i < ActualGeneration.GetLength(0); i++)
             {
@@ -96,58 +123,36 @@ namespace GOL
                     if (ActualGeneration[i, j].IsAlive)
                     {
                         var c = ActualGeneration[i, j];
-                        AliveCells.Add(new Cell(c.X, c.Y, true));
+                        AliveCells.Add(new Cell(c.X, c.Y, true,GenNumber));
                     }
                 }
             }
+            GenNumber++;
 
+        }
+
+        public void SaveToDatabase()
+        {
             using (GContext db = new GContext())
             {
-                int maxGen;
 
-                if(db.Generations.Count() != 0)
-                {
-                maxGen = db.Generations.Max(p => p.GenNumber);
-                    maxGen += 1;
-                }
-                else
-                {
-                    maxGen = 1;
-                }
-               
-                
+
                 foreach (var item in AliveCells)
                 {
-                    SavedGame sav = new SavedGame();
-                    Generation gen = new Generation();
-                    Player p = new Player();
+                    
+                    Generation g = new Generation();
 
-                    gen.GenNumber = maxGen;
-                    sav.GenNumber = maxGen;
-
-                    gen.Cell_X = item.X;
-                    gen.Cell_Y = item.Y;
-
-                    sav.Generations.Add(gen);
-                    p.SavedGames.Add(sav);
-
-                    db.Players.Add(p);
-                    db.Generations.Add(gen);
-                    db.SavedGames.Add(sav);
+                    g.GenNumber = item.GenNumber;
+                    g.SavedGame_id = savedGame.id;
+                    db.SavedGames.Add(savedGame);
+                    g.Cell_X = item.X;
+                    g.Cell_Y = item.Y;
+                    db.Generations.Add(g);
 
                 }
                 db.SaveChanges();
                 AliveCells.Clear();
-
-                //SavedGame myNewSaveGame = new SavedGame();
-
-                //Player player = new Player();
-
-                //player.PlayerName = textBoxEnterName.Text.ToLower();
-
-                ////player.SavedGames.Add(myNewSaveGame);
             }
-
         }
 
         /// <summary>
@@ -238,6 +243,7 @@ namespace GOL
         /// <returns></returns>
         public Cell[,] GetNextGeneration()
         {
+            addGeneration();//TODO: fixa så första generation blir med också.
             return NextGeneration;
         }
 

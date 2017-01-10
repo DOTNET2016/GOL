@@ -12,21 +12,14 @@ namespace GOL
         public SavedGame()
         {
             Generations = new HashSet<Generation>();
-            Players = new HashSet<Player>();
         }
 
-        [Key]
-        public int S_id { get; set; }
-
-        public int GenNumber { get; set; }
+        public int id { get; set; }
 
         public int? Player_id { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Generation> Generations { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Player> Players { get; set; }
 
         public virtual Player Player { get; set; }
     }

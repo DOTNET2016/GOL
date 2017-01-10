@@ -25,9 +25,7 @@ namespace GOL
         //Fields
         private bool _IsOn;
         GOLHandler handler;
-        PlayerNameIntro PlayerName = new PlayerNameIntro();
-        private int _X;
-        private int _Y;
+       
 
         //propertie
         public bool TimerIsOn
@@ -45,7 +43,6 @@ namespace GOL
         //constructor.
         public MainWindow()
         {
-            PlayerName.ShowDialog();
             InitializeComponent();
             handler = new GOLHandler();
             initializeGameBoard();
@@ -161,6 +158,7 @@ namespace GOL
 
             //An Temporary holder for the ActualGeneration Array from the handler.
             var arrayToUpdateFrom = handler.GetActualGeneration();
+            
 
             //Loops through all the Cells from the Array, So we can populate the Canvas with the Actual Generation. 
             #region LoopThroughTheActualGeneration
@@ -207,7 +205,7 @@ namespace GOL
 
         //public void SaveGenNumberInSaveGameTable()
         //{
-        //    //TODO maybe change so the savedgametable so ut has only the savedgame_id and gennumber. Because the generation table already keep tracks on what cells alive for every gennumber. hmm ???
+        //    TODO:....
         //    using (GContext db = new GContext())
         //    {
         //        SavedGame sav = new SavedGame();
@@ -249,7 +247,7 @@ namespace GOL
             }
 
             #endregion
-            handler.UpdateDatabase();
+           
         }
 
         /// <summary>
@@ -279,15 +277,21 @@ namespace GOL
 
         private void buttonLoadFromGenTable_Click(object sender, RoutedEventArgs e)
         {
-            LoadGenFromDB();
+            //LoadGenFromDB();TODO: Something.
         }
 
         private void buttonSaveGen_Click(object sender, RoutedEventArgs e)
         {
-            handler.UpdateDatabase();
+            handler.SetSavedGameId();
+            handler.SaveToDatabase();
         }
 
-
+        private void buttonNewPlayer_Click(object sender, RoutedEventArgs e)
+        {
+            PlayerNameIntro playerwindow = new PlayerNameIntro();
+            playerwindow.ShowDialog();
+            handler.ChoosePlayer();
+        }
     }
 }
 

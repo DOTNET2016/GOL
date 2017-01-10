@@ -70,8 +70,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Generation.cs" />
     <Compile Include="GContext.cs" />
+    <Compile Include="Generation.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="PlayerNameIntro.xaml.cs">
       <DependentUpon>PlayerNameIntro.xaml</DependentUpon>

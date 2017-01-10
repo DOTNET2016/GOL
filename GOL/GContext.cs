@@ -31,11 +31,6 @@ namespace GOL
                 .HasMany(e => e.Generations)
                 .WithOptional(e => e.SavedGame)
                 .HasForeignKey(e => e.SavedGame_id);
-
-            modelBuilder.Entity<SavedGame>()
-                .HasMany(e => e.Players)
-                .WithOptional(e => e.SavedGame)
-                .HasForeignKey(e => e.SavedGame_id);
         }
     }
 }
