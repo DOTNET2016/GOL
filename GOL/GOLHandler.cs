@@ -25,10 +25,11 @@ namespace GOL
         //Constructor
         public GOLHandler()
         {
+            int value = 300;
             timer = new DispatcherTimer();
-            timer.Interval = (new TimeSpan(0,0,1));// Interval set to one second.
-            timer.IsEnabled = true;
-            timer.Stop();
+            timer.Interval = TimeSpan.FromMilliseconds(value);
+            //timer.IsEnabled = true;
+            //timer.Stop();
             timer.Tick += Timer_Tick;
         }
 
