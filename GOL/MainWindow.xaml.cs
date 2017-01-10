@@ -199,21 +199,13 @@ namespace GOL
 
         //public void SendSaveGameTable(double X_index, double Y_index)
         //{
-        //    TODO maybe change so the savedgametable so ut has only the savedgame_id and gennumber. Because the generation table already keep tracks on what cells alive for every gennumber. hmm ???
-        //    using (GOLContext db = new GOLContext())
+        //    //TODO maybe change so the savedgametable so ut has only the savedgame_id and gennumber. Because the generation table already keep tracks on what cells alive for every gennumber. hmm ???
+        //    using (GContext db = new GContext())
         //        {
         //            SavedGame sav = new SavedGame();
 
-        //            _X = (int)X_index;
-        //            _Y = (int)Y_index;
 
-        //            Rounds it to the nearest 10.
-        //            _X = ((int)Math.Round(_X / 10.0));
-        //            _Y = ((int)Math.Round(_Y / 10.0));
-
-        //            sav.Cell_X = _X;
-        //            sav.Cell_Y = _Y;
-        //            sav.IsAlive = true;
+        //            sav.GenNumber = 
 
         //            db.SavedGames.Add(sav);
         //            db.SaveChanges();
