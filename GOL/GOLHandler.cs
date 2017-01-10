@@ -104,14 +104,14 @@ namespace GOL
             {
                 int maxGen;
 
-                if(db.Generations.Count() != 0)
+                if(db.Generations.Count() != 1)
                 {
                 maxGen = db.Generations.Max(p => p.GenNumber);
                     maxGen += 1;
                 }
                 else
                 {
-                    maxGen = 0;
+                    maxGen = 1;
                 }
                
                 
