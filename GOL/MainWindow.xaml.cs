@@ -28,7 +28,6 @@ namespace GOL
         PlayerNameIntro PlayerName = new PlayerNameIntro();
         private int _X;
         private int _Y;
-        
 
         //propertie
         public bool TimerIsOn
@@ -113,10 +112,7 @@ namespace GOL
         /// <param name="x">Send the Cell.X Propertie.</param>
         /// <param name="y">Send the Cell.Y Propertie</param>
         /// <param name="IsAlive">Put it True if the cell is Alive, Put it false if it's dead.</param>
-        private void UpdatePoint(i
-
-        /// <summary>
-        /// Method for Choose the Cells ynt x, int y, bool IsAlive)
+        private void UpdatePoint(int x, int y, bool IsAlive)
         {
             #region CellIsAlive
             if (IsAlive == true)
@@ -143,10 +139,13 @@ namespace GOL
                 gameBoardCanvas.Children.Add(r);
             }
             #endregion
-        }        /// <param name="e"></param>
-ou want alive or not before you save and get the next Generation.
+        }
+
+        /// <summary>
+        /// Method for Choose the Cells you want alive or not before you save and get the next Generation.
         /// </summary>
-        /// <param name="sender"></param>
+        /// <param name="sender"></param>        /// <param name="e"></param>
+
         private void gameBoardCanvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             //Clear the canvas before updating it.
