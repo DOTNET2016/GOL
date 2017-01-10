@@ -16,7 +16,7 @@ namespace GOL
         }
 
         [Key]
-        public int SavedGame_id { get; set; }
+        public int S_id { get; set; }
 
         public int GenNumber { get; set; }
 

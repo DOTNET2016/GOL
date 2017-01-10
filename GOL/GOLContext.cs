@@ -5,10 +5,10 @@ namespace GOL
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
 
-    public partial class GOLContext : DbContext
+    public partial class GameOfLifeContext : DbContext
     {
-        public GOLContext()
-            : base("name=GOLContext")
+        public GameOfLifeContext()
+            : base("name=GameOfLifeContext")
         {
         }
 
@@ -26,6 +26,11 @@ namespace GOL
                 .HasMany(e => e.SavedGames)
                 .WithOptional(e => e.Player)
                 .HasForeignKey(e => e.Player_id);
+
+            modelBuilder.Entity<SavedGame>()
+                .HasMany(e => e.Generations)
+                .WithOptional(e => e.SavedGame)
+                .HasForeignKey(e => e.SavedGame_id);
 
             modelBuilder.Entity<SavedGame>()
                 .HasMany(e => e.Players)

@@ -15,8 +15,7 @@ namespace GOL
             SavedGames = new HashSet<SavedGame>();
         }
 
-        [Key]
-        public int Player_id { get; set; }
+        public int id { get; set; }
 
         [StringLength(25)]
         public string PlayerName { get; set; }

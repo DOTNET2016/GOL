@@ -100,7 +100,7 @@ namespace GOL
                 }
             }
 
-            using (GOLContext db = new GOLContext())
+            using (GameOfLifeContext db = new GameOfLifeContext())
             {
                 int maxGen;
 
