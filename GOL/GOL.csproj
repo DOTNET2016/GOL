@@ -71,7 +71,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Generation.cs" />
-    <Compile Include="GOLContext.cs" />
+    <Compile Include="GoLContext.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="PlayerNameIntro.xaml.cs">
       <DependentUpon>PlayerNameIntro.xaml</DependentUpon>

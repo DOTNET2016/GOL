@@ -21,6 +21,16 @@ namespace GOL
             modelBuilder.Entity<Player>()
                 .Property(e => e.PlayerName)
                 .IsUnicode(false);
+
+            modelBuilder.Entity<Player>()
+                .HasMany(e => e.SavedGames)
+                .WithOptional(e => e.Player)
+                .HasForeignKey(e => e.Player_id);
+
+            modelBuilder.Entity<SavedGame>()
+                .HasMany(e => e.Players)
+                .WithOptional(e => e.SavedGame)
+                .HasForeignKey(e => e.SavedGame_id);
         }
     }
 }

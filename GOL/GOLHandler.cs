@@ -300,25 +300,32 @@ namespace GOL
 
 
 
-//--CREATE TABLE Generation
+//    --CREATE TABLE Generation
 //--(
 //--	Gen_id int IDENTITY(1,1) PRIMARY KEY,
+//--	GenNumber int NOT NULL,
 //--	Cell_X int NOT NULL,
 //--	Cell_Y int NOT NULL,
 //--	IsAlive bit DEFAULT(0) NOT NULL,
 //--	SavedGame_id int FOREIGN KEY REFERENCES SavedGames(SavedGame_id)
 //--)
+
 //--CREATE TABLE SavedGames
 //--(
 //--	SavedGame_id int IDENTITY(1,1) PRIMARY KEY,
-//--	Cell_X int NOT NULL,
-//--	Cell_Y int NOT NULL,
-//--	IsAlive bit DEFAULT(0) NOT NULL,
-//--	Player_id int FOREIGN KEY REFERENCES PlayersTable(Player_id)
+//--	GenNumber int NOT NULL,
+//--	Player_id int FOREIGN KEY REFERENCES Player(Player_id)
 //--)
-//SELECT* FROM Generation
-//SELECT* FROM SavedGames
-//SELECT* FROM PlayersTable
-//--DROP TABLE Generation
-//--DROP TABLE SavedGames
-//--DELETE FROM Generation
+
+//--CREATE TABLE Player
+//--(
+//--	Player_id int IDENTITY(1,1) PRIMARY KEY,
+//--	PlayerName varchar(25),
+//--	--SavedGame_id int FOREIGN KEY REFERENCES SavedGames(SavedGame_id)
+//--)
+
+//--ALTER TABLE Player
+//--ADD COLUMN SavedGame_id int
+
+//--ALTER TABLE Player
+//--ADD FOREIGN KEY(SavedGame_id) REFERENCES SavedGames(SavedGame_id)

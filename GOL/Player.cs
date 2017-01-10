@@ -18,8 +18,12 @@ namespace GOL
         [Key]
         public int Player_id { get; set; }
 
-        [StringLength(20)]
+        [StringLength(25)]
         public string PlayerName { get; set; }
+
+        public int? SavedGame_id { get; set; }
+
+        public virtual SavedGame SavedGame { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SavedGame> SavedGames { get; set; }

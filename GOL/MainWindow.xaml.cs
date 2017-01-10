@@ -45,7 +45,7 @@ namespace GOL
         //constructor.
         public MainWindow()
         {
-            //PlayerName.ShowDialog();
+            PlayerName.ShowDialog();
             InitializeComponent();
             handler = new GOLHandler();
             initializeGameBoard();
@@ -60,19 +60,6 @@ namespace GOL
                     comboBoxPlayers.Items.Add(player.PlayerName);
                 }
 
-                //var savedGame = from p in db.PlayersTables
-                //                join sav in db.SavedGames on p.Player_id equals sav.SavedGame_id
-                //                select new
-                //                {
-                //                    PlayerName = p.PlayerName,
-                //                    Index_X= sav.Index_X,
-                //                    Index_Y = sav.Index_Y,
-                //                    SavedGameNumber = sav.SavedGame_id
-                //                };
-                //foreach (var info in savedGame)
-                //{
-                //    listBoxPlayerInfo.Items.Add(info.PlayerName + " " + info.Index_X + " " + info.Index_Y);
-                //}
             }
         }
 
@@ -211,28 +198,28 @@ namespace GOL
             }
         }
 
-        public void SendSaveGameTable(double X_index, double Y_index)
-        {
-            //TODO maybe change so the savedgametable so ut has only the savedgame_id and gennumber. Because the generation table already keep tracks on what cells alive for every gennumber. hmm???
-            using (GOLContext db = new GOLContext())
-            {
-                SavedGame sav = new SavedGame();
+        //public void SendSaveGameTable(double X_index, double Y_index)
+        //{
+        //    TODO maybe change so the savedgametable so ut has only the savedgame_id and gennumber. Because the generation table already keep tracks on what cells alive for every gennumber. hmm ???
+        //    using (GOLContext db = new GOLContext())
+        //        {
+        //            SavedGame sav = new SavedGame();
 
-                _X = (int)X_index;
-                _Y = (int)Y_index;
+        //            _X = (int)X_index;
+        //            _Y = (int)Y_index;
 
-                //Rounds it to the nearest 10.
-                _X = ((int)Math.Round(_X / 10.0));
-                _Y = ((int)Math.Round(_Y / 10.0));
+        //            Rounds it to the nearest 10.
+        //            _X = ((int)Math.Round(_X / 10.0));
+        //            _Y = ((int)Math.Round(_Y / 10.0));
 
-                sav.Cell_X = _X;
-                sav.Cell_Y = _Y;
-                sav.IsAlive = true;
+        //            sav.Cell_X = _X;
+        //            sav.Cell_Y = _Y;
+        //            sav.IsAlive = true;
 
-                db.SavedGames.Add(sav);
-                db.SaveChanges();
-            }
-        }
+        //            db.SavedGames.Add(sav);
+        //            db.SaveChanges();
+        //        }
+        //}
 
         private void LoadNextGeneration()
         {
