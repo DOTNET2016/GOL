@@ -23,5 +23,6 @@
         <Button x:Name="buttonLoadFromGenTable" Content="Load from Gen Table" HorizontalAlignment="Left" Margin="336,630,0,0" VerticalAlignment="Top" Width="144" Height="39" Click="buttonLoadFromGenTable_Click"/>
         <ComboBox x:Name="comboBoxPlayers" HorizontalAlignment="Left" Margin="840,58,0,0" VerticalAlignment="Top" Width="120"/>
         <Button x:Name="buttonSaveGen" Content="Save Generation" HorizontalAlignment="Left" Margin="535,630,0,0" VerticalAlignment="Top" Width="135" Height="35" Click="buttonSaveGen_Click"/>
+        <ComboBox x:Name="comboBoxGenNumber" HorizontalAlignment="Left" Margin="1005,58,0,0" VerticalAlignment="Top" Width="120"/>
     </Grid>
 </Window>

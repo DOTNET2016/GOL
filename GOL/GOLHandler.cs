@@ -19,6 +19,7 @@ namespace GOL
         DispatcherTimer timer;
         PlayerNameIntro Intro = new PlayerNameIntro();
 
+
         //Event
         public event EventHandler Timer_Ticked;
 
@@ -104,7 +105,7 @@ namespace GOL
             {
                 int maxGen;
 
-                if(db.Generations.Count() != 1)
+                if(db.Generations.Count() != 0)
                 {
                 maxGen = db.Generations.Max(p => p.GenNumber);
                     maxGen += 1;
@@ -117,15 +118,34 @@ namespace GOL
                 
                 foreach (var item in AliveCells)
                 {
+                    SavedGame sav = new SavedGame();
                     Generation gen = new Generation();
+                    Player p = new Player();
 
                     gen.GenNumber = maxGen;
+                    sav.GenNumber = maxGen;
+
                     gen.Cell_X = item.X;
                     gen.Cell_Y = item.Y;
+
+                    sav.Generations.Add(gen);
+                    p.SavedGames.Add(sav);
+
+                    db.Players.Add(p);
                     db.Generations.Add(gen);
+                    db.SavedGames.Add(sav);
+
                 }
                 db.SaveChanges();
                 AliveCells.Clear();
+
+                //SavedGame myNewSaveGame = new SavedGame();
+
+                //Player player = new Player();
+
+                //player.PlayerName = textBoxEnterName.Text.ToLower();
+
+                ////player.SavedGames.Add(myNewSaveGame);
             }
 
         }

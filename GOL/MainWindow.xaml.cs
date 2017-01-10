@@ -28,6 +28,7 @@ namespace GOL
         PlayerNameIntro PlayerName = new PlayerNameIntro();
         private int _X;
         private int _Y;
+        
 
         //propertie
         public bool TimerIsOn
@@ -112,7 +113,10 @@ namespace GOL
         /// <param name="x">Send the Cell.X Propertie.</param>
         /// <param name="y">Send the Cell.Y Propertie</param>
         /// <param name="IsAlive">Put it True if the cell is Alive, Put it false if it's dead.</param>
-        private void UpdatePoint(int x, int y, bool IsAlive)
+        private void UpdatePoint(i
+
+        /// <summary>
+        /// Method for Choose the Cells ynt x, int y, bool IsAlive)
         {
             #region CellIsAlive
             if (IsAlive == true)
@@ -139,13 +143,10 @@ namespace GOL
                 gameBoardCanvas.Children.Add(r);
             }
             #endregion
-        }
-
-        /// <summary>
-        /// Method for Choose the Cells you want alive or not before you save and get the next Generation.
+        }        /// <param name="e"></param>
+ou want alive or not before you save and get the next Generation.
         /// </summary>
         /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void gameBoardCanvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             //Clear the canvas before updating it.
@@ -197,19 +198,27 @@ namespace GOL
             }
         }
 
-        //public void SendSaveGameTable(double X_index, double Y_index)
+        private void GenDropDownMenu()
+        {
+            using (GContext db = new GContext())
+            {
+
+            }
+        }
+
+        //public void SaveGenNumberInSaveGameTable()
         //{
         //    //TODO maybe change so the savedgametable so ut has only the savedgame_id and gennumber. Because the generation table already keep tracks on what cells alive for every gennumber. hmm ???
         //    using (GContext db = new GContext())
-        //        {
-        //            SavedGame sav = new SavedGame();
+        //    {
+        //        SavedGame sav = new SavedGame();
+        //        Generation gen = new Generation();
 
+        //        sav.GenNumber = gen.GenNumber;
 
-        //            sav.GenNumber = 
-
-        //            db.SavedGames.Add(sav);
-        //            db.SaveChanges();
-        //        }
+        //        db.SavedGames.Add(sav);
+        //        db.SaveChanges();
+        //    }
         //}
 
         private void LoadNextGeneration()

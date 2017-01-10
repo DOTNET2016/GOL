@@ -19,7 +19,7 @@ namespace GOL
     /// </summary>
     public partial class PlayerNameIntro : Window
     {
-       
+        
         public string userName { get; set; }
         public PlayerNameIntro()
         {
@@ -33,29 +33,31 @@ namespace GOL
                 Close();
             }
             else 
-            AddPlayer();
+            //AddPlayer();
             Close();
         }
 
         private void textBoxEnterName_TextInput(object sender, TextCompositionEventArgs e)
         {
-
+            userName = textBoxEnterName.Text.ToLower();
         }
 
         //Saves the players name to the player table and gives them an id_number & Adds the players id to the SavedGames Table
-        private void AddPlayer()
-        {
-            using (GContext db = new GContext())
-            {
-                SavedGame myNewSaveGame = new SavedGame();
+        //private void AddPlayer()
+        //{
+        //    using (GContext db = new GContext())
+        //    {
+        //        SavedGame myNewSaveGame = new SavedGame();
 
-                Player player = new Player();
-                player.PlayerName = textBoxEnterName.Text.ToLower();
-                player.SavedGames.Add(myNewSaveGame);
+        //        Player player = new Player();
 
-                db.Players.Add(player);
-                db.SaveChanges();
-            }
-        }
+        //        player.PlayerName = textBoxEnterName.Text.ToLower();
+
+        //        //player.SavedGames.Add(myNewSaveGame);
+
+        //        db.Players.Add(player);
+        //        db.SaveChanges();
+        //    }
+        //}
     }
 }
