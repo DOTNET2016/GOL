@@ -39,7 +39,7 @@ namespace GOL
 
         private void textBoxEnterName_TextInput(object sender, TextCompositionEventArgs e)
         {
-            userName = textBoxEnterName.Text;
+            userName = textBoxEnterName.Text.ToLower();
         }
 
         //Saves the players name to the player table and gives them an id_number & Adds the players id to the SavedGames Table
@@ -50,7 +50,7 @@ namespace GOL
                 SavedGame myNewSaveGame = new SavedGame();
 
                 Player player = new Player();
-                player.PlayerName = textBoxEnterName.Text;
+                player.PlayerName = userName;
                 player.SavedGames.Add(myNewSaveGame);
 
                 db.Players.Add(player);
