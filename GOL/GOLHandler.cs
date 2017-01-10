@@ -100,7 +100,7 @@ namespace GOL
                 }
             }
 
-            using (GameOfLifeContext db = new GameOfLifeContext())
+            using (GContext db = new GContext())
             {
                 int maxGen;
 
@@ -229,44 +229,44 @@ namespace GOL
             int Ylength = ActualGeneration.GetLength(1);
 
             //Start counting from zero neighboors.
-            int neighboors = 0;
+            int neighbours = 0;
 
             #region CountingNeighboors
             //Right
             if (x < Xlength - 1)
                 if (ActualGeneration[x + 1, y].IsAlive)
-                    neighboors++;
+                    neighbours++;
             //Bottom Right
             if (x < Xlength - 1 && y < Ylength - 1)
                 if (ActualGeneration[x + 1, y + 1].IsAlive)
-                    neighboors++;
+                    neighbours++;
             //Bottom
             if (y < Ylength - 1)
                 if (ActualGeneration[x, y + 1].IsAlive)
-                    neighboors++;
+                    neighbours++;
             //Bottom Left
             if (x > 0 && y < Ylength - 1)
                 if (ActualGeneration[x - 1, y + 1].IsAlive)
-                    neighboors++;
+                    neighbours++;
             //Left
             if (x > 0)
                 if (ActualGeneration[x - 1, y].IsAlive)
-                    neighboors++;
+                    neighbours++;
             //Top Left
             if (x > 0 && y > 0)
                 if (ActualGeneration[x - 1, y - 1].IsAlive)
-                    neighboors++;
+                    neighbours++;
             //Top
             if (y > 0)
                 if (ActualGeneration[x, y - 1].IsAlive)
-                    neighboors++;
+                    neighbours++;
             //Top Right
             if (x < Xlength - 1 && y != 0)
                 if (ActualGeneration[x + 1, y - 1].IsAlive)
-                    neighboors++;
+                    neighbours++;
             #endregion
 
-            return neighboors;
+            return neighbours;
         }
     }
 }

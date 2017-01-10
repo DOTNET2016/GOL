@@ -45,7 +45,7 @@ namespace GOL
         //Saves the players name to the player table and gives them an id_number & Adds the players id to the SavedGames Table
         private void AddPlayer()
         {
-            using (GameOfLifeContext db = new GameOfLifeContext())
+            using (GContext db = new GContext())
             {
                 SavedGame myNewSaveGame = new SavedGame();
 

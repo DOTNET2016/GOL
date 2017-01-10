@@ -51,7 +51,7 @@ namespace GOL
             initializeGameBoard();
             handler.Timer_Ticked += Handler_Timer_Ticked;
 
-            using (GameOfLifeContext db = new GameOfLifeContext())
+            using (GContext db = new GContext())
             {
                 var players = from p in db.Players
                               select p;
@@ -183,7 +183,7 @@ namespace GOL
         //Loads the latest gen from the db.....
         private void LoadGenFromDB()
         {
-            using (GameOfLifeContext db = new GameOfLifeContext())
+            using (GContext db = new GContext())
             {
                 Generation gen = new Generation();
 
