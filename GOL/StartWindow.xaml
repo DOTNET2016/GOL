@@ -20,7 +20,7 @@
         <Label x:Name="labelRule2" Content="2. Any live cell with two or three live neighbours lives on to the next generation." HorizontalAlignment="Left" Margin="270,553,0,0" VerticalAlignment="Top" Width="746" Grid.ColumnSpan="2" FontFamily="SimSun" FontSize="16"/>
         <Label x:Name="labelRule3" Content="3. Any live cell with more than three live neighbours dies, as if by overpopulation." HorizontalAlignment="Left" Margin="270,584,0,0" VerticalAlignment="Top" Width="746" Grid.ColumnSpan="2" FontFamily="SimSun" FontSize="16"/>
         <Label x:Name="labelRule4" Content="4. Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction." HorizontalAlignment="Left" Margin="270,615,0,0" VerticalAlignment="Top" Width="770" Grid.ColumnSpan="2" FontFamily="SimSun" FontSize="16"/>
-        <Button x:Name="buttonExit" Content="Button" Grid.Column="1" HorizontalAlignment="Left" Margin="367,643,0,0" VerticalAlignment="Top" Width="75" Height="48" Click="buttonExit_Click"/>
+        <Button x:Name="buttonExit" Content="Exit" Grid.Column="1" HorizontalAlignment="Left" Margin="367,643,0,0" VerticalAlignment="Top" Width="75" Height="48" Click="buttonExit_Click"/>
 
     </Grid>
 </Window>
