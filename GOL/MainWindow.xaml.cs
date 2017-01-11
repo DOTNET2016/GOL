@@ -26,7 +26,7 @@ namespace GOL
         private bool _IsOn;
         GOLHandler handler;
         StartWindow window;
-        public string SavedGame { get; set; }
+        public int SavedGame { get; set; }
 
         //propertie
         public bool TimerIsOn
@@ -287,8 +287,6 @@ namespace GOL
 
         private void buttonGoBack_Click(object sender, RoutedEventArgs e)
         {
-            window = new StartWindow();
-            window.ShowDialog();
             this.Close();
         }
 
