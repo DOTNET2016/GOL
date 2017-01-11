@@ -56,6 +56,7 @@ namespace GOL
 
             using (GContext db = new GContext())
             {
+                db.Database.Log = s => textBox.Text += s;
                 var SavedGames = db.SavedGames.Where(x => x.Player_id == playerId);
 
                 foreach (var SavedGame_id in SavedGames)
@@ -63,8 +64,6 @@ namespace GOL
                     comboxBoxSavedGames.Items.Add(SavedGame_id.id);
                 }
             }
-
-
         }
 
         //Eventhandler for the Timer_Ticked event in the handler class.
@@ -192,6 +191,7 @@ namespace GOL
         {
             using (GContext db = new GContext())
             {
+                db.Database.Log = s => textBox.Text += s;
                 Generation gen = new Generation();
 
                 var currentGen = db.Generation.Where(g => g.SavedGame_id == SavedGame);
@@ -200,14 +200,6 @@ namespace GOL
                 {
                     UpdatePoint(item.Cell_X, item.Cell_Y, true);
                 }
-            }
-        }
-
-        private void GenDropDownMenu()
-        {
-            using (GContext db = new GContext())
-            {
-
             }
         }
 
