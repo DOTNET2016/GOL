@@ -39,12 +39,12 @@ namespace GOL
             else if(PlayerName != null)
                 {
                     PickPlayer();
-                    this.Hide();
+                    this.Show();
                 }
             else if (NewPlayerName != null)
                 {
                     AddPlayer();
-                    this.Hide();
+                    this.Show();
                 }
         }
 
@@ -74,7 +74,7 @@ namespace GOL
                 playerId = (from p in db.Player
                             select p.id).Max();
             }
-
+            this.Hide();
             window = new MainWindow(playerId);
             window.ShowDialog();
         }
@@ -88,7 +88,7 @@ namespace GOL
                             where l.PlayerName.ToLower().StartsWith(PlayerName)
                             select l.id).FirstOrDefault();
             }
-
+            this.Hide();
             window = new MainWindow(playerId);
             window.ShowDialog();
         }

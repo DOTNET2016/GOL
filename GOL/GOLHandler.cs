@@ -19,7 +19,7 @@ namespace GOL
         DispatcherTimer timer;
         public Player activePlayer { get; set; }
         public SavedGames savedGame { get; set; }
-        int GenNumber= 1;
+        int GenNumber = 0;
 
 
         //Event
