@@ -47,6 +47,12 @@ namespace GOL
             handler = new GOLHandler(playerId);
             initializeGameBoard();
             handler.Timer_Ticked += Handler_Timer_Ticked;
+            LoadSavedGames(playerId);
+        }
+
+        private void LoadSavedGames(int Id)
+        {
+            int playerId = Id;
 
             using (GContext db = new GContext())
             {
@@ -54,11 +60,9 @@ namespace GOL
 
                 foreach (var SavedGame_id in SavedGames)
                 {
-                    comboxBoxSavedGames.Items.Add(SavedGame_id.id);      
+                    comboxBoxSavedGames.Items.Add(SavedGame_id.id);
                 }
             }
-
-
         }
 
         //Eventhandler for the Timer_Ticked event in the handler class.
@@ -186,8 +190,6 @@ namespace GOL
         {
             using (GContext db = new GContext())
             {
-                Generation gen = new Generation();
-
                 var currentGen = (from g in db.Generation
                                   select g).ToList();
 
