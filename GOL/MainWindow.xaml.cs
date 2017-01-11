@@ -26,7 +26,7 @@ namespace GOL
         private bool _IsOn;
         GOLHandler handler;
         StartWindow window;
-
+        public string SavedGame { get; set; }
 
         //propertie
         public bool TimerIsOn
@@ -48,6 +48,16 @@ namespace GOL
             handler = new GOLHandler(playerId);
             initializeGameBoard();
             handler.Timer_Ticked += Handler_Timer_Ticked;
+
+            using (GContext db = new GContext())
+            {
+                var SavedGames = db.SavedGames.Where(x => x.Player_id == playerId);
+
+                foreach (var SavedGame_id in SavedGames)
+                {
+                    comboBoxSavedGames.Items.Add(SavedGame_id.id);
+                }
+            }
         }
 
         //Eventhandler for the Timer_Ticked event in the handler class.
@@ -280,6 +290,12 @@ namespace GOL
             window = new StartWindow();
             window.ShowDialog();
             this.Close();
+        }
+
+        private void comboBoxSavedGames_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            dynamic itemSelected = comboBoxSavedGames.SelectedItem;
+            SavedGame = itemSelected;
         }
     }
 }
