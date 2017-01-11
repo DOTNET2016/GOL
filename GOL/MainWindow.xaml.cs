@@ -111,6 +111,7 @@ namespace GOL
 
         private void resetGameBoard()
         {
+            
             gameBoardCanvas.Children.Clear();
             for (int i = 0; i < 800; i += 10)
             {
@@ -268,7 +269,7 @@ namespace GOL
             label.Content = "Gen: 0";
         }
 
-        private void buttonLoadFromGenTable_Click(object sender, RoutedEventArgs e)
+        private void buttonLoadNextGen_Click(object sender, RoutedEventArgs e)
         {
             var generations = handler.LoadGenFromDatabase();
             resetGameBoard();
@@ -284,7 +285,7 @@ namespace GOL
             }
         }
 
-        private void buttonSaveGen_Click(object sender, RoutedEventArgs e)
+        private void buttonSaveGame_Click(object sender, RoutedEventArgs e)
         {
             handler.SaveToDatabase();
         }
