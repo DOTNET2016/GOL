@@ -63,6 +63,8 @@ namespace GOL
                     comboxBoxSavedGames.Items.Add(SavedGame_id.id);
                 }
             }
+
+
         }
 
         //Eventhandler for the Timer_Ticked event in the handler class.
@@ -190,8 +192,9 @@ namespace GOL
         {
             using (GContext db = new GContext())
             {
-                var currentGen = (from g in db.Generation
-                                  select g).ToList();
+                Generation gen = new Generation();
+
+                var currentGen = db.Generation.Where(g => g.SavedGame_id == SavedGame);
 
                 foreach (var item in currentGen)
                 {
@@ -283,6 +286,7 @@ namespace GOL
         private void buttonLoadFromGenTable_Click(object sender, RoutedEventArgs e)
         {
             //LoadGenFromDB();TODO: Something.
+            LoadGenFromDB();
         }
 
         private void buttonSaveGen_Click(object sender, RoutedEventArgs e)
