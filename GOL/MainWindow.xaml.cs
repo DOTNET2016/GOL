@@ -25,7 +25,6 @@ namespace GOL
         //Fields
         private bool _IsOn;
         GOLHandler handler;
-        StartWindow window;
         public int SavedGame { get; set; }
 
         //propertie
