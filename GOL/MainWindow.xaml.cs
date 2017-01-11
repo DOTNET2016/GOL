@@ -186,7 +186,7 @@ namespace GOL
             }
             #endregion
         }
-        //Loads the latest gen from the db.....
+        //Loads the latest gen from the db.....NEED FIXING, Cannot play through loaded game. It just disappears when timer is started or next gen button is pressed
         private void LoadGenFromDB()
         {
             using (GContext db = new GContext())
@@ -202,21 +202,6 @@ namespace GOL
                 }
             }
         }
-
-        //public void SaveGenNumberInSaveGameTable()
-        //{
-        //    TODO:....
-        //    using (GContext db = new GContext())
-        //    {
-        //        SavedGame sav = new SavedGame();
-        //        Generation gen = new Generation();
-
-        //        sav.GenNumber = gen.GenNumber;
-
-        //        db.SavedGames.Add(sav);
-        //        db.SaveChanges();
-        //    }
-        //}
 
         private void LoadNextGeneration()
         {
@@ -242,12 +227,9 @@ namespace GOL
                         handler.AddCell(new Cell(i, j));
                         UpdatePoint(i, j, false);
                     }
-                }
-                
+                }              
             }
-
-            #endregion
-           
+            #endregion          
         }
 
         /// <summary>
@@ -273,6 +255,7 @@ namespace GOL
 
             if (!TimerIsOn)
                 handler.Stop_Timer();
+            label.Content = "Gen: 0";
         }
 
         private void buttonLoadFromGenTable_Click(object sender, RoutedEventArgs e)
@@ -295,6 +278,7 @@ namespace GOL
         {
             dynamic itemSelected = comboxBoxSavedGames.SelectedItem;
             SavedGame = itemSelected;
+            label.Content = "Gen: 0";
         }
     }
 }
