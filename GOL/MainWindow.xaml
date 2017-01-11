@@ -24,7 +24,7 @@
         <ComboBox x:Name="comboxBoxSavedGames" HorizontalAlignment="Left" Margin="840,58,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="comboBoxSavedGames_SelectionChanged"/>
         <Button x:Name="buttonSaveGen" Content="Save Generation" HorizontalAlignment="Left" Margin="535,630,0,0" VerticalAlignment="Top" Width="135" Height="35" Click="buttonSaveGen_Click"/>
         <Button x:Name="buttonGoBack" Content="Go back to Menu" HorizontalAlignment="Left" Margin="1134,620,0,0" VerticalAlignment="Top" Width="120" Height="49" Click="buttonGoBack_Click"/>
-        <Button x:Name="buttonClearBoard" Content="Clear Board" HorizontalAlignment="Left" Margin="715,630,0,0" VerticalAlignment="Top" Width="95" Height="35"/>
+        <Button x:Name="buttonClearBoard" Content="Clear Board" HorizontalAlignment="Left" Margin="715,630,0,0" VerticalAlignment="Top" Width="95" Height="35" Click="buttonClearBoard_Click"/>
         <Label x:Name="label" Content="Gen: 0" HorizontalAlignment="Center" Margin="840,548,156,79" VerticalAlignment="Center" Height="62" Width="285" FontSize="48" Background="{x:Null}" Panel.ZIndex="2" FontWeight="Bold" FontStretch="Expanded" Foreground="Black"/>
         <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="397" Margin="872,146,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="382"/>
         <Label x:Name="labelSaveGame" Content="Saved Games" HorizontalAlignment="Left" Margin="860,32,0,0" VerticalAlignment="Top" Foreground="White"/>

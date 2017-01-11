@@ -25,6 +25,7 @@ namespace GOL
         //Fields
         private bool _IsOn;
         GOLHandler handler;
+        int _playerId;
         public int SavedGame { get; set; }
 
         //propertie
@@ -44,20 +45,20 @@ namespace GOL
         public MainWindow(int playerId)
         {
             InitializeComponent();
-            handler = new GOLHandler(playerId);
+            _playerId = playerId;
+            handler = new GOLHandler(_playerId);
             initializeGameBoard();
             handler.Timer_Ticked += Handler_Timer_Ticked;
-            LoadSavedGames(playerId);
+            LoadSavedGames();
         }
 
-        private void LoadSavedGames(int Id)
+        private void LoadSavedGames()
         {
-            int playerId = Id;
 
             using (GContext db = new GContext())
             {
                 db.Database.Log = s => textBox.Text += s;
-                var SavedGames = db.SavedGames.Where(x => x.Player_id == playerId);
+                var SavedGames = db.SavedGames.Where(x => x.Player_id == _playerId);
 
                 foreach (var SavedGame_id in SavedGames)
                 {
@@ -104,6 +105,30 @@ namespace GOL
                     Canvas.SetTop(r, j + 1);
                     gameBoardCanvas.Children.Add(r);
                     #endregion
+                }
+            }
+        }
+
+        private void resetGameBoard()
+        {
+            gameBoardCanvas.Children.Clear();
+            for (int i = 0; i < 800; i += 10)
+            {
+                for (int j = 0; j < 600; j += 10)
+                {
+                    int xPosition = 0;
+                    int YPosition = 0;
+                    //Algorithm for get the nearest value with 10.
+                    xPosition = ((int)Math.Round(i / 10.0)) * 10;
+                    YPosition = ((int)Math.Round(j / 10.0)) * 10;
+
+                    Rectangle r = new Rectangle();
+                    r.Width = 8;
+                    r.Height = 8;
+                    r.Fill = (Brushes.WhiteSmoke);
+                    Canvas.SetLeft(r, i + 1);
+                    Canvas.SetTop(r, j + 1);
+                    gameBoardCanvas.Children.Add(r);
                 }
             }
         }
@@ -186,22 +211,7 @@ namespace GOL
             }
             #endregion
         }
-        //Loads the latest gen from the db.....NEED FIXING, Cannot play through loaded game. It just disappears when timer is started or next gen button is pressed
-        private void LoadGenFromDB()
-        {
-            using (GContext db = new GContext())
-            {
-                db.Database.Log = s => textBox.Text += s;
-                Generation gen = new Generation();
-
-                var currentGen = db.Generation.Where(g => g.SavedGame_id == SavedGame);
-
-                foreach (var item in currentGen)
-                {
-                    UpdatePoint(item.Cell_X, item.Cell_Y, true);
-                }
-            }
-        }
+    
 
         private void LoadNextGeneration()
         {
@@ -260,8 +270,18 @@ namespace GOL
 
         private void buttonLoadFromGenTable_Click(object sender, RoutedEventArgs e)
         {
-            //LoadGenFromDB();TODO: Something.
-            LoadGenFromDB();
+            var generations = handler.LoadGenFromDatabase();
+            resetGameBoard();
+            foreach (var item in generations)
+            {
+                UpdatePoint(item.Cell_X, item.Cell_Y, true);
+            }
+
+            //TODO:Ta bort sen kanske när vi ser att allt fungerar.
+            using (GContext db = new GContext())
+            {
+                db.Database.Log = s => textBox.Text += s;
+            }
         }
 
         private void buttonSaveGen_Click(object sender, RoutedEventArgs e)
@@ -278,7 +298,12 @@ namespace GOL
         {
             dynamic itemSelected = comboxBoxSavedGames.SelectedItem;
             SavedGame = itemSelected;
-            label.Content = "Gen: 0";
+            label.Content = handler.CurrentGenNumber();
+        }
+
+        private void buttonClearBoard_Click(object sender, RoutedEventArgs e)
+        {
+            resetGameBoard();
         }
     }
 }

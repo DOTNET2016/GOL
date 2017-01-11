@@ -152,6 +152,7 @@ namespace GOL
                 }
                 db.SaveChanges();
                 AliveCells.Clear();
+                GenNumber = 0;
             }
         }
 
@@ -293,6 +294,22 @@ namespace GOL
             #endregion
 
             return neighbours;
+        }
+
+        public List<Generation> LoadGenFromDatabase()
+        {
+            List<Generation> generationsToReturn = new List<Generation>();
+            using (GContext db = new GContext())
+            {
+                var currentGen = db.Generation.Where(x => x.SavedGames.Player_id == activePlayer.id && x.GenNumber == GenNumber);
+                
+                foreach(var gen in currentGen)
+                {
+                    generationsToReturn.Add(gen);
+                }
+            }
+            GenNumber++;
+            return generationsToReturn;
         }
     }
 }
