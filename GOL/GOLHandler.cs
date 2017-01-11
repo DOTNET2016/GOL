@@ -127,7 +127,12 @@ namespace GOL
                 }
             }
             GenNumber++;
+        }
 
+        public string CurrentGenNumber()
+        {
+            string CurGenNumber = "Gen: " + GenNumber;
+            return CurGenNumber;
         }
 
         public void SaveToDatabase()

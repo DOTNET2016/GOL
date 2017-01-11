@@ -58,6 +58,8 @@ namespace GOL
                     comboxBoxSavedGames.Items.Add(SavedGame_id.id);      
                 }
             }
+
+
         }
 
         //Eventhandler for the Timer_Ticked event in the handler class.
@@ -136,6 +138,8 @@ namespace GOL
                 gameBoardCanvas.Children.Add(r);
             }
             #endregion
+
+            label.Content = handler.CurrentGenNumber();
         }
 
         /// <summary>

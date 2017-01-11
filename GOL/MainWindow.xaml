@@ -26,5 +26,6 @@
         <ComboBox x:Name="comboBoxGenNumber" HorizontalAlignment="Left" Margin="1005,58,0,0" VerticalAlignment="Top" Width="120"/>
         <Button x:Name="buttonGoBack" Content="Go back to Menu" HorizontalAlignment="Left" Margin="1134,620,0,0" VerticalAlignment="Top" Width="120" Height="49" Click="buttonGoBack_Click"/>
         <Button x:Name="buttonClearBoard" Content="Clear Board" HorizontalAlignment="Left" Margin="715,630,0,0" VerticalAlignment="Top" Width="95" Height="35"/>
+        <Label x:Name="label" Content="Gen: 0" HorizontalAlignment="Left" Margin="840,189,0,0" VerticalAlignment="Top" Height="46" Width="54"/>
     </Grid>
 </Window>
