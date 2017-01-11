@@ -25,7 +25,8 @@ namespace GOL
         //Fields
         private bool _IsOn;
         GOLHandler handler;
-       
+        StartWindow window;
+
 
         //propertie
         public bool TimerIsOn
@@ -47,17 +48,6 @@ namespace GOL
             handler = new GOLHandler(playerId);
             initializeGameBoard();
             handler.Timer_Ticked += Handler_Timer_Ticked;
-
-            using (GContext db = new GContext())
-            {
-                var players = from p in db.Players
-                              select p;
-                foreach (var player in players)
-                {
-                    comboBoxPlayers.Items.Add(player.PlayerName);
-                }
-
-            }
         }
 
         //Eventhandler for the Timer_Ticked event in the handler class.
@@ -287,6 +277,8 @@ namespace GOL
 
         private void buttonGoBack_Click(object sender, RoutedEventArgs e)
         {
+            window = new StartWindow();
+            window.ShowDialog();
             this.Close();
         }
     }
