@@ -64,7 +64,7 @@ namespace GOL
         /// <param name="X_index">send The X coordinate.</param>
         /// <param name="Y_index">Send The Y coordinate</param>
         /// <param name="RadiusOfTheSquare">Send the Radius of the Square</param>
-        public void KillOrMakeCell(double X_index, double Y_index,int RadiusOfTheSquare)
+        public void KillOrMakeCell(double X_index, double Y_index, int RadiusOfTheSquare)
         {
             //Casting the values to an int.
             int X = (int)X_index;

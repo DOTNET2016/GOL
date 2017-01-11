@@ -57,8 +57,6 @@ namespace GOL
                     comboxBoxSavedGames.Items.Add(SavedGame_id.id);      
                 }
             }
-
-
         }
 
         //Eventhandler for the Timer_Ticked event in the handler class.
@@ -181,7 +179,7 @@ namespace GOL
             }
             #endregion
         }
-        //Loads the latest gen from the db.....
+        //Loads the latest gen from the db.....FIX THIS, IT LOADS THE SAVED GAME BUT DOESNT PLAY THROUGH THE GAME ONCE TIMER IS STARTED OR NEXT GEN BUTTON IS PRESSED
         private void LoadGenFromDB()
         {
             using (GContext db = new GContext())
@@ -196,29 +194,6 @@ namespace GOL
                 }
             }
         }
-
-        private void GenDropDownMenu()
-        {
-            using (GContext db = new GContext())
-            {
-
-            }
-        }
-
-        //public void SaveGenNumberInSaveGameTable()
-        //{
-        //    TODO:....
-        //    using (GContext db = new GContext())
-        //    {
-        //        SavedGame sav = new SavedGame();
-        //        Generation gen = new Generation();
-
-        //        sav.GenNumber = gen.GenNumber;
-
-        //        db.SavedGames.Add(sav);
-        //        db.SaveChanges();
-        //    }
-        //}
 
         private void LoadNextGeneration()
         {
@@ -297,7 +272,6 @@ namespace GOL
         {
             dynamic itemSelected = comboxBoxSavedGames.SelectedItem;
             SavedGame = itemSelected;
-            handler.CurrentGenNumber();
         }
     }
 }
