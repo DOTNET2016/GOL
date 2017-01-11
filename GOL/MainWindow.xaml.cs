@@ -25,7 +25,6 @@ namespace GOL
         //Fields
         private bool _IsOn;
         GOLHandler handler;
-       
 
         //propertie
         public bool TimerIsOn
@@ -50,7 +49,7 @@ namespace GOL
 
             using (GContext db = new GContext())
             {
-                var players = from p in db.Players
+                var players = from p in db.Player
                               select p;
                 foreach (var player in players)
                 {
@@ -58,6 +57,7 @@ namespace GOL
                 }
 
             }
+            GenDropDownMenu();
         }
 
         //Eventhandler for the Timer_Ticked event in the handler class.
@@ -183,14 +183,14 @@ namespace GOL
         {
             using (GContext db = new GContext())
             {
-                Generation gen = new Generation();
-
-                var currentGen = (from g in db.Generations
+                var currentGen = (from g in db.Generation
                                   select g).ToList();
 
                 foreach (var item in currentGen)
                 {
+                    item.GenNumber = (int)comboBoxGenNumber.SelectedItem;
                     UpdatePoint(item.Cell_X, item.Cell_Y, true);
+
                 }
             }
         }
@@ -199,24 +199,15 @@ namespace GOL
         {
             using (GContext db = new GContext())
             {
+                var loadGen = from g in db.Generation
+                              select g;
 
+                foreach (var item in loadGen)
+                {
+                    comboBoxGenNumber.Items.Add(item.GenNumber);                  
+                }
             }
         }
-
-        //public void SaveGenNumberInSaveGameTable()
-        //{
-        //    TODO:....
-        //    using (GContext db = new GContext())
-        //    {
-        //        SavedGame sav = new SavedGame();
-        //        Generation gen = new Generation();
-
-        //        sav.GenNumber = gen.GenNumber;
-
-        //        db.SavedGames.Add(sav);
-        //        db.SaveChanges();
-        //    }
-        //}
 
         private void LoadNextGeneration()
         {
@@ -278,6 +269,7 @@ namespace GOL
         private void buttonLoadFromGenTable_Click(object sender, RoutedEventArgs e)
         {
             //LoadGenFromDB();TODO: Something.
+           LoadGenFromDB();       
         }
 
         private void buttonSaveGen_Click(object sender, RoutedEventArgs e)
@@ -288,6 +280,11 @@ namespace GOL
         private void buttonGoBack_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void buttonClearBoard_Click(object sender, RoutedEventArgs e)
+        {
+            gameBoardCanvas.Children.Clear();            
         }
     }
 }

@@ -73,10 +73,10 @@
     <Compile Include="GContext.cs" />
     <Compile Include="Generation.cs" />
     <Compile Include="Player.cs" />
+    <Compile Include="SavedGames.cs" />
     <Compile Include="StartWindow.xaml.cs">
       <DependentUpon>StartWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SavedGame.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

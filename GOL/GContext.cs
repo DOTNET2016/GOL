@@ -12,9 +12,9 @@ namespace GOL
         {
         }
 
-        public virtual DbSet<Generation> Generations { get; set; }
-        public virtual DbSet<Player> Players { get; set; }
-        public virtual DbSet<SavedGame> SavedGames { get; set; }
+        public virtual DbSet<Generation> Generation { get; set; }
+        public virtual DbSet<Player> Player { get; set; }
+        public virtual DbSet<SavedGames> SavedGames { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -27,9 +27,9 @@ namespace GOL
                 .WithOptional(e => e.Player)
                 .HasForeignKey(e => e.Player_id);
 
-            modelBuilder.Entity<SavedGame>()
-                .HasMany(e => e.Generations)
-                .WithOptional(e => e.SavedGame)
+            modelBuilder.Entity<SavedGames>()
+                .HasMany(e => e.Generation)
+                .WithOptional(e => e.SavedGames)
                 .HasForeignKey(e => e.SavedGame_id);
         }
     }

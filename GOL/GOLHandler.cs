@@ -17,8 +17,8 @@ namespace GOL
         private Cell[,] NextGeneration = new Cell[80, 60];
         private List<Cell> AliveCells = new List<Cell>();
         DispatcherTimer timer;
-        private Player activePlayer;
-        private SavedGame savedGame;
+        public Player activePlayer { get; set; }
+        public SavedGames savedGame { get; set; }
         int GenNumber= 1;
 
 
@@ -94,7 +94,7 @@ namespace GOL
             using (GContext g = new GContext())
             {
                 activePlayer = new Player();
-                var players = g.Players;
+                var players = g.Player;
                 foreach (var player in players)
                 {
                     if (player.id == playerId)
@@ -108,7 +108,7 @@ namespace GOL
 
         private void SetSavedGame_PlayerId()
         {
-            savedGame = new SavedGame();
+            savedGame = new SavedGames();
             savedGame.Player_id = activePlayer.id;
 
         }
@@ -143,7 +143,7 @@ namespace GOL
                     g.SavedGame_id = savedGame.id;
                     g.Cell_X = item.X;
                     g.Cell_Y = item.Y;
-                    db.Generations.Add(g);
+                    db.Generation.Add(g);
 
                 }
                 db.SaveChanges();

@@ -19,6 +19,6 @@ namespace GOL
 
         public int? SavedGame_id { get; set; }
 
-        public virtual SavedGame SavedGame { get; set; }
+        public virtual SavedGames SavedGames { get; set; }
     }
 }

@@ -28,9 +28,9 @@ namespace GOL
 
         private void buttonStartGame_Click(object sender, RoutedEventArgs e)
         {
-            if (textBoxEnterName.Text == null)
+            if (textBoxEnterName.Text.Length <= 0)
             {
-                MessageBox.Show("Error, you have not entered a name.");
+                MessageBox.Show("Error, you have not entered a name.", "You shall not pass!");
             }
             else 
             AddPlayer();
@@ -43,9 +43,9 @@ namespace GOL
             {
                 Player player = new Player();
                 player.PlayerName = textBoxEnterName.Text.ToLower();
-                db.Players.Add(player);
+                db.Player.Add(player);
                 db.SaveChanges();
-                playerId = (from p in db.Players select p.id).Max();
+                playerId = (from p in db.Player select p.id).Max();
 
             }
 

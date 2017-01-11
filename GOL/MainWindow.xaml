@@ -25,5 +25,6 @@
         <Button x:Name="buttonSaveGen" Content="Save Generation" HorizontalAlignment="Left" Margin="535,630,0,0" VerticalAlignment="Top" Width="135" Height="35" Click="buttonSaveGen_Click"/>
         <ComboBox x:Name="comboBoxGenNumber" HorizontalAlignment="Left" Margin="1005,58,0,0" VerticalAlignment="Top" Width="120"/>
         <Button x:Name="buttonGoBack" Content="Go back to Menu" HorizontalAlignment="Left" Margin="1134,620,0,0" VerticalAlignment="Top" Width="120" Height="49" Click="buttonGoBack_Click"/>
+        <Button x:Name="buttonClearBoard" Content="Clear Board" HorizontalAlignment="Left" Margin="715,630,0,0" VerticalAlignment="Top" Width="95" Height="35" Click="buttonClearBoard_Click"/>
     </Grid>
 </Window>

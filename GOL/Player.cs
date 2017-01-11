@@ -12,7 +12,7 @@ namespace GOL
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Player()
         {
-            SavedGames = new HashSet<SavedGame>();
+            SavedGames = new HashSet<SavedGames>();
         }
 
         public int id { get; set; }
@@ -21,6 +21,6 @@ namespace GOL
         public string PlayerName { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SavedGame> SavedGames { get; set; }
+        public virtual ICollection<SavedGames> SavedGames { get; set; }
     }
 }
