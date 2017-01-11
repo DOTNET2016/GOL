@@ -29,7 +29,7 @@ namespace GOL
 
             using (GContext db = new GContext())
             {
-                var players = db.Players;
+                var players = db.Player;
  
                 foreach (var player in players)
                 {
@@ -68,7 +68,7 @@ namespace GOL
         {
             using (GContext db = new GContext())
             {
-                playerId = (from l in db.Players
+                playerId = (from l in db.Player
                             where l.PlayerName.ToLower().StartsWith(PlayerName)
                             select l.id).FirstOrDefault();
             }

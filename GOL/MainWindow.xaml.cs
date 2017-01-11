@@ -55,7 +55,7 @@ namespace GOL
 
                 foreach (var SavedGame_id in SavedGames)
                 {
-                    comboBoxSavedGames.Items.Add(SavedGame_id.id);
+                    comboxBoxSavedGames.Items.Add(SavedGame_id.id);      
                 }
             }
         }
@@ -185,7 +185,7 @@ namespace GOL
             {
                 Generation gen = new Generation();
 
-                var currentGen = (from g in db.Generations
+                var currentGen = (from g in db.Generation
                                   select g).ToList();
 
                 foreach (var item in currentGen)
@@ -294,7 +294,7 @@ namespace GOL
 
         private void comboBoxSavedGames_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            dynamic itemSelected = comboBoxSavedGames.SelectedItem;
+            dynamic itemSelected = comboxBoxSavedGames.SelectedItem;
             SavedGame = itemSelected;
         }
     }
