@@ -12,15 +12,16 @@
             <ColumnDefinition Width="117*"/>
         </Grid.ColumnDefinitions>
         <Image x:Name="Conways_game_of_life_breeder_png" Margin="458,81,308,330" Source="Conways_game_of_life_breeder.png" Stretch="Fill" Grid.ColumnSpan="2"/>
-        <Button x:Name="buttonStartGame" Content="Save and Start" HorizontalAlignment="Left" Margin="194,581,0,0" VerticalAlignment="Top" Width="101" Click="buttonStartGame_Click" Height="32"/>
+        <Button x:Name="buttonStartGame" Content="Save and Start" HorizontalAlignment="Left" Margin="237,548,0,0" VerticalAlignment="Top" Width="101" Click="buttonStartGame_Click" Height="32"/>
         <Label x:Name="label" Content="Conways Game Of Life" HorizontalAlignment="Left" Margin="270,10,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2" Width="770" Height="100" FontFamily="SimSun" FontSize="72"/>
-        <TextBox x:Name="textBoxEnterName" HorizontalAlignment="Left" Height="23" Margin="133,536,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="218"/>
-        <Label x:Name="label1EnterYourName" Content="Please enter your name" HorizontalAlignment="Left" Margin="173,505,0,0" VerticalAlignment="Top" Width="142"/>
+        <TextBox x:Name="textBoxEnterName" HorizontalAlignment="Left" Height="23" Margin="56,585,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="218"/>
+        <Label x:Name="label1EnterYourName" Content="Please enter your name" HorizontalAlignment="Left" Margin="270,454,0,0" VerticalAlignment="Top" Width="142"/>
         <Label x:Name="labelRule1" Content="1. Any live cell with fewer than two live neighbours dies, as if caused by underpopulation." HorizontalAlignment="Left" Margin="104,671,0,0" VerticalAlignment="Top" Width="945" Height="42" FontFamily="SimSun" FontSize="16"/>
         <Label x:Name="labelRule2" Content="2. Any live cell with two or three live neighbours lives on to the next generation." HorizontalAlignment="Left" Margin="104,713,0,0" VerticalAlignment="Top" Width="916" FontFamily="SimSun" FontSize="16" Height="40"/>
         <Label x:Name="labelRule3" Content="3. Any live cell with more than three live neighbours dies, as if by overpopulation." HorizontalAlignment="Left" Margin="104,757,0,0" VerticalAlignment="Top" Width="916" FontFamily="SimSun" FontSize="16" Height="40"/>
         <Label x:Name="labelRule4" Content="4. Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction." HorizontalAlignment="Left" Margin="104,802,0,0" VerticalAlignment="Top" Width="945" FontFamily="SimSun" FontSize="16" Height="39"/>
         <Button x:Name="buttonExit" Content="Exit" Grid.Column="1" HorizontalAlignment="Left" Margin="573,882,0,0" VerticalAlignment="Top" Width="75" Height="48" Click="buttonExit_Click"/>
+        <ComboBox x:Name="comboBoxPlayers" HorizontalAlignment="Left" Margin="154,508,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="comboBoxPlayers_SelectionChanged"/>
 
     </Grid>
 </Window>

@@ -21,7 +21,7 @@
         <Button x:Name="buttonGetNxtGen" Content="Get Next Generation" HorizontalAlignment="Left" Margin="10,630,0,0" VerticalAlignment="Top" Width="144" Height="39" Click="buttonGetNxtGen_Click"/>
         <Button x:Name="StartTimer" Content="Start Timer" HorizontalAlignment="Left" Margin="175,630,0,0" VerticalAlignment="Top" Width="144" Height="39" Click="StartTimer_Click"/>
         <Button x:Name="buttonLoadFromGenTable" Content="Load from Gen Table" HorizontalAlignment="Left" Margin="336,630,0,0" VerticalAlignment="Top" Width="144" Height="39" Click="buttonLoadFromGenTable_Click"/>
-        <ComboBox x:Name="comboBoxPlayers" HorizontalAlignment="Left" Margin="840,58,0,0" VerticalAlignment="Top" Width="120"/>
+        <ComboBox x:Name="comboBoxSavedGames" HorizontalAlignment="Left" Margin="840,58,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="comboBoxSavedGames_SelectionChanged"/>
         <Button x:Name="buttonSaveGen" Content="Save Generation" HorizontalAlignment="Left" Margin="535,630,0,0" VerticalAlignment="Top" Width="135" Height="35" Click="buttonSaveGen_Click"/>
         <ComboBox x:Name="comboBoxGenNumber" HorizontalAlignment="Left" Margin="1005,58,0,0" VerticalAlignment="Top" Width="120"/>
         <Button x:Name="buttonGoBack" Content="Go back to Menu" HorizontalAlignment="Left" Margin="1134,620,0,0" VerticalAlignment="Top" Width="120" Height="49" Click="buttonGoBack_Click"/>
