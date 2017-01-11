@@ -189,8 +189,7 @@ namespace GOL
             {
                 Generation gen = new Generation();
 
-                var currentGen = (from g in db.Generation
-                                  select g).ToList();
+                var currentGen = db.Generation.Where(g => g.SavedGame_id == SavedGame);
 
                 foreach (var item in currentGen)
                 {
@@ -282,6 +281,7 @@ namespace GOL
         private void buttonLoadFromGenTable_Click(object sender, RoutedEventArgs e)
         {
             //LoadGenFromDB();TODO: Something.
+            LoadGenFromDB();
         }
 
         private void buttonSaveGen_Click(object sender, RoutedEventArgs e)
@@ -298,6 +298,7 @@ namespace GOL
         {
             dynamic itemSelected = comboxBoxSavedGames.SelectedItem;
             SavedGame = itemSelected;
+            handler.CurrentGenNumber();
         }
     }
 }
