@@ -45,7 +45,6 @@ namespace GOL
             {
                 Timer_Ticked.Invoke(this, new EventArgs());
             }
-
         }
 
         /// <summary>

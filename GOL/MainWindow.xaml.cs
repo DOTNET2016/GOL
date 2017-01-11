@@ -47,14 +47,21 @@ namespace GOL
             handler = new GOLHandler(playerId);
             initializeGameBoard();
             handler.Timer_Ticked += Handler_Timer_Ticked;
+            LoadSavedGames(playerId);
+        }
+
+        private void LoadSavedGames(int Id)
+        {
+            int playerId = Id;
 
             using (GContext db = new GContext())
             {
+                db.Database.Log = s => textBox.Text += s;
                 var SavedGames = db.SavedGames.Where(x => x.Player_id == playerId);
 
                 foreach (var SavedGame_id in SavedGames)
                 {
-                    comboxBoxSavedGames.Items.Add(SavedGame_id.id);      
+                    comboxBoxSavedGames.Items.Add(SavedGame_id.id);
                 }
             }
         }
@@ -179,11 +186,12 @@ namespace GOL
             }
             #endregion
         }
-        //Loads the latest gen from the db.....FIX THIS, IT LOADS THE SAVED GAME BUT DOESNT PLAY THROUGH THE GAME ONCE TIMER IS STARTED OR NEXT GEN BUTTON IS PRESSED
+        //Loads the latest gen from the db.....
         private void LoadGenFromDB()
         {
             using (GContext db = new GContext())
             {
+                db.Database.Log = s => textBox.Text += s;
                 Generation gen = new Generation();
 
                 var currentGen = db.Generation.Where(g => g.SavedGame_id == SavedGame);
@@ -194,6 +202,21 @@ namespace GOL
                 }
             }
         }
+
+        //public void SaveGenNumberInSaveGameTable()
+        //{
+        //    TODO:....
+        //    using (GContext db = new GContext())
+        //    {
+        //        SavedGame sav = new SavedGame();
+        //        Generation gen = new Generation();
+
+        //        sav.GenNumber = gen.GenNumber;
+
+        //        db.SavedGames.Add(sav);
+        //        db.SaveChanges();
+        //    }
+        //}
 
         private void LoadNextGeneration()
         {
