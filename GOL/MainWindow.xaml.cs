@@ -297,6 +297,7 @@ namespace GOL
             {
                 clearMe = true;
                 genNumber = 0;
+                EnableAllButtons();
             }
         }
 
