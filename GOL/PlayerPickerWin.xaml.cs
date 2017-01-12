@@ -23,15 +23,22 @@ namespace GOL
         public string PlayerName { get; set; }
         public string NewPlayerName { get; set; }
 
+        public string CurrentPlayerName { get; set; }
+
         public PlayerPickerWin()
         {
             InitializeComponent();
             loadPlayers();
         }
 
-        public int Answer
+        public int AnswerOne
         {
             get { return playerId; }
+        }
+
+        public string AnswerTwo
+        {
+            get { return CurrentPlayerName; }
         }
 
         private void buttonStartGame_Click(object sender, RoutedEventArgs e)
@@ -83,6 +90,7 @@ namespace GOL
                 playerId = (from p in db.Player
                             select p.id).Max();
             }
+            CurrentPlayerName = NewPlayerName;
         }
 
         private void PickPlayer()
@@ -92,6 +100,9 @@ namespace GOL
                 playerId = (from l in db.Player
                             where l.PlayerName.ToLower().StartsWith(PlayerName)
                             select l.id).FirstOrDefault();
+                CurrentPlayerName = (from l in db.Player
+                            where l.PlayerName.ToLower().StartsWith(PlayerName)
+                            select l.PlayerName).FirstOrDefault();
             }
         }
 

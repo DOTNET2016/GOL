@@ -25,8 +25,11 @@ namespace GOL
     {
         //Fields
         private bool _IsOn;
+        private bool _ReplayIsOn;
+
         GOLHandler handler;
         int _playerId;
+        string _playerName;
         public int SavedGame { get; set; }
         private bool clearMe = false;
 
@@ -41,6 +44,19 @@ namespace GOL
             {
                 _IsOn = value;
                 buttonStartTimer.Content = _IsOn ? "Stop Timer" : "Start Timer";
+            }
+        }
+
+        public bool ReplayOn
+        {
+            get
+            {
+                return _ReplayIsOn;
+            }
+            set
+            {
+                _ReplayIsOn = value;
+                buttonReplay.Content = _ReplayIsOn ? "Stop Replay" : "Replay";
             }
         }
         //constructor.
@@ -106,6 +122,7 @@ namespace GOL
                     gameBoardCanvas.Children.Add(r);
                     #endregion
                 }
+                DisableButtonsWhenReplaying();
             }
         }
 
@@ -275,12 +292,21 @@ namespace GOL
             buttonStartTimer.IsHitTestVisible = false;
             buttonSaveGame.IsHitTestVisible = false;
             buttonReplay.IsHitTestVisible = false;
+            comboxBoxSavedGames.IsHitTestVisible = false;
         }
 
         private void buttonReplay_Click(object sender, RoutedEventArgs e)
         {
-            clearMe = false;
-            replaySavedGame();
+            ReplayOn = !ReplayOn;
+            if (ReplayOn)
+            {
+                clearMe = false;
+                replaySavedGame();
+            }
+            if (!ReplayOn)
+            {
+                clearMe = true;
+            }
         }
 
         private async void replaySavedGame()
@@ -289,22 +315,21 @@ namespace GOL
             int genNumber = 0;
             var generations = handler.LoadGenFromDatabase();
 
-                foreach (var gen in generations)
+            foreach (var gen in generations)
+            {
+                if (gen.GenNumber == genNumber && Check() == false)
+                {           
+                    PrintCell(gen.Cell_X, gen.Cell_Y, true);
+                    label.Content = "Gen: " + genNumber;
+                }
+                else if (gen.GenNumber == genNumber + 1 && Check() == false)
                 {
-                    if (gen.GenNumber == genNumber && Check() == false)
-                    {           
-                        PrintCell(gen.Cell_X, gen.Cell_Y, true);
-                        label.Content = "Gen: " + genNumber;
-                    }
-                    else if (gen.GenNumber == genNumber + 1 && Check() == false)
-                    {
-                        await Task.Delay(1000);
-                        resetGameBoard();
-                        PrintCell(gen.Cell_X, gen.Cell_Y, true);
-                        genNumber++;
-                    }
+                    await Task.Delay(1000);
+                    resetGameBoard();
+                    PrintCell(gen.Cell_X, gen.Cell_Y, true);
+                    genNumber++;
+                }
             }
-
         }
 
         private bool Check()
@@ -319,14 +344,13 @@ namespace GOL
         }
         private void EnableAllButtons()
         {
-            buttonReplay.Foreground = Brushes.Black;
             buttonGetNxtGen.Foreground = Brushes.Black;
             buttonStartTimer.Foreground = Brushes.Black;
             buttonSaveGame.Foreground = Brushes.Black;
             buttonGetNxtGen.IsHitTestVisible = true;
             buttonStartTimer.IsHitTestVisible = true;
             buttonSaveGame.IsHitTestVisible = true;
-            buttonReplay.IsHitTestVisible = true;
+            comboxBoxSavedGames.IsHitTestVisible = true;
         }
 
 
@@ -344,14 +368,17 @@ namespace GOL
         {
             dynamic itemSelected = comboxBoxSavedGames.SelectedItem;
             if (itemSelected != null)
+            {
                 SavedGame = itemSelected;
+                buttonReplay.IsHitTestVisible = true;
+                buttonReplay.Foreground = Brushes.Black;
+            }
             else
                 comboxBoxSavedGames.ItemsSource = null;
         }
 
         private void buttonClear_Click(object sender, RoutedEventArgs e)
         {
-            clearMe = true;
             //TODO: fix so it actually resets the game
             resetGameBoard();
             label.Content = "Gen: 0";
@@ -362,8 +389,13 @@ namespace GOL
         {
             PlayerPickerWin pickedPlayer = new PlayerPickerWin();
             if (pickedPlayer.ShowDialog() == true)
-                _playerId = pickedPlayer.Answer;
+            {
+                _playerId = pickedPlayer.AnswerOne;
+                _playerName = pickedPlayer.AnswerTwo;
+            }
             LoadSavedGames();
+            EnableAllButtons();
+            PlayerLabel.Content = "Current Player: " + _playerName;
             handler.SetupPlayer(_playerId);
         }
 
