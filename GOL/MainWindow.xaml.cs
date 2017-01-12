@@ -310,7 +310,6 @@ namespace GOL
             int numberOfGenerations = (from gen in generations
                                        select gen.GenNumber).Distinct().Count() - 1;
 
-
             foreach (var gen in generations)
             {
 
@@ -402,6 +401,7 @@ namespace GOL
             //TODO: fix so it actually resets the game
             resetGameBoard();
             initializeGameBoard();
+            handler.GenNumber = 0;
             label.Content = "Gen: 0";
             EnableAllButtons();
         }
@@ -413,11 +413,11 @@ namespace GOL
             {
                 _playerId = pickedPlayer.AnswerOne;
                 _playerName = pickedPlayer.AnswerTwo;
+                PlayerLabel.Content = "Selected Player: " + _playerName;
+                LoadSavedGames();
+                EnableAllButtons();
+                handler.SetupPlayer(_playerId);
             }
-            LoadSavedGames();
-            EnableAllButtons();
-            PlayerLabel.Content = "Selected Player: " + _playerName;
-            handler.SetupPlayer(_playerId);
         }
 
         private void aboutButton_Click(object sender, RoutedEventArgs e)
