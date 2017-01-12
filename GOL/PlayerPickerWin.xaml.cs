@@ -109,10 +109,13 @@ namespace GOL
 
         private void New_Player_Click(object sender, RoutedEventArgs e)
         {
-            comboBoxPlayers.IsHitTestVisible = false;
             NewPlayer newPlayer = new NewPlayer("Please enter your name:", "Adam");
+            comboBoxPlayers.IsHitTestVisible = true;
             if (newPlayer.ShowDialog() == true)
+            {
                 NewPlayerName = newPlayer.Answer;
+                comboBoxPlayers.IsHitTestVisible = false;
+            }
         }
     }
 }

@@ -42,5 +42,9 @@ namespace GOL
             get { return NameInput.Text; }
         }
 
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            this.DialogResult = false;
+        }
     }
 }
