@@ -44,6 +44,7 @@ namespace GOL
         //constructor.
         public MainWindow()
         {
+            //TODO add a current player label on main
             InitializeComponent();
             handler = new GOLHandler();
             initializeGameBoard();
