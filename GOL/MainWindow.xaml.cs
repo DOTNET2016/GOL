@@ -399,7 +399,7 @@ namespace GOL
             }
             LoadSavedGames();
             EnableAllButtons();
-            PlayerLabel.Content = "Current Player: " + _playerName;
+            PlayerLabel.Content = "Selected Player: " + _playerName;
             handler.SetupPlayer(_playerId);
         }
 

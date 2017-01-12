@@ -108,7 +108,6 @@ namespace GOL
         {
             savedGame = new SavedGames();
             savedGame.Player_id = activePlayer.id;
-
         }
 
         public void addGeneration()
