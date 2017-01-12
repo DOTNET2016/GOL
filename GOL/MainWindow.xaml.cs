@@ -322,9 +322,9 @@ namespace GOL
             handler.SaveToDatabase();
         }
 
-        private void buttonGoBack_Click(object sender, RoutedEventArgs e)
+        private void buttonExit_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            Application.Current.Shutdown();
         }
 
         private void comboBoxSavedGames_SelectionChanged(object sender, SelectionChangedEventArgs e)
