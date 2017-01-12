@@ -13,6 +13,6 @@
         <Label x:Name="labelRule3" Content="3. Any live cell with more than three live neighbours dies, as if by overpopulation." HorizontalAlignment="Left" Margin="10,368,-204,0" VerticalAlignment="Top" Width="916" FontFamily="SimSun" Height="40" FontSize="14"/>
         <Label x:Name="labelRule4" Content="4. Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction." HorizontalAlignment="Left" Margin="10,386,-233,0" VerticalAlignment="Top" Width="945" FontFamily="SimSun" Height="39" FontSize="14"/>
         <Label x:Name="label" Content="Conways Game Of Life" HorizontalAlignment="Left" Margin="84,10,-128,0" VerticalAlignment="Top" Width="766" Height="98" FontFamily="SimSun" FontSize="52"/>
-        <Button x:Name="aboutClose" Content="Close" HorizontalAlignment="Left" Margin="623,421,0,0" VerticalAlignment="Top" Width="75" Click="aboutClose_Click"/>
+        <Button x:Name="aboutClose" Content="Close" HorizontalAlignment="Left" Margin="621,413,0,0" VerticalAlignment="Top" Width="75" Click="aboutClose_Click"/>
     </Grid>
 </Window>

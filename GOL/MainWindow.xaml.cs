@@ -335,6 +335,7 @@ namespace GOL
 
         private void buttonClear_Click(object sender, RoutedEventArgs e)
         {
+            //TODO: fix so it actually resets the game
             resetGameBoard();
             label.Content = "Gen: 0";
             EnableAllButtons();
@@ -346,6 +347,7 @@ namespace GOL
             if (pickedPlayer.ShowDialog() == true)
                 _playerId = pickedPlayer.Answer;
             LoadSavedGames();
+            handler.SetupPlayer(_playerId);
         }
 
         private void aboutButton_Click(object sender, RoutedEventArgs e)

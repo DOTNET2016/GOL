@@ -36,18 +36,25 @@ namespace GOL
 
         private void buttonStartGame_Click(object sender, RoutedEventArgs e)
         {
+
+
             if (PlayerName == null && NewPlayerName == null)
                 MessageBox.Show("Error, you have not picked a name. or made a new player");
-
+            else if (PlayerName != null && NewPlayerName != null)
+                {
+                    MessageBox.Show("Error, you managed to pick a player while a new was made!");
+                    this.DialogResult = false;
+                }
             else if(PlayerName != null)
                 {
                     PickPlayer();
+                    this.DialogResult = true;
                 }
             else if (NewPlayerName != null)
                 {
                     AddPlayer();
+                    this.DialogResult = true;
                 }
-            this.DialogResult = true;
         }
 
         //load all existing players from databse
@@ -95,6 +102,7 @@ namespace GOL
 
         private void comboBoxPlayers_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            NewPlayerButton.IsHitTestVisible = false;
             dynamic itemSelected = comboBoxPlayers.SelectedItem;
             PlayerName = itemSelected;
         }

@@ -6,15 +6,17 @@
         xmlns:local="clr-namespace:GOL"
         mc:Ignorable="d"
         Title="PlayerNameIntro"  Height="280" Width="380" WindowStyle="None" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
-    <Grid Margin="0,0,2,2">
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
+        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="280" VerticalAlignment="Top" Width="380"/>
+
         <Button x:Name="buttonStartGame" Content="Load and Start" HorizontalAlignment="Left" Margin="81,166,0,0" VerticalAlignment="Top" Width="101" Click="buttonStartGame_Click" Height="32"/>
         <Label x:Name="label1EnterYourName" Content="Please pick a player" HorizontalAlignment="Left" Margin="67,94,0,0" VerticalAlignment="Top" Width="142" Height="26"/>
         <Button x:Name="buttonExit" Content="Cancel" HorizontalAlignment="Left" Margin="209,166,0,0" VerticalAlignment="Top" Width="65" Height="32" Click="buttonExit_Click"/>
         <ComboBox x:Name="comboBoxPlayers" HorizontalAlignment="Left" Margin="62,125,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="comboBoxPlayers_SelectionChanged" Height="22"/>
-        <Button x:Name="New_Player" Content="New Player" HorizontalAlignment="Left" Margin="218,127,0,0" VerticalAlignment="Top" Width="74" Click="New_Player_Click" Height="20"/>
+        <Button x:Name="NewPlayerButton" Content="New Player" HorizontalAlignment="Left" Margin="218,127,0,0" VerticalAlignment="Top" Width="74" Click="New_Player_Click" Height="20"/>
         <Label x:Name="Make_New_Player" Content="Add a new player" HorizontalAlignment="Left" Margin="209,94,0,0" VerticalAlignment="Top" Width="142" Height="26"/>
 
     </Grid>

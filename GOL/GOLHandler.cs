@@ -91,7 +91,7 @@ namespace GOL
         {
             using (GContext g = new GContext())
             {
-                activePlayer = new Player();
+
                 var players = g.Player;
                 foreach (var player in players)
                 {
