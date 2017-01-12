@@ -400,6 +400,7 @@ namespace GOL
         private void buttonClear_Click(object sender, RoutedEventArgs e)
         {
             //TODO: fix so it actually resets the game
+            resetGameBoard();
             initializeGameBoard();
             label.Content = "Gen: 0";
             EnableAllButtons();
