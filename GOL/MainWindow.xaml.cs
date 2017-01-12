@@ -167,6 +167,8 @@ namespace GOL
                 gameBoardCanvas.Children.Add(r);
             }
             #endregion
+
+            label.Content = handler.CurrentGenNumber();
         }
 
         /// <summary>
@@ -263,7 +265,6 @@ namespace GOL
 
             if (!TimerIsOn)
                 handler.Stop_Timer();
-            label.Content = "Gen: 0";
         }
 
         private void DisableButtonsWhenReplaying()
