@@ -17,8 +17,8 @@ namespace GOL
         private Cell[,] NextGeneration = new Cell[80, 60];
         private List<Cell> AliveCells = new List<Cell>();
         DispatcherTimer timer;
-        public Player activePlayer { get; set; }
-        public SavedGames savedGame { get; set; }
+        private Player activePlayer;
+        private SavedGames savedGame;
         int GenNumber = 0;
 
 
@@ -89,6 +89,7 @@ namespace GOL
 
         public void SetupPlayer(int playerId)
         {
+            activePlayer = new Player();
             using (GContext g = new GContext())
             {
 
@@ -98,13 +99,13 @@ namespace GOL
                     if (player.id == playerId)
                     {
                         activePlayer = player;
-                        SetSavedGame_PlayerId();
+                        newSavedGame();
                     }
                 }
             }
         }
 
-        private void SetSavedGame_PlayerId()
+        private void newSavedGame()
         {
             savedGame = new SavedGames();
             savedGame.Player_id = activePlayer.id;
@@ -127,7 +128,7 @@ namespace GOL
             GenNumber++;
         }
 
-        public void ClearBoard()
+        public void ClearCellsAlive()
         {
             AliveCells.Clear();
             GenNumber = 0;

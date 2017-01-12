@@ -291,6 +291,7 @@ namespace GOL
             if (ReplayOn)
             {
                 clearMe = false;
+                resetGameBoard();
                 replaySavedGame();
             }
             if (!ReplayOn)
@@ -303,22 +304,38 @@ namespace GOL
         private async void replaySavedGame()
         {
             DisableButtons();
-
+            Cell tempCell = null;
             var generations = handler.LoadGenFromDatabase();
+            int numberOfGenerations = (from gen in generations
+                                       select gen.GenNumber).Distinct().Count() - 1;
+
 
             foreach (var gen in generations)
             {
+
                 if (gen.GenNumber == genNumber && CheckClearButtonState() == false)
-                {           
+                {
+                    if (tempCell != null)
+                    {
+                        PrintCell(tempCell.X, tempCell.Y, true);
+                    }
                     PrintCell(gen.Cell_X, gen.Cell_Y, true);
-                    label.Content = "Gen: " + genNumber;
+                    label.Content = "Gen: " + genNumber + " of " + numberOfGenerations + ".";
+
                 }
                 else if (gen.GenNumber == genNumber + 1 && CheckClearButtonState() == false)
                 {
-                    await Task.Delay(1000);
-                    resetGameBoard();
-                    PrintCell(gen.Cell_X, gen.Cell_Y, true);
+                    tempCell = new Cell(gen.Cell_X, gen.Cell_Y, true, gen.GenNumber);
                     genNumber++;
+                    await Task.Delay(1000);
+                    if (CheckClearButtonState() == false)
+                    {
+                        resetGameBoard();
+                    }
+                }
+                if(CheckClearButtonState() == true)
+                {
+                    break;
                 }
             }
         }
@@ -327,7 +344,6 @@ namespace GOL
         {
             if (clearMe)
             {
-                handler.LoadGenFromDatabase().Clear();
                 return true;
             }
             else
@@ -383,7 +399,7 @@ namespace GOL
         private void buttonClear_Click(object sender, RoutedEventArgs e)
         {
             //TODO: fix so it actually resets the game
-            resetGameBoard();
+            initializeGameBoard();
             label.Content = "Gen: 0";
             EnableAllButtons();
         }
