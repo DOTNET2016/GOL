@@ -122,7 +122,7 @@ namespace GOL
                     gameBoardCanvas.Children.Add(r);
                     #endregion
                 }
-                DisableButtonsWhenReplaying();
+                DisableButtons();
             }
         }
 
@@ -282,19 +282,6 @@ namespace GOL
                 handler.Stop_Timer();
         }
 
-        private void DisableButtonsWhenReplaying()
-        {
-            buttonGetNxtGen.Foreground = Brushes.Gray;
-            buttonStartTimer.Foreground = Brushes.Gray;
-            buttonSaveGame.Foreground = Brushes.Gray;
-            buttonReplay.Foreground = Brushes.Gray;
-            buttonGetNxtGen.IsHitTestVisible = false;
-            buttonStartTimer.IsHitTestVisible = false;
-            buttonSaveGame.IsHitTestVisible = false;
-            buttonReplay.IsHitTestVisible = false;
-            comboxBoxSavedGames.IsHitTestVisible = false;
-        }
-
         private void buttonReplay_Click(object sender, RoutedEventArgs e)
         {
             ReplayOn = !ReplayOn;
@@ -311,24 +298,24 @@ namespace GOL
 
         private async void replaySavedGame()
         {
-            DisableButtonsWhenReplaying();
+            DisableButtons();
             int genNumber = 0;
             var generations = handler.LoadGenFromDatabase();
 
-                foreach (var gen in generations)
+            foreach (var gen in generations)
+            {
+                if (gen.GenNumber == genNumber && CheckClearButtonState() == false)
+                {           
+                    PrintCell(gen.Cell_X, gen.Cell_Y, true);
+                    label.Content = "Gen: " + genNumber;
+                }
+                else if (gen.GenNumber == genNumber + 1 && CheckClearButtonState() == false)
                 {
-                    if (gen.GenNumber == genNumber && CheckClearButtonState() == false)
-                    {           
-                        PrintCell(gen.Cell_X, gen.Cell_Y, true);
-                        label.Content = "Gen: " + genNumber;
-                    }
-                    else if (gen.GenNumber == genNumber + 1 && CheckClearButtonState() == false)
-                    {
-                        await Task.Delay(1000);
-                        resetGameBoard();
-                        PrintCell(gen.Cell_X, gen.Cell_Y, true);
-                        genNumber++;
-                    }
+                    await Task.Delay(1000);
+                    resetGameBoard();
+                    PrintCell(gen.Cell_X, gen.Cell_Y, true);
+                    genNumber++;
+                }
             }
 
         }
@@ -343,26 +330,39 @@ namespace GOL
             else
                 return false;
         }
+
         private void EnableAllButtons()
         {
             buttonGetNxtGen.Foreground = Brushes.Black;
             buttonStartTimer.Foreground = Brushes.Black;
             buttonSaveGame.Foreground = Brushes.Black;
+            buttonClear.Foreground = Brushes.Black;
+
             buttonGetNxtGen.IsHitTestVisible = true;
             buttonStartTimer.IsHitTestVisible = true;
             buttonSaveGame.IsHitTestVisible = true;
             comboxBoxSavedGames.IsHitTestVisible = true;
+            buttonClear.IsHitTestVisible = true;
         }
 
+        private void DisableButtons()
+        {
+            buttonGetNxtGen.Foreground = Brushes.Gray;
+            buttonStartTimer.Foreground = Brushes.Gray;
+            buttonSaveGame.Foreground = Brushes.Gray;
+            buttonReplay.Foreground = Brushes.Gray;
+            buttonClear.Foreground = Brushes.Gray;
+            buttonGetNxtGen.IsHitTestVisible = false;
+            buttonStartTimer.IsHitTestVisible = false;
+            buttonSaveGame.IsHitTestVisible = false;
+            buttonReplay.IsHitTestVisible = false;
+            comboxBoxSavedGames.IsHitTestVisible = false;
+            buttonClear.IsHitTestVisible = false;
+        }
 
         private void buttonSaveGame_Click(object sender, RoutedEventArgs e)
         {
             handler.SaveToDatabase();
-        }
-
-        private void buttonExit_Click(object sender, RoutedEventArgs e)
-        {
-            Application.Current.Shutdown();
         }
 
         private void comboBoxSavedGames_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -404,6 +404,11 @@ namespace GOL
         {
             AboutGolWin aboutGol = new AboutGolWin();
             aboutGol.ShowDialog();
+        }
+
+        private void buttonExit_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
         }
     }
 }

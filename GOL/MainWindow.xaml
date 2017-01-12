@@ -22,10 +22,10 @@
         <Button x:Name="buttonStartTimer" Content="Start Timer" HorizontalAlignment="Left" Margin="256,626,0,0" VerticalAlignment="Top" Width="144" Height="39" Click="StartTimer_Click"/>
         <Button x:Name="buttonReplay" Content="Replay" HorizontalAlignment="Left" Margin="840,85,0,0" VerticalAlignment="Top" Width="120" Height="35" Click="buttonReplay_Click"/>
         <ComboBox x:Name="comboxBoxSavedGames" HorizontalAlignment="Left" Margin="840,58,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="comboBoxSavedGames_SelectionChanged"/>
-        <Button x:Name="buttonSaveGame" Content="Save Game" HorizontalAlignment="Left" Margin="428,624,0,0" VerticalAlignment="Top" Width="136" Height="39" Click="buttonSaveGame_Click"/>
+        <Button x:Name="buttonSaveGame" Content="Save Game" HorizontalAlignment="Left" Margin="427,626,0,0" VerticalAlignment="Top" Width="136" Height="39" Click="buttonSaveGame_Click"/>
         <Button x:Name="buttonExit" Content="Exit" HorizontalAlignment="Left" Margin="1134,620,0,0" VerticalAlignment="Top" Width="120" Height="49" Click="buttonExit_Click"/>
-        <Button x:Name="buttonClear" Content="Clear Board" HorizontalAlignment="Left" Margin="585,626,0,0" VerticalAlignment="Top" Width="96" Height="35" Click="buttonClear_Click"/>
-        <Label x:Name="label" Content="Gen: 0" HorizontalAlignment="Center" Margin="840,548,156,79" VerticalAlignment="Center" Height="62" Width="285" FontSize="48" Background="{x:Null}" Panel.ZIndex="2" FontWeight="Bold" FontStretch="Expanded" Foreground="Black"/>
+        <Button x:Name="buttonClear" Content="Clear Board" HorizontalAlignment="Left" Margin="704,630,0,0" VerticalAlignment="Top" Width="96" Height="35" Click="buttonClear_Click"/>
+        <Label x:Name="label" Content="Gen: 0" HorizontalAlignment="Center" Margin="841,523,157,106" VerticalAlignment="Center" Height="62" Width="285" FontSize="48" Background="{x:Null}" Panel.ZIndex="2" FontWeight="Bold" FontStretch="Expanded" Foreground="Black"/>
         <Label x:Name="labelSaveGame" Content="Saved Games" HorizontalAlignment="Left" Margin="860,32,0,0" VerticalAlignment="Top" Foreground="White"/>
         <Button x:Name="buttonPicker" Content="Choose a Player" HorizontalAlignment="Left" Margin="1074,57,0,0" VerticalAlignment="Top" Width="139" Height="46" Click="buttonPicker_Click"/>
         <Button x:Name="aboutButton" Content="About GoL" HorizontalAlignment="Left" Margin="1039,620,0,0" VerticalAlignment="Top" Width="86" Height="49" Click="aboutButton_Click"/>
