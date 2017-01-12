@@ -26,14 +26,13 @@ namespace GOL
         public event EventHandler Timer_Ticked;
 
         //Constructor
-        public GOLHandler(int SetplayerId)
+        public GOLHandler()
         {
             int value = 300;
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromMilliseconds(value);
             timer.IsEnabled = true;
             timer.Stop();
-            SetupPlayer(SetplayerId);
             timer.Tick += Timer_Tick;
         }
 
@@ -88,7 +87,7 @@ namespace GOL
             }
         }
 
-        private void SetupPlayer(int playerId)
+        public void SetupPlayer(int playerId)
         {
             using (GContext g = new GContext())
             {

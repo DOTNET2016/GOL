@@ -17,7 +17,7 @@ namespace GOL
     /// <summary>
     /// Interaction logic for PlayerNameIntro.xaml
     /// </summary>
-    public partial class StartWindow : Window
+    public partial class PleyerPickerWin : Window
     {
         MainWindow window;
 
@@ -25,7 +25,7 @@ namespace GOL
         public string PlayerName { get; set; }
         public string NewPlayerName { get; set; }
 
-        public StartWindow()
+        public PleyerPickerWin()
         {
             InitializeComponent();
             loadPlayers();
@@ -75,7 +75,7 @@ namespace GOL
                             select p.id).Max();
             }
             this.Hide();
-            window = new MainWindow(playerId);
+            window = new MainWindow();
             window.ShowDialog();
         }
 
@@ -89,7 +89,7 @@ namespace GOL
                             select l.id).FirstOrDefault();
             }
             this.Hide();
-            window = new MainWindow(playerId);
+            window = new MainWindow();
             window.ShowDialog();
         }
 

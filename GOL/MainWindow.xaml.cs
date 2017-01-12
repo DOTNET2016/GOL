@@ -42,11 +42,10 @@ namespace GOL
             }
         }
         //constructor.
-        public MainWindow(int playerId)
+        public MainWindow()
         {
             InitializeComponent();
-            _playerId = playerId;
-            handler = new GOLHandler(_playerId);
+            handler = new GOLHandler();
             initializeGameBoard();
             handler.Timer_Ticked += Handler_Timer_Ticked;
             LoadSavedGames();
