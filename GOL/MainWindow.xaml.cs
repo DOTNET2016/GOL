@@ -287,6 +287,7 @@ namespace GOL
             buttonGetNxtGen.Foreground = Brushes.Gray;
             buttonStartTimer.Foreground = Brushes.Gray;
             buttonSaveGame.Foreground = Brushes.Gray;
+            buttonReplay.Foreground = Brushes.Gray;
             buttonGetNxtGen.IsHitTestVisible = false;
             buttonStartTimer.IsHitTestVisible = false;
             buttonSaveGame.IsHitTestVisible = false;
