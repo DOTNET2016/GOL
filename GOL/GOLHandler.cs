@@ -13,7 +13,7 @@ namespace GOL
     class GOLHandler
     {
         //Fields
-        private Cell[,] ActualGeneration = new Cell[80, 60];
+        public Cell[,] ActualGeneration = new Cell[80, 60];
         private Cell[,] NextGeneration = new Cell[80, 60];
         private List<Cell> AliveCells = new List<Cell>();
         DispatcherTimer timer;
@@ -125,6 +125,12 @@ namespace GOL
                 }
             }
             GenNumber++;
+        }
+
+        public void ClearBoard()
+        {
+            AliveCells.Clear();
+            GenNumber = 0;
         }
 
         public string CurrentGenNumber()

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity.Spatial;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -184,8 +185,6 @@ namespace GOL
             double tempX = e.GetPosition(gameBoardCanvas).X;
 
             handler.KillOrMakeCell(tempX, tempY, 5);
-            //SendSaveGameTable(tempX, tempY);
-
 
             //An Temporary holder for the ActualGeneration Array from the handler.
             var arrayToUpdateFrom = handler.GetActualGeneration();
@@ -288,22 +287,21 @@ namespace GOL
             int genNumber = 0;
             var generations = handler.LoadGenFromDatabase();
 
-            foreach (var gen in generations)
-            {
-                if (gen.GenNumber == genNumber)
+                foreach (var gen in generations)
                 {
-                    PrintCell(gen.Cell_X, gen.Cell_Y, true);
-                    label.Content = "Gen: " + genNumber;
+                    if (gen.GenNumber == genNumber)
+                    {
+                        PrintCell(gen.Cell_X, gen.Cell_Y, true);
+                        label.Content = "Gen: " + genNumber;
+                    }
+                    else if (gen.GenNumber == genNumber + 1)
+                    {
+                        await Task.Delay(1000);
+                        resetGameBoard();
+                        PrintCell(gen.Cell_X, gen.Cell_Y, true);
+                        genNumber++;
+                    }
                 }
-                else if (gen.GenNumber == genNumber + 1)
-                {
-                    await Task.Delay(1000);
-                    resetGameBoard();
-                    PrintCell(gen.Cell_X, gen.Cell_Y, true);
-                    genNumber++;
-                }
-
-            }
         }
         private void EnableAllButtons()
         {
@@ -331,11 +329,16 @@ namespace GOL
         private void comboBoxSavedGames_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             dynamic itemSelected = comboxBoxSavedGames.SelectedItem;
-            SavedGame = itemSelected;
+            if (itemSelected != null)
+                SavedGame = itemSelected;
+            else
+                comboxBoxSavedGames.ItemsSource = null;
         }
 
         private void buttonClear_Click(object sender, RoutedEventArgs e)
         {
+            handler.LoadGenFromDatabase().Clear();
+            handler.ClearBoard();
             //TODO: fix so it actually resets the game
             resetGameBoard();
             label.Content = "Gen: 0";
