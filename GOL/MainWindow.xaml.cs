@@ -270,11 +270,9 @@ namespace GOL
             buttonGetNxtGen.Foreground = Brushes.Gray;
             buttonStartTimer.Foreground = Brushes.Gray;
             buttonSaveGame.Foreground = Brushes.Gray;
-            buttonReplay.Foreground = Brushes.Gray;
             buttonGetNxtGen.IsHitTestVisible = false;
             buttonStartTimer.IsHitTestVisible = false;
             buttonSaveGame.IsHitTestVisible = false;
-            buttonReplay.IsHitTestVisible = false;
         }
 
         private void buttonReplay_Click(object sender, RoutedEventArgs e)
@@ -291,12 +289,12 @@ namespace GOL
 
                 foreach (var gen in generations)
                 {
-                    if (gen.GenNumber == genNumber && Check() == false)
+                    if (gen.GenNumber == genNumber && CheckClearButtonState() == false)
                     {           
                         PrintCell(gen.Cell_X, gen.Cell_Y, true);
                         label.Content = "Gen: " + genNumber;
                     }
-                    else if (gen.GenNumber == genNumber + 1 && Check() == false)
+                    else if (gen.GenNumber == genNumber + 1 && CheckClearButtonState() == false)
                     {
                         await Task.Delay(1000);
                         resetGameBoard();
@@ -304,10 +302,9 @@ namespace GOL
                         genNumber++;
                     }
             }
-
         }
 
-        private bool Check()
+        private bool CheckClearButtonState()
         {
             if (clearMe)
             {
