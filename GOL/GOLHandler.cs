@@ -307,11 +307,20 @@ namespace GOL
             using (GContext db = new GContext())
             {
                 var currentGen = db.Generation.Where(x => x.SavedGames.Player_id == activePlayer.id);
-                
-                foreach(var gen in currentGen)
+
+                try
                 {
-                    generationsToReturn.Add(gen);
+                    foreach (var gen in currentGen)
+                    {
+                        generationsToReturn.Add(gen);
+                    }
                 }
+                catch (Exception)
+                {
+
+                    MessageBox.Show("That didn't work", "Warning!");
+                }
+              
             }
             return generationsToReturn;
         }

@@ -27,7 +27,7 @@
         <Button x:Name="buttonClear" Content="Clear Board" HorizontalAlignment="Left" Margin="585,626,0,0" VerticalAlignment="Top" Width="96" Height="35" Click="buttonClear_Click"/>
         <Label x:Name="label" Content="Gen: 0" HorizontalAlignment="Center" Margin="840,548,156,79" VerticalAlignment="Center" Height="62" Width="285" FontSize="48" Background="{x:Null}" Panel.ZIndex="2" FontWeight="Bold" FontStretch="Expanded" Foreground="Black"/>
         <Label x:Name="labelSaveGame" Content="Saved Games" HorizontalAlignment="Left" Margin="860,32,0,0" VerticalAlignment="Top" Foreground="White"/>
-        <Button x:Name="buttonPicker" Content="Chose a Player" HorizontalAlignment="Left" Margin="1074,57,0,0" VerticalAlignment="Top" Width="139" Height="46" Click="buttonPicker_Click"/>
+        <Button x:Name="buttonPicker" Content="Choose a Player" HorizontalAlignment="Left" Margin="1074,57,0,0" VerticalAlignment="Top" Width="139" Height="46" Click="buttonPicker_Click"/>
         <Button x:Name="aboutButton" Content="About GoL" HorizontalAlignment="Left" Margin="1039,620,0,0" VerticalAlignment="Top" Width="86" Height="49" Click="aboutButton_Click"/>
     </Grid>
 </Window>

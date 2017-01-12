@@ -28,6 +28,7 @@ namespace GOL
         GOLHandler handler;
         int _playerId;
         public int SavedGame { get; set; }
+        private bool clearMe = false;
 
         //propertie
         public bool TimerIsOn
@@ -278,6 +279,7 @@ namespace GOL
 
         private void buttonReplay_Click(object sender, RoutedEventArgs e)
         {
+            clearMe = false;
             replaySavedGame();
         }
 
@@ -289,19 +291,31 @@ namespace GOL
 
                 foreach (var gen in generations)
                 {
-                    if (gen.GenNumber == genNumber)
-                    {
+                    if (gen.GenNumber == genNumber && Check() == false)
+                    {           
                         PrintCell(gen.Cell_X, gen.Cell_Y, true);
                         label.Content = "Gen: " + genNumber;
                     }
-                    else if (gen.GenNumber == genNumber + 1)
+                    else if (gen.GenNumber == genNumber + 1 && Check() == false)
                     {
                         await Task.Delay(1000);
                         resetGameBoard();
                         PrintCell(gen.Cell_X, gen.Cell_Y, true);
                         genNumber++;
                     }
-                }
+            }
+
+        }
+
+        private bool Check()
+        {
+            if (clearMe)
+            {
+                handler.LoadGenFromDatabase().Clear();
+                return true;
+            }
+            else
+                return false;
         }
         private void EnableAllButtons()
         {
@@ -337,8 +351,7 @@ namespace GOL
 
         private void buttonClear_Click(object sender, RoutedEventArgs e)
         {
-            handler.LoadGenFromDatabase().Clear();
-            handler.ClearBoard();
+            clearMe = true;
             //TODO: fix so it actually resets the game
             resetGameBoard();
             label.Content = "Gen: 0";
