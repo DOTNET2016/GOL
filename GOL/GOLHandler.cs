@@ -301,14 +301,13 @@ namespace GOL
             List<Generation> generationsToReturn = new List<Generation>();
             using (GContext db = new GContext())
             {
-                var currentGen = db.Generation.Where(x => x.SavedGames.Player_id == activePlayer.id && x.GenNumber == GenNumber);
+                var currentGen = db.Generation.Where(x => x.SavedGames.Player_id == activePlayer.id);
                 
                 foreach(var gen in currentGen)
                 {
                     generationsToReturn.Add(gen);
                 }
             }
-            GenNumber++;
             return generationsToReturn;
         }
     }

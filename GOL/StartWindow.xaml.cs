@@ -95,7 +95,7 @@ namespace GOL
 
         private void buttonExit_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            Application.Current.Shutdown();
         }
 
         private void comboBoxPlayers_SelectionChanged(object sender, SelectionChangedEventArgs e)

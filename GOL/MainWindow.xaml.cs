@@ -38,7 +38,7 @@ namespace GOL
             set
             {
                 _IsOn = value;
-                StartTimer.Content = _IsOn ? "Stop Timer" : "Start Timer";
+                buttonStartTimer.Content = _IsOn ? "Stop Timer" : "Start Timer";
             }
         }
         //constructor.
@@ -54,7 +54,7 @@ namespace GOL
 
         private void LoadSavedGames()
         {
-
+            comboxBoxSavedGames.Items.Clear();
             using (GContext db = new GContext())
             {
                 db.Database.Log = s => textBox.Text += s;
@@ -70,7 +70,7 @@ namespace GOL
         //Eventhandler for the Timer_Ticked event in the handler class.
         private void Handler_Timer_Ticked(object sender, EventArgs e)
         {
-            LoadNextGeneration();
+            GetNextGeneration();
         }
 
         /// <summary>
@@ -111,7 +111,6 @@ namespace GOL
 
         private void resetGameBoard()
         {
-            
             gameBoardCanvas.Children.Clear();
             for (int i = 0; i < 800; i += 10)
             {
@@ -141,7 +140,7 @@ namespace GOL
         /// <param name="x">Send the Cell.X Propertie.</param>
         /// <param name="y">Send the Cell.Y Propertie</param>
         /// <param name="IsAlive">Put it True if the cell is Alive, Put it false if it's dead.</param>
-        private void UpdatePoint(int x, int y, bool IsAlive)
+        private void PrintCell(int x, int y, bool IsAlive)
         {
             #region CellIsAlive
             if (IsAlive == true)
@@ -168,8 +167,6 @@ namespace GOL
                 gameBoardCanvas.Children.Add(r);
             }
             #endregion
-
-            label.Content = handler.CurrentGenNumber();
         }
 
         /// <summary>
@@ -192,7 +189,7 @@ namespace GOL
 
             //An Temporary holder for the ActualGeneration Array from the handler.
             var arrayToUpdateFrom = handler.GetActualGeneration();
-            
+
 
             //Loops through all the Cells from the Array, So we can populate the Canvas with the Actual Generation. 
             #region LoopThroughTheActualGeneration
@@ -202,19 +199,19 @@ namespace GOL
                 {
                     if (arrayToUpdateFrom[i, j].IsAlive == true)
                     {
-                        UpdatePoint(i, j, true);
+                        PrintCell(i, j, true);
                     }
                     else
                     {
-                        UpdatePoint(i, j, false);
+                        PrintCell(i, j, false);
                     }
                 }
             }
             #endregion
         }
-    
 
-        private void LoadNextGeneration()
+
+        private void GetNextGeneration()
         {
             handler.calculateNextGeneration();
             gameBoardCanvas.Children.Clear();
@@ -231,14 +228,14 @@ namespace GOL
                     if (arrayToUpdateFrom[i, j].IsAlive == true)
                     {
                         handler.AddCell(new Cell(i, j, true));
-                        UpdatePoint(i, j, true);
+                        PrintCell(i, j, true);
                     }
                     else
                     {
                         handler.AddCell(new Cell(i, j));
-                        UpdatePoint(i, j, false);
+                        PrintCell(i, j, false);
                     }
-                }              
+                }
             }
             #endregion          
         }
@@ -250,7 +247,7 @@ namespace GOL
         /// <param name="e"></param>
         private void buttonGetNxtGen_Click(object sender, RoutedEventArgs e)
         {
-            LoadNextGeneration();
+            GetNextGeneration();
         }
 
         /// <summary>
@@ -269,21 +266,58 @@ namespace GOL
             label.Content = "Gen: 0";
         }
 
-        private void buttonLoadNextGen_Click(object sender, RoutedEventArgs e)
+        private void DisableButtonsWhenReplaying()
         {
-            var generations = handler.LoadGenFromDatabase();
-            resetGameBoard();
-            foreach (var item in generations)
-            {
-                UpdatePoint(item.Cell_X, item.Cell_Y, true);
-            }
+            buttonGetNxtGen.Foreground = Brushes.Gray;
+            buttonStartTimer.Foreground = Brushes.Gray;
+            buttonSaveGame.Foreground = Brushes.Gray;
+            buttonReplay.Foreground = Brushes.Gray;
+            buttonGetNxtGen.IsHitTestVisible = false;
+            buttonStartTimer.IsHitTestVisible = false;
+            buttonSaveGame.IsHitTestVisible = false;
+            buttonReplay.IsHitTestVisible = false;
+        }
 
-            //TODO:Ta bort sen kanske när vi ser att allt fungerar.
-            using (GContext db = new GContext())
+        private void buttonReplay_Click(object sender, RoutedEventArgs e)
+        {
+            replaySavedGame();
+        }
+
+        private async void replaySavedGame()
+        {
+            DisableButtonsWhenReplaying();
+            int genNumber = 0;
+            var generations = handler.LoadGenFromDatabase();
+
+            foreach (var gen in generations)
             {
-                db.Database.Log = s => textBox.Text += s;
+                if (gen.GenNumber == genNumber)
+                {
+                    PrintCell(gen.Cell_X, gen.Cell_Y, true);
+                    label.Content = "Gen: " + genNumber;
+                }
+                else if (gen.GenNumber == genNumber + 1)
+                {
+                    await Task.Delay(1000);
+                    resetGameBoard();
+                    PrintCell(gen.Cell_X, gen.Cell_Y, true);
+                    genNumber++;
+                }
+
             }
         }
+        private void EnableAllButtons()
+        {
+            buttonReplay.Foreground = Brushes.Black;
+            buttonGetNxtGen.Foreground = Brushes.Black;
+            buttonStartTimer.Foreground = Brushes.Black;
+            buttonSaveGame.Foreground = Brushes.Black;
+            buttonGetNxtGen.IsHitTestVisible = true;
+            buttonStartTimer.IsHitTestVisible = true;
+            buttonSaveGame.IsHitTestVisible = true;
+            buttonReplay.IsHitTestVisible = true;
+        }
+
 
         private void buttonSaveGame_Click(object sender, RoutedEventArgs e)
         {
@@ -299,12 +333,13 @@ namespace GOL
         {
             dynamic itemSelected = comboxBoxSavedGames.SelectedItem;
             SavedGame = itemSelected;
-            label.Content = handler.CurrentGenNumber();
         }
 
-        private void buttonClearBoard_Click(object sender, RoutedEventArgs e)
+        private void buttonClear_Click(object sender, RoutedEventArgs e)
         {
             resetGameBoard();
+            label.Content = "Gen: 0";
+            EnableAllButtons();
         }
     }
 }
