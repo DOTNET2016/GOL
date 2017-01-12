@@ -287,7 +287,6 @@ namespace GOL
             buttonGetNxtGen.Foreground = Brushes.Gray;
             buttonStartTimer.Foreground = Brushes.Gray;
             buttonSaveGame.Foreground = Brushes.Gray;
-            buttonReplay.Foreground = Brushes.Gray;
             buttonGetNxtGen.IsHitTestVisible = false;
             buttonStartTimer.IsHitTestVisible = false;
             buttonSaveGame.IsHitTestVisible = false;
@@ -315,24 +314,25 @@ namespace GOL
             int genNumber = 0;
             var generations = handler.LoadGenFromDatabase();
 
-            foreach (var gen in generations)
-            {
-                if (gen.GenNumber == genNumber && Check() == false)
-                {           
-                    PrintCell(gen.Cell_X, gen.Cell_Y, true);
-                    label.Content = "Gen: " + genNumber;
-                }
-                else if (gen.GenNumber == genNumber + 1 && Check() == false)
+                foreach (var gen in generations)
                 {
-                    await Task.Delay(1000);
-                    resetGameBoard();
-                    PrintCell(gen.Cell_X, gen.Cell_Y, true);
-                    genNumber++;
-                }
+                    if (gen.GenNumber == genNumber && CheckClearButtonState() == false)
+                    {           
+                        PrintCell(gen.Cell_X, gen.Cell_Y, true);
+                        label.Content = "Gen: " + genNumber;
+                    }
+                    else if (gen.GenNumber == genNumber + 1 && CheckClearButtonState() == false)
+                    {
+                        await Task.Delay(1000);
+                        resetGameBoard();
+                        PrintCell(gen.Cell_X, gen.Cell_Y, true);
+                        genNumber++;
+                    }
             }
+
         }
 
-        private bool Check()
+        private bool CheckClearButtonState()
         {
             if (clearMe)
             {
