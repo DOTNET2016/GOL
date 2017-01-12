@@ -10,10 +10,10 @@ using System.Windows.Threading;
 
 namespace GOL
 {
-    class GOLHandler
+    public class GOLHandler
     {
         //Fields
-        public Cell[,] ActualGeneration = new Cell[80, 60];
+        private Cell[,] ActualGeneration = new Cell[80, 60];
         private Cell[,] NextGeneration = new Cell[80, 60];
         private List<Cell> AliveCells = new List<Cell>();
         DispatcherTimer timer;
@@ -249,7 +249,7 @@ namespace GOL
         /// <returns></returns>
         public Cell[,] GetNextGeneration()
         {
-            addGeneration();//TODO: fixa så första generation blir med också.
+            addGeneration();
             return NextGeneration;
         }
 

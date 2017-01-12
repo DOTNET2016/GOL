@@ -8,7 +8,7 @@ using System.Windows.Shapes;
 
 namespace GOL
 {
-    class Cell 
+    public class Cell 
     {
         //Properties
         public int X { get; set; }
