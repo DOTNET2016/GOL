@@ -29,6 +29,7 @@ namespace GOL
 
         GOLHandler handler;
         int _playerId;
+        int genNumber = 0;
         string _playerName;
         public int SavedGame { get; set; }
         private bool clearMe = false;
@@ -123,6 +124,8 @@ namespace GOL
                     #endregion
                 }
                 DisableButtons();
+                buttonReplay.IsHitTestVisible = false;
+                buttonReplay.Foreground = Brushes.Gray;
             }
         }
 
@@ -293,13 +296,14 @@ namespace GOL
             if (!ReplayOn)
             {
                 clearMe = true;
+                genNumber = 0;
             }
         }
 
         private async void replaySavedGame()
         {
             DisableButtons();
-            int genNumber = 0;
+
             var generations = handler.LoadGenFromDatabase();
 
             foreach (var gen in generations)
@@ -317,7 +321,6 @@ namespace GOL
                     genNumber++;
                 }
             }
-
         }
 
         private bool CheckClearButtonState()
@@ -350,12 +353,11 @@ namespace GOL
             buttonGetNxtGen.Foreground = Brushes.Gray;
             buttonStartTimer.Foreground = Brushes.Gray;
             buttonSaveGame.Foreground = Brushes.Gray;
-            buttonReplay.Foreground = Brushes.Gray;
             buttonClear.Foreground = Brushes.Gray;
+
             buttonGetNxtGen.IsHitTestVisible = false;
             buttonStartTimer.IsHitTestVisible = false;
             buttonSaveGame.IsHitTestVisible = false;
-            buttonReplay.IsHitTestVisible = false;
             comboxBoxSavedGames.IsHitTestVisible = false;
             buttonClear.IsHitTestVisible = false;
         }
