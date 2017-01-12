@@ -70,6 +70,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AboutGolWin.xaml.cs">
+      <DependentUpon>AboutGolWin.xaml</DependentUpon>
+    </Compile>
     <Compile Include="GContext.cs" />
     <Compile Include="Generation.cs" />
     <Compile Include="NewPlayer.xaml.cs">
@@ -80,6 +83,10 @@
     <Compile Include="PlayerPickerWin.xaml.cs">
       <DependentUpon>PlayerPickerWin.xaml</DependentUpon>
     </Compile>
+    <Page Include="AboutGolWin.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -48,7 +48,6 @@ namespace GOL
             handler = new GOLHandler();
             initializeGameBoard();
             handler.Timer_Ticked += Handler_Timer_Ticked;
-            LoadSavedGames();
         }
 
         private void LoadSavedGames()
@@ -56,7 +55,6 @@ namespace GOL
             comboxBoxSavedGames.Items.Clear();
             using (GContext db = new GContext())
             {
-                db.Database.Log = s => textBox.Text += s;
                 var SavedGames = db.SavedGames.Where(x => x.Player_id == _playerId);
 
                 foreach (var SavedGame_id in SavedGames)
@@ -340,6 +338,20 @@ namespace GOL
             resetGameBoard();
             label.Content = "Gen: 0";
             EnableAllButtons();
+        }
+
+        private void buttonPicker_Click(object sender, RoutedEventArgs e)
+        {
+            PlayerPickerWin pickedPlayer = new PlayerPickerWin();
+            if (pickedPlayer.ShowDialog() == true)
+                _playerId = pickedPlayer.Answer;
+            LoadSavedGames();
+        }
+
+        private void aboutButton_Click(object sender, RoutedEventArgs e)
+        {
+            AboutGolWin aboutGol = new AboutGolWin();
+            aboutGol.ShowDialog();
         }
     }
 }

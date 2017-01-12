@@ -17,18 +17,21 @@ namespace GOL
     /// <summary>
     /// Interaction logic for PlayerNameIntro.xaml
     /// </summary>
-    public partial class PleyerPickerWin : Window
+    public partial class PlayerPickerWin : Window
     {
-        MainWindow window;
-
         int playerId;
         public string PlayerName { get; set; }
         public string NewPlayerName { get; set; }
 
-        public PleyerPickerWin()
+        public PlayerPickerWin()
         {
             InitializeComponent();
             loadPlayers();
+        }
+
+        public int Answer
+        {
+            get { return playerId; }
         }
 
         private void buttonStartGame_Click(object sender, RoutedEventArgs e)
@@ -39,13 +42,12 @@ namespace GOL
             else if(PlayerName != null)
                 {
                     PickPlayer();
-                    this.Show();
                 }
             else if (NewPlayerName != null)
                 {
                     AddPlayer();
-                    this.Show();
                 }
+            this.DialogResult = true;
         }
 
         //load all existing players from databse
@@ -74,12 +76,8 @@ namespace GOL
                 playerId = (from p in db.Player
                             select p.id).Max();
             }
-            this.Hide();
-            window = new MainWindow();
-            window.ShowDialog();
         }
 
-        //
         private void PickPlayer()
         {
             using (GContext db = new GContext())
@@ -88,14 +86,11 @@ namespace GOL
                             where l.PlayerName.ToLower().StartsWith(PlayerName)
                             select l.id).FirstOrDefault();
             }
-            this.Hide();
-            window = new MainWindow();
-            window.ShowDialog();
         }
 
         private void buttonExit_Click(object sender, RoutedEventArgs e)
         {
-            Application.Current.Shutdown();
+            this.DialogResult = false;
         }
 
         private void comboBoxPlayers_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -106,6 +101,7 @@ namespace GOL
 
         private void New_Player_Click(object sender, RoutedEventArgs e)
         {
+            comboBoxPlayers.IsHitTestVisible = false;
             NewPlayer newPlayer = new NewPlayer("Please enter your name:", "Adam");
             if (newPlayer.ShowDialog() == true)
                 NewPlayerName = newPlayer.Answer;
