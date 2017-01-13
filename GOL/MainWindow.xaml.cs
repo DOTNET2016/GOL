@@ -112,7 +112,7 @@ namespace GOL
 
                     /*Add the cell to the ActualGeneration in the handler class, 
                     it divides the coordinates by 10 so we get the actual indexes in the Multidimensional Generation-Array.*/
-                    handler.AddCell(new Cell(xPosition / 10, YPosition / 10));
+                    handler.setupActualGeneration(new Cell(xPosition / 10, YPosition / 10));
 
                     Rectangle r = new Rectangle();
                     r.Width = 8;
@@ -214,7 +214,7 @@ namespace GOL
             X = ((int)Math.Round(X / 10.0));
             Y = ((int)Math.Round(Y / 10.0));
 
-            switch(handler.KillOrMakeCell(X,Y))
+            switch (handler.ClickKillOrMakeCell(X, Y))
             {
                 case true:
                     {
@@ -234,28 +234,44 @@ namespace GOL
         private void GetNextGeneration()
         {
             handler.calculateNextGeneration();
-            gameBoardCanvas.Children.Clear();
 
             //An Temporary holder for the NextGeneration Array from the handler.
             var arrayToUpdateFrom = handler.GetNextGeneration();
 
             //Loops through all the Cells from the Array, So we can populate the Canvas with the Next Generation. 
-            
+
             for (int i = 0; i < arrayToUpdateFrom.GetLength(0); i++)
             {
                 for (int j = 0; j < arrayToUpdateFrom.GetLength(1); j++)
                 {
-                    if (arrayToUpdateFrom[i, j].IsAlive == true)
+                    bool tempAliveOrNot = arrayToUpdateFrom[i, j].IsAlive;
+
+                    if(tempAliveOrNot == true)
                     {
-                        handler.AddCell(new Cell(i, j, true));
-                        handler.addGeneration(new Cell(i, j, true),genNumber);
-                        PrintCell(i, j, true);
+                        handler.addGeneration(new Cell(i, j, true), genNumber);
                     }
-                    else
+
+
+                    switch (handler.CheckIfHaveToChange(i,j,tempAliveOrNot))
                     {
-                        handler.AddCell(new Cell(i, j));
-                        PrintCell(i, j, false);
+                        case true:
+                            {
+                                break;
+                            }
+                        case false:
+                            {
+                                if (tempAliveOrNot)
+                                {
+                                    PrintCell(i, j, true);
+                                }
+                                else
+                                {
+                                    PrintCell(i, j, false);
+                                }
+                                break;
+                            }
                     }
+                    handler.setupActualGeneration(new Cell(i, j, tempAliveOrNot, genNumber));
                 }
             }
             genNumber++;
@@ -340,9 +356,8 @@ namespace GOL
                         resetGameBoard();
                     }
                 }
-                if(CheckClearButtonState() == true)
+                if (CheckClearButtonState() == true)
                 {
-                    currentGenlabel.Content = "Gen: 0";
                     break;
                 }
             }
