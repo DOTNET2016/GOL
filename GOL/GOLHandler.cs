@@ -62,28 +62,21 @@ namespace GOL
         /// <param name="X_index">send The X coordinate.</param>
         /// <param name="Y_index">Send The Y coordinate</param>
         /// <param name="RadiusOfTheSquare">Send the Radius of the Square</param>
-        public void KillOrMakeCell(double X_index, double Y_index, int RadiusOfTheSquare)
+        public bool KillOrMakeCell(int X, int Y)
         {
             //Casting the values to an int.
-            int X = (int)X_index;
-            int Y = (int)Y_index;
-
-            //Substract the radius value so it will be the center point.
-            X -= RadiusOfTheSquare;
-            Y -= RadiusOfTheSquare;
-
-            //Rounds it to the nearest 10.
-            X = ((int)Math.Round(X / 10.0));
-            Y = ((int)Math.Round(Y / 10.0));
+            
 
             //Kill or make the cell alive.
             if (ActualGeneration[X, Y].IsAlive == true)
             {
                 ActualGeneration[X, Y].IsAlive = false;
+                return false;
             }
             else
             {
                 ActualGeneration[X, Y].IsAlive = true;
+                return true;
             }
         }
 

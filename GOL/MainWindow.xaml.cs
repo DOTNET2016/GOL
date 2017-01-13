@@ -65,6 +65,7 @@ namespace GOL
         {
             //TODO add a current player label on main
             InitializeComponent();
+            gameBoardCanvas.Background = Brushes.Black;
             handler = new GOLHandler();
             initializeGameBoard();
             handler.Timer_Ticked += Handler_Timer_Ticked;
@@ -199,35 +200,35 @@ namespace GOL
         private void gameBoardCanvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             //Clear the canvas before updating it.
-            gameBoardCanvas.Children.Clear();
-
             // Taking the position from the cursor.
             double tempY = e.GetPosition(gameBoardCanvas).Y;
             double tempX = e.GetPosition(gameBoardCanvas).X;
 
-            handler.KillOrMakeCell(tempX, tempY, 5);
+            int X = (int)tempX;
+            int Y = (int)tempY;
 
-            //An Temporary holder for the ActualGeneration Array from the handler.
-            var arrayToUpdateFrom = handler.GetActualGeneration();
+            //Substract the radius value so it will be the center point.
+            X -= 5;
+            Y -= 5;
 
+            //Rounds it to the nearest 10.
+            X = ((int)Math.Round(X / 10.0));
+            Y = ((int)Math.Round(Y / 10.0));
 
-            //Loops through all the Cells from the Array, So we can populate the Canvas with the Actual Generation. 
-            #region LoopThroughTheActualGeneration
-            for (int i = 0; i < arrayToUpdateFrom.GetLength(0); i++)
+            switch(handler.KillOrMakeCell(X,Y))
             {
-                for (int j = 0; j < arrayToUpdateFrom.GetLength(1); j++)
-                {
-                    if (arrayToUpdateFrom[i, j].IsAlive == true)
+                case true:
                     {
-                        PrintCell(i, j, true);
+                        PrintCell(X, Y, true);
+                        break;
                     }
-                    else
+                case false:
                     {
-                        PrintCell(i, j, false);
+                        PrintCell(X, Y, false);
+                        break;
                     }
-                }
+
             }
-            #endregion
         }
 
 
