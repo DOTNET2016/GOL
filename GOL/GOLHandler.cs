@@ -27,7 +27,7 @@ namespace GOL
         //Constructor
         public GOLHandler()
         {
-            int value = 300;
+            int value = 500;
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromMilliseconds(value);
             timer.IsEnabled = true;
@@ -49,7 +49,7 @@ namespace GOL
         /// Method for adding new cells to the ActualGeneration.
         /// </summary>
         /// <param name="cell">Send the cell you want to add.</param>
-        public void AddCell(Cell cell)
+        public void setupActualGeneration(Cell cell)
         {
             ActualGeneration.SetValue(cell, cell.X, cell.Y);
         }
@@ -61,7 +61,7 @@ namespace GOL
         /// <param name="X_index">send The X coordinate.</param>
         /// <param name="Y_index">Send The Y coordinate</param>
         /// <param name="RadiusOfTheSquare">Send the Radius of the Square</param>
-        public bool KillOrMakeCell(int X, int Y)
+        public bool ClickKillOrMakeCell(int X, int Y)
         {
             //Casting the values to an int.
 
@@ -76,6 +76,19 @@ namespace GOL
             {
                 ActualGeneration[X, Y].IsAlive = true;
                 return true;
+            }
+        }
+
+        public bool CheckIfHaveToChange(int _X,int _Y,bool AliveOrNot)
+        {
+            if (ActualGeneration[_X,_Y].IsAlive == AliveOrNot)
+            {
+                return true;
+            }
+            
+            else
+            {
+                return false;
             }
         }
 
