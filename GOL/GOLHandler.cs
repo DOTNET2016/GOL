@@ -20,16 +20,14 @@ namespace GOL
         private Player activePlayer;
         private SavedGames savedGame;
 
-
         //Event
         public event EventHandler Timer_Ticked;
 
         //Constructor
         public GOLHandler()
         {
-            int value = 300;
             timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromMilliseconds(value);
+            timer.Interval = TimeSpan.FromMilliseconds(500);
             timer.IsEnabled = true;
             timer.Stop();
             timer.Tick += Timer_Tick;
@@ -43,6 +41,12 @@ namespace GOL
             {
                 Timer_Ticked.Invoke(this, new EventArgs());
             }
+        }
+
+        public int CurrentAliveCells()
+        {
+            int alivecells = AliveCells.Count();
+            return alivecells;
         }
 
         /// <summary>
@@ -140,6 +144,7 @@ namespace GOL
         /// </summary>
         public void calculateNextGeneration()
         {
+            AliveCells.Clear();
             for (int i = 0; i < ActualGeneration.GetLength(0); i++)
             {
                 for (int j = 0; j < ActualGeneration.GetLength(1); j++)
@@ -201,7 +206,7 @@ namespace GOL
         }
 
         /// <summary>
-        /// Start the timer, The interval is 2 seconds by default.
+        /// Start the timer.
         /// </summary>
         public void Start_Timer()
         {

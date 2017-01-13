@@ -188,7 +188,7 @@ namespace GOL
             }
             #endregion
 
-            label.Content = genNumber;
+
         }
 
         /// <summary>
@@ -258,7 +258,10 @@ namespace GOL
                     }
                 }
             }
-            genNumber++;         
+            genNumber++;
+            currentGenlabel.Content = "Gen: " + genNumber;
+            aliveCellLabel.Content = "Alive Cells: " + handler.CurrentAliveCells();
+
         }
 
         /// <summary>
@@ -294,12 +297,15 @@ namespace GOL
                 clearMe = false;
                 resetGameBoard();
                 replaySavedGame();
+                aliveCellLabel.IsEnabled = false;
             }
             if (!ReplayOn)
             {
                 clearMe = true;
                 genNumber = 0;
-                EnableAllButtons();
+                buttonClear.Foreground = Brushes.Black;
+                buttonClear.IsHitTestVisible = true;
+                aliveCellLabel.IsEnabled = true;
             }
         }
 
@@ -321,14 +327,14 @@ namespace GOL
                         PrintCell(tempCell.X, tempCell.Y, true);
                     }
                     PrintCell(gen.Cell_X, gen.Cell_Y, true);
-                    label.Content = "Gen: " + genNumber + " of " + numberOfGenerations + ".";
+                    currentGenlabel.Content = "Gen: " + genNumber + " of " + numberOfGenerations + ".";
 
                 }
                 else if (gen.GenNumber == genNumber + 1 && CheckClearButtonState() == false)
                 {
                     tempCell = new Cell(gen.Cell_X, gen.Cell_Y, true, gen.GenNumber);
                     genNumber++;
-                    await Task.Delay(1000);
+                    await Task.Delay(300);
                     if (CheckClearButtonState() == false)
                     {
                         resetGameBoard();
@@ -336,6 +342,7 @@ namespace GOL
                 }
                 if(CheckClearButtonState() == true)
                 {
+                    currentGenlabel.Content = "Gen: 0";
                     break;
                 }
             }
@@ -403,8 +410,13 @@ namespace GOL
             resetGameBoard();
             initializeGameBoard();
             genNumber = 0;
-            label.Content = "Gen: 0";
+            currentGenlabel.Content = "Gen: 0";
             EnableAllButtons();
+            if (TimerIsOn = TimerIsOn)
+            {
+                TimerIsOn = !TimerIsOn;
+                handler.Stop_Timer();
+            }
         }
 
         private void buttonPicker_Click(object sender, RoutedEventArgs e)
