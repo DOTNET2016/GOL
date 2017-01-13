@@ -358,6 +358,7 @@ namespace GOL
                 }
                 if (CheckClearButtonState() == true)
                 {
+                    currentGenlabel.Content = "Gen: 0";
                     break;
                 }
             }
@@ -426,6 +427,7 @@ namespace GOL
             initializeGameBoard();
             genNumber = 0;
             currentGenlabel.Content = "Gen: 0";
+            aliveCellLabel.Content = "Alive Cells: 0";
             EnableAllButtons();
             if (TimerIsOn = TimerIsOn)
             {
