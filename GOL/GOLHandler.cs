@@ -19,7 +19,6 @@ namespace GOL
         DispatcherTimer timer;
         private Player activePlayer;
         private SavedGames savedGame;
-        public int GenNumber = 0;
 
 
         //Event
@@ -65,7 +64,7 @@ namespace GOL
         public bool KillOrMakeCell(int X, int Y)
         {
             //Casting the values to an int.
-            
+
 
             //Kill or make the cell alive.
             if (ActualGeneration[X, Y].IsAlive == true)
@@ -104,32 +103,14 @@ namespace GOL
             savedGame.Player_id = activePlayer.id;
         }
 
-        public void addGeneration()
+        public void addGeneration(Cell generationToSave,int _genNumber)
         {
-            for (int i = 0; i < ActualGeneration.GetLength(0); i++)
-            {
-                for (int j = 0; j < ActualGeneration.GetLength(1); j++)
-                {
-                    if (ActualGeneration[i, j].IsAlive)
-                    {
-                        var c = ActualGeneration[i, j];
-                        AliveCells.Add(new Cell(c.X, c.Y, true,GenNumber));
-                    }
-                }
-            }
-            GenNumber++;
+            AliveCells.Add(new Cell(generationToSave.X, generationToSave.Y, true, _genNumber));
         }
 
         public void ClearCellsAlive()
         {
             AliveCells.Clear();
-            GenNumber = 0;
-        }
-
-        public string CurrentGenNumber()
-        {
-            string CurGenNumber = "Gen: " + GenNumber;
-            return CurGenNumber;
         }
 
         public void SaveToDatabase()
@@ -150,7 +131,6 @@ namespace GOL
                 }
                 db.SaveChanges();
                 AliveCells.Clear();
-                GenNumber = 0;
             }
         }
 
@@ -242,7 +222,6 @@ namespace GOL
         /// <returns></returns>
         public Cell[,] GetNextGeneration()
         {
-            addGeneration();
             return NextGeneration;
         }
 
@@ -313,7 +292,7 @@ namespace GOL
 
                     MessageBox.Show("That didn't work", "Warning!");
                 }
-              
+
             }
             return generationsToReturn;
         }

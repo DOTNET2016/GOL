@@ -24,10 +24,9 @@ namespace GOL
     public partial class MainWindow : Window
     {
         //Fields
+        GOLHandler handler;
         private bool _IsOn;
         private bool _ReplayIsOn;
-
-        GOLHandler handler;
         int _playerId;
         int genNumber = 0;
         string _playerName;
@@ -189,7 +188,7 @@ namespace GOL
             }
             #endregion
 
-            label.Content = handler.CurrentGenNumber();
+            label.Content = genNumber;
         }
 
         /// <summary>
@@ -241,7 +240,7 @@ namespace GOL
             var arrayToUpdateFrom = handler.GetNextGeneration();
 
             //Loops through all the Cells from the Array, So we can populate the Canvas with the Next Generation. 
-            #region LoopThroughTheNextGeneration
+            
             for (int i = 0; i < arrayToUpdateFrom.GetLength(0); i++)
             {
                 for (int j = 0; j < arrayToUpdateFrom.GetLength(1); j++)
@@ -249,6 +248,7 @@ namespace GOL
                     if (arrayToUpdateFrom[i, j].IsAlive == true)
                     {
                         handler.AddCell(new Cell(i, j, true));
+                        handler.addGeneration(new Cell(i, j, true),genNumber);
                         PrintCell(i, j, true);
                     }
                     else
@@ -258,7 +258,7 @@ namespace GOL
                     }
                 }
             }
-            #endregion          
+            genNumber++;         
         }
 
         /// <summary>
@@ -402,7 +402,7 @@ namespace GOL
             //TODO: fix so it actually resets the game
             resetGameBoard();
             initializeGameBoard();
-            handler.GenNumber = 0;
+            genNumber = 0;
             label.Content = "Gen: 0";
             EnableAllButtons();
         }
