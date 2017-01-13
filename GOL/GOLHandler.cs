@@ -27,9 +27,9 @@ namespace GOL
         //Constructor
         public GOLHandler()
         {
-            int value = 500;
+            int value = 300;
             timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromMilliseconds(value);
+            timer.Interval = new TimeSpan(value);
             timer.IsEnabled = true;
             timer.Stop();
             timer.Tick += Timer_Tick;
@@ -41,7 +41,7 @@ namespace GOL
             //Check so the event have a subscriber.
             if (Timer_Ticked != null)
             {
-                Timer_Ticked.Invoke(this, new EventArgs());
+                Timer_Ticked.Invoke(this, EventArgs.Empty);
             }
         }
 
