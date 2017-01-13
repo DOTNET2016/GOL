@@ -26,9 +26,9 @@ namespace GOL
         //Constructor
         public GOLHandler()
         {
-            int value = 300;
+            //        http://stackoverflow.com/questions/10173300/wpf-dispatchertimer-delayed-reaction-freeze
             timer = new DispatcherTimer();
-            timer.Interval = new TimeSpan(value);
+            timer.Interval = TimeSpan.FromMilliseconds(500); //sorry changed this back, didnt really work using ticks :)
             timer.IsEnabled = true;
             timer.Stop();
             timer.Tick += Timer_Tick;
