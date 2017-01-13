@@ -118,7 +118,7 @@ namespace GOL
                     Rectangle r = new Rectangle();
                     r.Width = 8;
                     r.Height = 8;
-                    r.Fill = (Brushes.WhiteSmoke);
+                    r.Fill = (Brushes.SaddleBrown);
                     Canvas.SetLeft(r, i + 1);
                     Canvas.SetTop(r, j + 1);
                     gameBoardCanvas.Children.Add(r);
@@ -146,7 +146,7 @@ namespace GOL
                     Rectangle r = new Rectangle();
                     r.Width = 8;
                     r.Height = 8;
-                    r.Fill = (Brushes.WhiteSmoke);
+                    r.Fill = (Brushes.SaddleBrown);
                     Canvas.SetLeft(r, i + 1);
                     Canvas.SetTop(r, j + 1);
                     gameBoardCanvas.Children.Add(r);
@@ -182,7 +182,7 @@ namespace GOL
                 Rectangle r = new Rectangle();
                 r.Width = 8;
                 r.Height = 8;
-                r.Fill = (Brushes.WhiteSmoke);
+                r.Fill = (Brushes.SaddleBrown);
                 Canvas.SetLeft(r, x * 10 + 1);
                 Canvas.SetTop(r, y * 10 + 1);
                 gameBoardCanvas.Children.Add(r);
