@@ -320,7 +320,7 @@ namespace GOL
 
         private void startTimer()
         {
-            labelTimerSpeed.Content = String.Format("Timer Speed:{0} milliseconds", timer.Interval.TotalMilliseconds);
+            labelTimerSpeed.Content = String.Format("Timer Speed: {0} ms", timer.Interval.TotalMilliseconds);
             timer.Start();
         }
 
@@ -485,7 +485,7 @@ namespace GOL
 
             if (labelTimerSpeed != null)
             {
-                labelTimerSpeed.Content = String.Format("Timer Speed:{0} milliseconds", timer.Interval.TotalMilliseconds);
+                labelTimerSpeed.Content = String.Format("Timer Speed: {0} ms", timer.Interval.TotalMilliseconds);
             }
         }
     }

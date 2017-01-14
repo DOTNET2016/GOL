@@ -32,6 +32,6 @@
         <Label x:Name="PlayerLabel" Content="SELECT PLAYER TO BEGIN" HorizontalAlignment="Left" Margin="841,431,0,0" VerticalAlignment="Top" Height="57" Width="413" FontSize="24" FontWeight="Bold"/>
         <Label x:Name="aliveCellLabel" Content="Alive Cells: 0" HorizontalAlignment="Left" Margin="821,520,0,0" VerticalAlignment="Top" FontSize="48" FontWeight="Bold" Width="433"/>
         <Slider x:Name="sliderTimerSpeed" HorizontalAlignment="Left" Margin="861,180,0,0" VerticalAlignment="Top" Width="143" ValueChanged="sliderTimerSpeed_ValueChanged" Minimum="200" Maximum="3000" TickFrequency="100" LargeChange="200" TickPlacement="Both" Cursor="Hand" IsDirectionReversed="True" Value="1500" SmallChange="100"/>
-        <Label x:Name="labelTimerSpeed" Content="Timer Speed:" HorizontalAlignment="Left" Margin="860,149,0,0" VerticalAlignment="Top" Height="31" Width="171" Foreground="#FFF16311"/>
+        <Label x:Name="labelTimerSpeed" Content="Timer Speed: 1500 ms" HorizontalAlignment="Left" Margin="860,149,0,0" VerticalAlignment="Top" Height="31" Width="171" Foreground="#FFF16311"/>
     </Grid>
 </Window>
