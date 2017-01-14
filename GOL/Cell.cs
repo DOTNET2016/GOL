@@ -13,7 +13,6 @@ namespace GOL
         //Properties
         public int X { get; set; }
         public int Y { get; set; }
-
         public int GenNumber { get; set; }
         public bool IsAlive { get; set; }
 

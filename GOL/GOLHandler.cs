@@ -16,147 +16,26 @@ namespace GOL
         private Cell[,] ActualGeneration = new Cell[80, 60];
         private Cell[,] NextGeneration = new Cell[80, 60];
         private List<Cell> AliveCells = new List<Cell>();
-        DispatcherTimer timer;
         private Player activePlayer;
         private SavedGames savedGame;
 
-        //Event
-        public event EventHandler Timer_Ticked;
 
-        //Constructor
         public GOLHandler()
         {
-            //        http://stackoverflow.com/questions/10173300/wpf-dispatchertimer-delayed-reaction-freeze
-            timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromMilliseconds(500); //sorry changed this back, didnt really work using ticks :)
-            timer.IsEnabled = true;
-            timer.Stop();
-            timer.Tick += Timer_Tick;
+           
         }
 
-        //Tick handler that raises the timer_ticked event if it has subscribers.
-        private void Timer_Tick(object sender, EventArgs e)
-        {
-            //Check so the event have a subscriber.
-            if (Timer_Ticked != null)
-            {
-                Timer_Ticked.Invoke(this, EventArgs.Empty);
-            }
-        }
-
-        public int CurrentAliveCells()
-        {
-            int alivecells = AliveCells.Count();
-            return alivecells;
-        }
-
-        /// <summary>
-        /// Method for adding new cells to the ActualGeneration.
-        /// </summary>
-        /// <param name="cell">Send the cell you want to add.</param>
         public void setupActualGeneration(Cell cell)
         {
             ActualGeneration.SetValue(cell, cell.X, cell.Y);
         }
 
-        /// <summary>
-        /// Send the coordinates from the position you click in the canvas and the radius of the square the cells is in.
-        /// This method will divide the coordinates by 10 and rounds it to nearest even 10.
-        /// </summary>
-        /// <param name="X_index">send The X coordinate.</param>
-        /// <param name="Y_index">Send The Y coordinate</param>
-        /// <param name="RadiusOfTheSquare">Send the Radius of the Square</param>
-        public bool ClickKillOrMakeCell(int X, int Y)
+        public Cell[,] GetActualGeneration()
         {
-            //Casting the values to an int.
-
-
-            //Kill or make the cell alive.
-            if (ActualGeneration[X, Y].IsAlive == true)
-            {
-                ActualGeneration[X, Y].IsAlive = false;
-                return false;
-            }
-            else
-            {
-                ActualGeneration[X, Y].IsAlive = true;
-                return true;
-            }
+            return ActualGeneration;
         }
 
-        public bool CheckIfHaveToChange(int _X,int _Y,bool AliveOrNot)
-        {
-            if (ActualGeneration[_X,_Y].IsAlive == AliveOrNot)
-            {
-                return true;
-            }
-            
-            else
-            {
-                return false;
-            }
-        }
-
-        public void SetupPlayer(int playerId)
-        {
-            activePlayer = new Player();
-            using (GContext g = new GContext())
-            {
-
-                var players = g.Player;
-                foreach (var player in players)
-                {
-                    if (player.id == playerId)
-                    {
-                        activePlayer = player;
-                        newSavedGame();
-                    }
-                }
-            }
-        }
-
-        private void newSavedGame()
-        {
-            savedGame = new SavedGames();
-            savedGame.Player_id = activePlayer.id;
-        }
-
-        public void addGeneration(Cell generationToSave,int _genNumber)
-        {
-            AliveCells.Add(new Cell(generationToSave.X, generationToSave.Y, true, _genNumber));
-        }
-
-        public void ClearCellsAlive()
-        {
-            AliveCells.Clear();
-        }
-
-        public void SaveToDatabase()
-        {
-            using (GContext db = new GContext())
-            {
-                db.SavedGames.Add(savedGame);
-
-                foreach (var item in AliveCells)
-                {
-                    Generation g = new Generation();
-                    g.GenNumber = item.GenNumber;
-                    g.SavedGame_id = savedGame.id;
-                    g.Cell_X = item.X;
-                    g.Cell_Y = item.Y;
-                    db.Generation.Add(g);
-
-                }
-                db.SaveChanges();
-                AliveCells.Clear();
-            }
-        }
-
-        /// <summary>
-        /// Method that looping through the ActualGenerations MultiDimensionalArray,
-        /// And Checks how many neighboor every cell has and then make the new generation.
-        /// </summary>
-        public void calculateNextGeneration()
+        public void CalculateNextGeneration()
         {
             AliveCells.Clear();
             for (int i = 0; i < ActualGeneration.GetLength(0); i++)
@@ -210,42 +89,7 @@ namespace GOL
             }
         }
 
-        /// <summary>
-        /// Method that returns the actualGeneration. 
-        /// </summary>
-        /// <returns>Actual generation MultiDimensionalArray with the cells.</returns>
-        public Cell[,] GetActualGeneration()
-        {
-            return ActualGeneration;
-        }
-
-        /// <summary>
-        /// Start the timer.
-        /// </summary>
-        public void Start_Timer()
-        {
-            timer.Start();
-        }
-
-        /// <summary>
-        /// Stops the timer.
-        /// </summary>
-        public void Stop_Timer()
-        {
-            timer.Stop();
-        }
-
-        /// <summary>
-        /// Method that returns the NextGeneration MultiDimensionalArrat with the cells.
-        /// </summary>
-        /// <returns></returns>
-        public Cell[,] GetNextGeneration()
-        {
-            return NextGeneration;
-        }
-
-        //Checks the surrounding Neighboor-Cells
-        public int CheckLivingNeighboors(int x, int y)
+        private int CheckLivingNeighboors(int x, int y)
         {
             //take the length of X and Y from ActualGeneration.
             int Xlength = ActualGeneration.GetLength(0);
@@ -292,6 +136,103 @@ namespace GOL
             return neighbours;
         }
 
+        public Cell[,] GetNextGeneration()
+        {
+            return NextGeneration;
+        }
+
+        public int CurrentAliveCells()
+        {
+            int alivecells = AliveCells.Count();
+            return alivecells;
+        }
+
+        public bool ClickKillOrMakeCell(int X, int Y)
+        {
+            //Casting the values to an int.
+
+
+            //Kill or make the cell alive.
+            if (ActualGeneration[X, Y].IsAlive == true)
+            {
+                ActualGeneration[X, Y].IsAlive = false;
+                return false;
+            }
+            else
+            {
+                ActualGeneration[X, Y].IsAlive = true;
+                return true;
+            }
+        }
+
+        public bool CheckIfHaveToChange(int _X, int _Y, bool AliveOrNot)
+        {
+            if (ActualGeneration[_X, _Y].IsAlive == AliveOrNot)
+            {
+                return true;
+            }
+
+            else
+            {
+                return false;
+            }
+        }
+
+        public void SetupPlayer(int playerId)
+        {
+            activePlayer = new Player();
+            using (GContext g = new GContext())
+            {
+
+                var players = g.Player;
+                foreach (var player in players)
+                {
+                    if (player.id == playerId)
+                    {
+                        activePlayer = player;
+                        newSavedGame();
+                    }
+                }
+            }
+        }
+
+        private void newSavedGame()
+        {
+            savedGame = new SavedGames();
+            savedGame.Player_id = activePlayer.id;
+        }
+
+        public void AddGeneration(Cell generationToSave, int _genNumber)
+        {
+            AliveCells.Add(new Cell(generationToSave.X, generationToSave.Y, true, _genNumber));
+        }
+
+        public void ClearCellsAlive()
+        {
+            AliveCells.Clear();
+        }
+
+        public void SaveToDatabase()
+        {
+            using (GContext db = new GContext())
+            {
+                db.SavedGames.Add(savedGame);
+
+                foreach (var item in AliveCells)
+                {
+                    Generation g = new Generation();
+                    g.GenNumber = item.GenNumber;
+                    g.SavedGame_id = savedGame.id;
+                    g.Cell_X = item.X;
+                    g.Cell_Y = item.Y;
+                    db.Generation.Add(g);
+
+                }
+                db.SaveChanges();
+                AliveCells.Clear();
+            }
+        }
+
         public List<Generation> LoadGenFromDatabase()
         {
             List<Generation> generationsToReturn = new List<Generation>();
@@ -315,39 +256,6 @@ namespace GOL
             }
             return generationsToReturn;
         }
+
     }
 }
-
-
-
-
-
-//    --CREATE TABLE Generation
-//--(
-//--	Gen_id int IDENTITY(1,1) PRIMARY KEY,
-//--	GenNumber int NOT NULL,
-//--	Cell_X int NOT NULL,
-//--	Cell_Y int NOT NULL,
-//--	IsAlive bit DEFAULT(0) NOT NULL,
-//--	SavedGame_id int FOREIGN KEY REFERENCES SavedGames(SavedGame_id)
-//--)
-
-//--CREATE TABLE SavedGames
-//--(
-//--	SavedGame_id int IDENTITY(1,1) PRIMARY KEY,
-//--	GenNumber int NOT NULL,
-//--	Player_id int FOREIGN KEY REFERENCES Player(Player_id)
-//--)
-
-//--CREATE TABLE Player
-//--(
-//--	Player_id int IDENTITY(1,1) PRIMARY KEY,
-//--	PlayerName varchar(25),
-//--	--SavedGame_id int FOREIGN KEY REFERENCES SavedGames(SavedGame_id)
-//--)
-
-//--ALTER TABLE Player
-//--ADD COLUMN SavedGame_id int
-
-//--ALTER TABLE Player
-//--ADD FOREIGN KEY(SavedGame_id) REFERENCES SavedGames(SavedGame_id)

@@ -25,16 +25,19 @@ namespace GOL
     {
         //Fields
         GOLHandler handler;
+        DispatcherTimer timer;
         private bool _IsOn;
         private bool _ReplayIsOn;
-        int _playerId;
-        int genNumber = 0;
-        string _playerName;
-        public int SavedGame { get; set; }
+        private int _playerId;
+        private int genNumber = 0;
+        private string _playerName;
         private bool clearMe = false;
 
-        //propertie
-        public bool TimerIsOn
+        public int SavedGame { get; set; }
+
+
+        //Properties
+        private bool TimerIsOn
         {
             get
             {
@@ -46,8 +49,7 @@ namespace GOL
                 buttonStartTimer.Content = _IsOn ? "Stop Timer" : "Start Timer";
             }
         }
-
-        public bool ReplayOn
+        private bool ReplayOn
         {
             get
             {
@@ -59,35 +61,17 @@ namespace GOL
                 buttonReplay.Content = _ReplayIsOn ? "Stop Replay" : "Replay";
             }
         }
-        //constructor.
+
+
         public MainWindow()
         {
             //TODO add a current player label on main
+            timer = new DispatcherTimer();
             InitializeComponent();
             gameBoardCanvas.Background = Brushes.Black;
             handler = new GOLHandler();
             initializeGameBoard();
-            handler.Timer_Ticked += Handler_Timer_Ticked;
-        }
-
-        private void LoadSavedGames()
-        {
-            comboxBoxSavedGames.Items.Clear();
-            using (GContext db = new GContext())
-            {
-                var SavedGames = db.SavedGames.Where(x => x.Player_id == _playerId);
-
-                foreach (var SavedGame_id in SavedGames)
-                {
-                    comboxBoxSavedGames.Items.Add(SavedGame_id.id);
-                }
-            }
-        }
-
-        //Eventhandler for the Timer_Ticked event in the handler class.
-        private void Handler_Timer_Ticked(object sender, EventArgs e)
-        {
-            GetNextGeneration();
+            timer.Tick += Timer_Tick;
         }
 
         /// <summary>
@@ -153,6 +137,44 @@ namespace GOL
             }
         }
 
+        private void EnableAllButtons()
+        {
+            buttonGetNxtGen.Foreground = Brushes.Black;
+            buttonStartTimer.Foreground = Brushes.Black;
+            buttonSaveGame.Foreground = Brushes.Black;
+            buttonClear.Foreground = Brushes.Black;
+
+            buttonGetNxtGen.IsHitTestVisible = true;
+            buttonStartTimer.IsHitTestVisible = true;
+            buttonSaveGame.IsHitTestVisible = true;
+            comboxBoxSavedGames.IsHitTestVisible = true;
+            buttonClear.IsHitTestVisible = true;
+        }
+
+        private void DisableButtons()
+        {
+            buttonGetNxtGen.Foreground = Brushes.Gray;
+            buttonStartTimer.Foreground = Brushes.Gray;
+            buttonSaveGame.Foreground = Brushes.Gray;
+            buttonClear.Foreground = Brushes.Gray;
+
+            buttonGetNxtGen.IsHitTestVisible = false;
+            buttonStartTimer.IsHitTestVisible = false;
+            buttonSaveGame.IsHitTestVisible = false;
+            comboxBoxSavedGames.IsHitTestVisible = false;
+            buttonClear.IsHitTestVisible = false;
+        }
+
+        private bool CheckClearButtonState()
+        {
+            if (clearMe)
+            {
+                return true;
+            }
+            else
+                return false;
+        }
+
         /// <summary>
         /// Method for Set and update Canvas with a Dead or Alive Cell, It will multiplicate the X and Y with then and get the Canvas Coordinates to Draw the Rectangle.
         /// If you send true it will draw a rectangle 10x10 black. If you send false it will draw a rewctangle 8x8 WhiteSmoke.
@@ -190,138 +212,17 @@ namespace GOL
 
 
         }
-
-        /// <summary>
-        /// Method for Choose the Cells you want alive or not before you save and get the next Generation.
-        /// </summary>
-        /// <param name="sender"></param>        /// <param name="e"></param>
-
-        private void gameBoardCanvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void LoadSavedGames()
         {
-            //Clear the canvas before updating it.
-            // Taking the position from the cursor.
-            double tempY = e.GetPosition(gameBoardCanvas).Y;
-            double tempX = e.GetPosition(gameBoardCanvas).X;
-
-            int X = (int)tempX;
-            int Y = (int)tempY;
-
-            //Substract the radius value so it will be the center point.
-            X -= 5;
-            Y -= 5;
-
-            //Rounds it to the nearest 10.
-            X = ((int)Math.Round(X / 10.0));
-            Y = ((int)Math.Round(Y / 10.0));
-
-            switch (handler.ClickKillOrMakeCell(X, Y))
+            comboxBoxSavedGames.Items.Clear();
+            using (GContext db = new GContext())
             {
-                case true:
-                    {
-                        PrintCell(X, Y, true);
-                        break;
-                    }
-                case false:
-                    {
-                        PrintCell(X, Y, false);
-                        break;
-                    }
+                var SavedGames = db.SavedGames.Where(x => x.Player_id == _playerId);
 
-            }
-        }
-
-
-        private void GetNextGeneration()
-        {
-            handler.calculateNextGeneration();
-
-            //An Temporary holder for the NextGeneration Array from the handler.
-            var arrayToUpdateFrom = handler.GetNextGeneration();
-
-            //Loops through all the Cells from the Array, So we can populate the Canvas with the Next Generation. 
-
-            for (int i = 0; i < arrayToUpdateFrom.GetLength(0); i++)
-            {
-                for (int j = 0; j < arrayToUpdateFrom.GetLength(1); j++)
+                foreach (var SavedGame_id in SavedGames)
                 {
-                    bool tempAliveOrNot = arrayToUpdateFrom[i, j].IsAlive;
-
-                    if(tempAliveOrNot == true)
-                    {
-                        handler.addGeneration(new Cell(i, j, true), genNumber);
-                    }
-
-
-                    switch (handler.CheckIfHaveToChange(i,j,tempAliveOrNot))
-                    {
-                        case true:
-                            {
-                                break;
-                            }
-                        case false:
-                            {
-                                if (tempAliveOrNot)
-                                {
-                                    PrintCell(i, j, true);
-                                }
-                                else
-                                {
-                                    PrintCell(i, j, false);
-                                }
-                                break;
-                            }
-                    }
-                    handler.setupActualGeneration(new Cell(i, j, tempAliveOrNot, genNumber));
+                    comboxBoxSavedGames.Items.Add(SavedGame_id.id);
                 }
-            }
-            genNumber++;
-            currentGenlabel.Content = "Gen: " + genNumber;
-            aliveCellLabel.Content = "Alive Cells: " + handler.CurrentAliveCells();
-
-        }
-
-        /// <summary>
-        /// Handler for the NextGenerationButton.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void buttonGetNxtGen_Click(object sender, RoutedEventArgs e)
-        {
-            GetNextGeneration();
-        }
-
-        /// <summary>
-        /// Handler for start or stop the timer in the handler class.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void StartTimer_Click(object sender, RoutedEventArgs e)
-        {
-            TimerIsOn = !TimerIsOn;
-            if (TimerIsOn)
-                handler.Start_Timer();
-
-            if (!TimerIsOn)
-                handler.Stop_Timer();
-        }
-
-        private void buttonReplay_Click(object sender, RoutedEventArgs e)
-        {
-            ReplayOn = !ReplayOn;
-            if (ReplayOn)
-            {
-                clearMe = false;
-                resetGameBoard();
-                replaySavedGame();
-                aliveCellLabel.IsEnabled = false;
-            }
-            if (!ReplayOn)
-            {
-                clearMe = true;
-                genNumber = 0;
-                buttonClear.Foreground = Brushes.Black;
-                buttonClear.IsHitTestVisible = true;
-                aliveCellLabel.IsEnabled = true;
             }
         }
 
@@ -364,47 +265,161 @@ namespace GOL
             }
         }
 
-        private bool CheckClearButtonState()
+        private void GetNextGeneration()
         {
-            if (clearMe)
+            handler.CalculateNextGeneration();
+            //An Temporary holder for the NextGeneration Array from the handler.
+            var arrayToUpdateFrom = handler.GetNextGeneration();
+
+            //Loops through all the Cells from the Array, So we can populate the Canvas with the Next Generation. 
+
+            for (int i = 0; i < arrayToUpdateFrom.GetLength(0); i++)
             {
-                return true;
+                for (int j = 0; j < arrayToUpdateFrom.GetLength(1); j++)
+                {
+                    bool tempAliveOrNot = arrayToUpdateFrom[i, j].IsAlive;
+
+                    if (tempAliveOrNot == true)
+                    {
+                        handler.AddGeneration(new Cell(i, j, true), genNumber);
+                    }
+
+
+                    switch (handler.CheckIfHaveToChange(i, j, tempAliveOrNot))
+                    {
+                        case true:
+                            {
+                                break;
+                            }
+                        case false:
+                            {
+                                if (tempAliveOrNot)
+                                {
+                                    PrintCell(i, j, true);
+                                }
+                                else
+                                {
+                                    PrintCell(i, j, false);
+                                }
+                                break;
+                            }
+                    }
+                    handler.setupActualGeneration(new Cell(i, j, tempAliveOrNot, genNumber));
+                }
             }
-            else
-                return false;
+            genNumber++;
+            currentGenlabel.Content = "Gen: " + genNumber;
+            aliveCellLabel.Content = "Alive Cells: " + handler.CurrentAliveCells();
+
         }
 
-        private void EnableAllButtons()
+        private void stopTimer()
         {
-            buttonGetNxtGen.Foreground = Brushes.Black;
-            buttonStartTimer.Foreground = Brushes.Black;
-            buttonSaveGame.Foreground = Brushes.Black;
-            buttonClear.Foreground = Brushes.Black;
-
-            buttonGetNxtGen.IsHitTestVisible = true;
-            buttonStartTimer.IsHitTestVisible = true;
-            buttonSaveGame.IsHitTestVisible = true;
-            comboxBoxSavedGames.IsHitTestVisible = true;
-            buttonClear.IsHitTestVisible = true;
+            timer.Stop();
         }
 
-        private void DisableButtons()
+        private void startTimer()
         {
-            buttonGetNxtGen.Foreground = Brushes.Gray;
-            buttonStartTimer.Foreground = Brushes.Gray;
-            buttonSaveGame.Foreground = Brushes.Gray;
-            buttonClear.Foreground = Brushes.Gray;
-
-            buttonGetNxtGen.IsHitTestVisible = false;
-            buttonStartTimer.IsHitTestVisible = false;
-            buttonSaveGame.IsHitTestVisible = false;
-            comboxBoxSavedGames.IsHitTestVisible = false;
-            buttonClear.IsHitTestVisible = false;
+            labelTimerSpeed.Content = String.Format("Timer Speed:{0} milliseconds", timer.Interval.TotalMilliseconds);
+            timer.Start();
         }
 
-        private void buttonSaveGame_Click(object sender, RoutedEventArgs e)
+        private void Timer_Tick(object sender, EventArgs e)
         {
-            handler.SaveToDatabase();
+            GetNextGeneration();
+        }
+
+        /// <summary>
+        /// Method for Choose the Cells you want alive or not before you save and get the next Generation.
+        /// </summary>
+        /// <param name="sender"></param>        /// <param name="e"></param>
+
+        private void gameBoardCanvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            //Clear the canvas before updating it.
+            // Taking the position from the cursor.
+            double tempY = e.GetPosition(gameBoardCanvas).Y;
+            double tempX = e.GetPosition(gameBoardCanvas).X;
+
+            int X = (int)tempX;
+            int Y = (int)tempY;
+
+            //Substract the radius value so it will be the center point.
+            X -= 5;
+            Y -= 5;
+
+            //Rounds it to the nearest 10.
+            X = ((int)Math.Round(X / 10.0));
+            Y = ((int)Math.Round(Y / 10.0));
+
+            switch (handler.ClickKillOrMakeCell(X, Y))
+            {
+                case true:
+                    {
+                        PrintCell(X, Y, true);
+                        break;
+                    }
+                case false:
+                    {
+                        PrintCell(X, Y, false);
+                        break;
+                    }
+
+            }
+        }
+
+
+        /// <summary>
+        /// Handler for the NextGenerationButton.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonGetNxtGen_Click(object sender, RoutedEventArgs e)
+        {
+            GetNextGeneration();
+        }
+
+        /// <summary>
+        /// Handler for start or stop the timer in the handler class.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void StartTimer_Click(object sender, RoutedEventArgs e)
+        {
+            TimerIsOn = !TimerIsOn;
+            if (TimerIsOn)
+                startTimer();
+
+            if (!TimerIsOn)
+                stopTimer();
+        }
+
+        private void buttonReplay_Click(object sender, RoutedEventArgs e)
+        {
+            ReplayOn = !ReplayOn;
+            if (ReplayOn)
+            {
+                clearMe = false;
+                resetGameBoard();
+                replaySavedGame();
+                aliveCellLabel.IsEnabled = false;
+            }
+            if (!ReplayOn)
+            {
+                clearMe = true;
+                genNumber = 0;
+                buttonClear.Foreground = Brushes.Black;
+                buttonClear.IsHitTestVisible = true;
+                aliveCellLabel.IsEnabled = true;
+            }
+        }
+
+        private async void buttonSaveGame_Click(object sender, RoutedEventArgs e)
+        {
+            DisableButtons();
+            await Task.Run(new Action(handler.SaveToDatabase));
+            MessageBox.Show("Sucessfully saved to database");
+            EnableAllButtons();
         }
 
         private void comboBoxSavedGames_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -432,7 +447,7 @@ namespace GOL
             if (TimerIsOn = TimerIsOn)
             {
                 TimerIsOn = !TimerIsOn;
-                handler.Stop_Timer();
+                stopTimer();
             }
         }
 
@@ -459,6 +474,16 @@ namespace GOL
         private void buttonExit_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
+        }
+
+        private void sliderTimerSpeed_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            timer.Interval = new TimeSpan(0, 0, 0, 0, (int)e.NewValue);
+
+            if (labelTimerSpeed != null)
+            {
+                labelTimerSpeed.Content = String.Format("Timer Speed:{0} milliseconds", timer.Interval.TotalMilliseconds);
+            }
         }
     }
 }
