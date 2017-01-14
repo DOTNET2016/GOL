@@ -396,21 +396,22 @@ namespace GOL
 
         private void buttonReplay_Click(object sender, RoutedEventArgs e)
         {
+            resetGameBoard();
+            genNumber = 0;
             ReplayOn = !ReplayOn;
             if (ReplayOn)
             {
                 clearMe = false;
-                resetGameBoard();
                 replaySavedGame();
-                aliveCellLabel.IsEnabled = false;
+                aliveCellLabel.Content = null;
+                //aliveCellLabel.;
             }
             if (!ReplayOn)
             {
                 clearMe = true;
-                genNumber = 0;
                 buttonClear.Foreground = Brushes.Black;
                 buttonClear.IsHitTestVisible = true;
-                aliveCellLabel.IsEnabled = true;
+                aliveCellLabel.Content = "Alive Cells: 0";
             }
         }
 
@@ -440,6 +441,8 @@ namespace GOL
             //TODO: fix so it actually resets the game
             resetGameBoard();
             initializeGameBoard();
+            buttonReplay.IsHitTestVisible = true;
+            buttonReplay.Foreground = Brushes.Black;
             genNumber = 0;
             currentGenlabel.Content = "Gen: 0";
             aliveCellLabel.Content = "Alive Cells: 0";
