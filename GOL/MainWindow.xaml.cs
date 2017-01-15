@@ -488,6 +488,11 @@ namespace GOL
                 labelTimerSpeed.Content = String.Format("Timer Speed: {0} ms", timer.Interval.TotalMilliseconds);
             }
         }
+
+        private void buttonDelete_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
 
