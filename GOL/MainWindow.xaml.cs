@@ -495,6 +495,12 @@ namespace GOL
             LoadSavedGames();
             MessageBox.Show("Successfully deleted");
         }
+
+        private void buttonShowDB_Click(object sender, RoutedEventArgs e)
+        {
+            ShowDB showDB = new ShowDB();
+            showDB.ShowDialog();
+        }
     }
 }
 

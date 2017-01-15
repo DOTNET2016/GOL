@@ -33,5 +33,16 @@ namespace GOL.Properties {
                 return ((string)(this["GameOfLifeConnectionString"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=edlund.database.windows.net;Initial Catalog=GameOfLifeEF;Persist Secu" +
+            "rity Info=True;User ID=molebox;Password=Magpie83")]
+        public string GameOfLifeEFConnectionString {
+            get {
+                return ((string)(this["GameOfLifeEFConnectionString"]));
+            }
+        }
     }
 }
