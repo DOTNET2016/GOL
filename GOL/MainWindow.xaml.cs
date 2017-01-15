@@ -474,7 +474,7 @@ namespace GOL
 
         private void buttonDelete_Click(object sender, RoutedEventArgs e)
         {
-
+            comboxBoxSavedGames.Items.Refresh();
         }
     }
 }
