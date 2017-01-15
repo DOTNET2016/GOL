@@ -117,6 +117,8 @@ namespace GOL
                 DisableButtons();
                 buttonReplay.IsHitTestVisible = false;
                 buttonReplay.Foreground = Brushes.Gray;
+                buttonDelete.Foreground = Brushes.Gray;
+                buttonDelete.IsHitTestVisible = false;
             }
         }
 
@@ -260,6 +262,7 @@ namespace GOL
                 if (CheckClearButtonState() == true)
                 {
                     currentGenlabel.Content = "Gen: 0";
+                    aliveCellLabel.Content = "Alive Cells: 0";
                     break;
                 }
             }
@@ -396,7 +399,6 @@ namespace GOL
             {
                 clearMe = false;
                 replaySavedGame();
-                aliveCellLabel.Content = null;
                 //aliveCellLabel.;
             }
             if (!ReplayOn)
@@ -405,7 +407,9 @@ namespace GOL
                 clearMe = true;
                 buttonClear.Foreground = Brushes.Black;
                 buttonClear.IsHitTestVisible = true;
-                aliveCellLabel.Content = "Alive Cells: 0";
+                buttonDelete.Foreground = Brushes.Black;
+                buttonDelete.IsHitTestVisible = true;
+                comboxBoxSavedGames.IsHitTestVisible = true;
             }
         }
 
@@ -437,11 +441,10 @@ namespace GOL
             //TODO: fix so it actually resets the game
             resetGameBoard();
             initializeGameBoard();
-            buttonReplay.IsHitTestVisible = true;
-            buttonReplay.Foreground = Brushes.Black;
             genNumber = 0;
             currentGenlabel.Content = "Gen: 0";
             aliveCellLabel.Content = "Alive Cells: 0";
+            comboxBoxSavedGames.Items.Refresh();
             EnableAllButtons();
             if (TimerIsOn = TimerIsOn)
             {
