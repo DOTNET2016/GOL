@@ -222,6 +222,7 @@ namespace GOL
 
         private async void replaySavedGame()
         {
+            int countCellsAlive = 0;
             DisableButtons();
             Cell tempCell = null;
             var generations = handler.LoadGenFromDatabase();
@@ -234,8 +235,10 @@ namespace GOL
                 {
                     if (tempCell != null)
                     {
+                        countCellsAlive++;
                         PrintCell(tempCell.X, tempCell.Y, true);
                     }
+                    countCellsAlive++;
                     PrintCell(gen.Cell_X, gen.Cell_Y, true);
                     currentGenlabel.Content = "Gen: " + genNumber + " of " + numberOfGenerations + ".";
                 }
@@ -243,10 +246,12 @@ namespace GOL
                 {
                     tempCell = new Cell(gen.Cell_X, gen.Cell_Y, true, gen.GenNumber);
                     genNumber++;
+                    aliveCellLabel.Content = "Alive Cells:" + countCellsAlive;
                     await Task.Delay(300);
                     if (CheckClearButtonState() == false)
                     {
                         resetGameBoard();
+                        countCellsAlive = 0;
                     }
                 }
                 if (CheckClearButtonState() == true)
@@ -259,6 +264,7 @@ namespace GOL
 
         private void GetNextGeneration()
         {
+            int countCellsAlive = 0;
             handler.CalculateNextGeneration();
             //An Temporary holder for the NextGeneration Array from the handler.
             var arrayToUpdateFrom = handler.GetNextGeneration();
@@ -272,6 +278,7 @@ namespace GOL
                     if (tempAliveOrNot == true)
                     {
                         handler.AddGeneration(new Cell(i, j, true), genNumber);
+                        countCellsAlive++;
                     }
                     switch (handler.CheckIfHaveToChange(i, j, tempAliveOrNot))
                     {
@@ -297,7 +304,7 @@ namespace GOL
             }
             genNumber++;
             currentGenlabel.Content = "Gen: " + genNumber;
-            aliveCellLabel.Content = "Alive Cells: " + handler.CurrentAliveCells();
+            aliveCellLabel.Content = "Alive Cells: " + countCellsAlive;
         }
 
         private void stopTimer()

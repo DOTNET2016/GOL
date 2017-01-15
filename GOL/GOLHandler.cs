@@ -37,7 +37,6 @@ namespace GOL
 
         public void CalculateNextGeneration()
         {
-            AliveCells.Clear();
             for (int i = 0; i < ActualGeneration.GetLength(0); i++)
             {
                 for (int j = 0; j < ActualGeneration.GetLength(1); j++)
@@ -139,12 +138,6 @@ namespace GOL
         public Cell[,] GetNextGeneration()
         {
             return NextGeneration;
-        }
-
-        public int CurrentAliveCells()
-        {
-            int alivecells = AliveCells.Count();
-            return alivecells;
         }
 
         public bool ClickKillOrMakeCell(int X, int Y)
