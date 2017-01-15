@@ -160,11 +160,13 @@ namespace GOL
 
         private void DisableButtons()
         {
+            buttonDelete.Foreground = Brushes.Gray;
             buttonGetNxtGen.Foreground = Brushes.Gray;
             buttonStartTimer.Foreground = Brushes.Gray;
             buttonSaveGame.Foreground = Brushes.Gray;
             buttonClear.Foreground = Brushes.Gray;
 
+            buttonDelete.IsHitTestVisible = false;
             buttonGetNxtGen.IsHitTestVisible = false;
             buttonStartTimer.IsHitTestVisible = false;
             buttonSaveGame.IsHitTestVisible = false;
@@ -209,6 +211,7 @@ namespace GOL
         }
         private void LoadSavedGames()
         {
+            comboxBoxSavedGames.IsHitTestVisible = true;
             comboxBoxSavedGames.Items.Clear();
             using (GContext db = new GContext())
             {
@@ -398,6 +401,7 @@ namespace GOL
             }
             if (!ReplayOn)
             {
+                LoadSavedGames();
                 clearMe = true;
                 buttonClear.Foreground = Brushes.Black;
                 buttonClear.IsHitTestVisible = true;
@@ -421,6 +425,8 @@ namespace GOL
                 SavedGame = itemSelected;
                 buttonReplay.IsHitTestVisible = true;
                 buttonReplay.Foreground = Brushes.Black;
+                buttonDelete.Foreground = Brushes.Black;
+                buttonDelete.IsHitTestVisible = true;
             }
             else
                 comboxBoxSavedGames.ItemsSource = null;
@@ -479,9 +485,12 @@ namespace GOL
             }
         }
 
-        private void buttonDelete_Click(object sender, RoutedEventArgs e)
+        private async void buttonDelete_Click(object sender, RoutedEventArgs e)
         {
-            comboxBoxSavedGames.Items.Refresh();
+            DisableButtons();
+            await Task.Run(() => handler.DeleteSavedGame(SavedGame));
+            LoadSavedGames();
+            MessageBox.Show("Successfully deleted");
         }
     }
 }

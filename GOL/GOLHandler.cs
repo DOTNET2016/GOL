@@ -226,6 +226,22 @@ namespace GOL
             }
         }
 
+        public void DeleteSavedGame(int savedGame)
+        {
+            using (var context = new GContext())
+            {
+                var savedGameToDelete = context.SavedGames.FirstOrDefault(i => i.id == savedGame);
+                context.Generation.RemoveRange(from g in context.Generation
+                                               where g.SavedGame_id == savedGame
+                                               select g);
+
+
+                context.SavedGames.Remove(savedGameToDelete);
+                context.SaveChanges();
+            }
+
+        }
+
         public List<Generation> LoadGenFromDatabase()
         {
             List<Generation> generationsToReturn = new List<Generation>();
@@ -250,5 +266,6 @@ namespace GOL
             return generationsToReturn;
         }
 
+        
     }
 }
