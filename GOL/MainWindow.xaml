@@ -13,7 +13,7 @@
                 <GradientStop Color="#FFFF3F00" Offset="1"/>
             </LinearGradientBrush>
         </Grid.Background>
-        <Canvas x:Name="gameBoardCanvas" HorizontalAlignment="Left" Height="600" Margin="10,10,0,0" VerticalAlignment="Top" Width="800" MouseLeftButtonDown="gameBoardCanvas_MouseLeftButtonDown">
+        <Canvas x:Name="gameBoardCanvas" HorizontalAlignment="Left" Height="600" Margin="10,10,0,0" VerticalAlignment="Top" Width="800" MouseLeftButtonDown="gameBoardCanvas_MouseLeftButtonDown" MouseLeftButtonUp="gameBoardCanvas_MouseLeftButtonUp">
             <Canvas.Background>
                 <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.WindowColorKey}}"/>
             </Canvas.Background>

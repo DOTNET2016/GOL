@@ -31,6 +31,8 @@ namespace GOL
         private int genNumber = 0;
         private string _playerName;
         private bool clearMe = false;
+        private bool GameBoardIsPressed = false;
+        int[,] gameBoard;
 
         public int SavedGame { get; set; }
 
@@ -88,7 +90,7 @@ namespace GOL
         /// </summary>
         private void initializeGameBoard()
         {
-            int[,] gameBoard = new int[800, 600];
+            gameBoard = new int[800, 600];
 
             #region LoopThroughTheCanvas
             for (int i = 0; i < 800; i += 10)
@@ -329,40 +331,65 @@ namespace GOL
             GetNextGeneration();
         }
 
+        private async void buttonIsPressed(MouseButtonEventArgs e)
+        {
+            int X = 0;
+            int Y = 0;
+            try
+            {
+                while (GameBoardIsPressed == true)
+                {
+
+                    //Clear the canvas before updating it.
+                    // Taking the position from the cursor.
+                    Y = (int)e.GetPosition(gameBoardCanvas).Y;
+                    X = (int)e.GetPosition(gameBoardCanvas).X;
+
+                    //Substract the radius value so it will be the center point.
+                    X -= 5;
+                    Y -= 5;
+
+                    //Rounds it to the nearest 10.
+                    X = ((int)Math.Round(X / 10.0));
+                    Y = ((int)Math.Round(Y / 10.0));
+
+                    
+
+                    switch (handler.ClickKillOrMakeCell(X, Y))
+                    {
+                        case true:
+                            {
+                                PrintCell(X, Y, true);
+                                break;
+                            }
+                        case false:
+                            {
+                                PrintCell(X, Y, false);
+                                break;
+                            }
+                    }
+                    await Task.Delay(200);
+                }
+            }
+            catch
+            {
+                GameBoardIsPressed = false;
+            }
+        }
+
         /// <summary>
         /// Method for Choose the Cells you want alive or not before you save and get the next Generation.
         /// </summary>
         /// <param name="sender"></param>        /// <param name="e"></param>
         private void gameBoardCanvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            //Clear the canvas before updating it.
-            // Taking the position from the cursor.
-            double tempY = e.GetPosition(gameBoardCanvas).Y;
-            double tempX = e.GetPosition(gameBoardCanvas).X;
-            int X = (int)tempX;
-            int Y = (int)tempY;
+            GameBoardIsPressed = true;
+            buttonIsPressed(e);
+        }
 
-            //Substract the radius value so it will be the center point.
-            X -= 5;
-            Y -= 5;
-
-            //Rounds it to the nearest 10.
-            X = ((int)Math.Round(X / 10.0));
-            Y = ((int)Math.Round(Y / 10.0));
-
-            switch (handler.ClickKillOrMakeCell(X, Y))
-            {
-                case true:
-                    {
-                        PrintCell(X, Y, true);
-                        break;
-                    }
-                case false:
-                    {
-                        PrintCell(X, Y, false);
-                        break;
-                    }
-            }
+        private void gameBoardCanvas_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            GameBoardIsPressed = false;
         }
 
         /// <summary>
@@ -380,7 +407,7 @@ namespace GOL
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void StartTimer_Click(object sender, RoutedEventArgs e)
+        private void buttonStartTimer_Click(object sender, RoutedEventArgs e)
         {
             TimerIsOn = !TimerIsOn;
             if (TimerIsOn)
@@ -399,7 +426,6 @@ namespace GOL
             {
                 clearMe = false;
                 replaySavedGame();
-                //aliveCellLabel.;
             }
             if (!ReplayOn)
             {
@@ -419,6 +445,56 @@ namespace GOL
             await Task.Run(new Action(handler.SaveToDatabase));
             MessageBox.Show("Sucessfully saved to database");
             EnableAllButtons();
+            LoadSavedGames();
+        }
+
+        private void buttonClear_Click(object sender, RoutedEventArgs e)
+        {
+            resetGameBoard();
+            initializeGameBoard();
+            genNumber = 0;
+            currentGenlabel.Content = "Gen: 0";
+            aliveCellLabel.Content = "Alive Cells: 0";
+            comboxBoxSavedGames.SelectedItem = null;
+            EnableAllButtons();
+            if (TimerIsOn = TimerIsOn)
+            {
+                TimerIsOn = !TimerIsOn;
+                stopTimer();
+            }
+        }
+
+        private void buttonPickPlayer_Click(object sender, RoutedEventArgs e)
+        {
+            PlayerPickerWin pickedPlayer = new PlayerPickerWin();
+            if (pickedPlayer.ShowDialog() == true)
+            {
+                _playerId = pickedPlayer.AnswerOne;
+                _playerName = pickedPlayer.AnswerTwo;
+                PlayerLabel.Content = "Selected Player: " + _playerName;
+                LoadSavedGames();
+                EnableAllButtons();
+                handler.SetupPlayer(_playerId);
+            }
+        }
+
+        private void buttonAbout_Click(object sender, RoutedEventArgs e)
+        {
+            AboutGolWin aboutGol = new AboutGolWin();
+            aboutGol.ShowDialog();
+        }
+
+        private void buttonExit_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
+        private async void buttonDelete_Click(object sender, RoutedEventArgs e)
+        {
+            DisableButtons();
+            await Task.Run(() => handler.DeleteSavedGame(SavedGame));
+            LoadSavedGames();
+            MessageBox.Show("Successfully deleted");
         }
 
         private void comboBoxSavedGames_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -434,48 +510,6 @@ namespace GOL
             }
             else
                 comboxBoxSavedGames.ItemsSource = null;
-        }
-
-        private void buttonClear_Click(object sender, RoutedEventArgs e)
-        {
-            //TODO: fix so it actually resets the game
-            resetGameBoard();
-            initializeGameBoard();
-            genNumber = 0;
-            currentGenlabel.Content = "Gen: 0";
-            aliveCellLabel.Content = "Alive Cells: 0";
-            comboxBoxSavedGames.Items.Refresh();
-            EnableAllButtons();
-            if (TimerIsOn = TimerIsOn)
-            {
-                TimerIsOn = !TimerIsOn;
-                stopTimer();
-            }
-        }
-
-        private void buttonPicker_Click(object sender, RoutedEventArgs e)
-        {
-            PlayerPickerWin pickedPlayer = new PlayerPickerWin();
-            if (pickedPlayer.ShowDialog() == true)
-            {
-                _playerId = pickedPlayer.AnswerOne;
-                _playerName = pickedPlayer.AnswerTwo;
-                PlayerLabel.Content = "Selected Player: " + _playerName;
-                LoadSavedGames();
-                EnableAllButtons();
-                handler.SetupPlayer(_playerId);
-            }
-        }
-
-        private void aboutButton_Click(object sender, RoutedEventArgs e)
-        {
-            AboutGolWin aboutGol = new AboutGolWin();
-            aboutGol.ShowDialog();
-        }
-
-        private void buttonExit_Click(object sender, RoutedEventArgs e)
-        {
-            Application.Current.Shutdown();
         }
 
         private void sliderTimerSpeed_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
