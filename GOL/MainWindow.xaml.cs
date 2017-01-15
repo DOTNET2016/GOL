@@ -464,26 +464,6 @@ namespace GOL
             }
         }
 
-        private void buttonPickPlayer_Click(object sender, RoutedEventArgs e)
-        {
-            PlayerPickerWin pickedPlayer = new PlayerPickerWin();
-            if (pickedPlayer.ShowDialog() == true)
-            {
-                _playerId = pickedPlayer.AnswerOne;
-                _playerName = pickedPlayer.AnswerTwo;
-                PlayerLabel.Content = "Selected Player: " + _playerName;
-                LoadSavedGames();
-                EnableAllButtons();
-                handler.SetupPlayer(_playerId);
-            }
-        }
-
-        private void buttonAbout_Click(object sender, RoutedEventArgs e)
-        {
-            AboutGolWin aboutGol = new AboutGolWin();
-            aboutGol.ShowDialog();
-        }
-
         private void buttonExit_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
@@ -522,18 +502,30 @@ namespace GOL
             }
         }
 
-        private async void buttonDelete_Click(object sender, RoutedEventArgs e)
-        {
-            DisableButtons();
-            await Task.Run(() => handler.DeleteSavedGame(SavedGame));
-            LoadSavedGames();
-            MessageBox.Show("Successfully deleted");
-        }
-
         private void buttonShowDB_Click(object sender, RoutedEventArgs e)
         {
             ShowDB showDB = new ShowDB();
             showDB.ShowDialog();
+        }
+
+        private void buttonPickerPlayer_Click(object sender, RoutedEventArgs e)
+        {
+            PlayerPickerWin pickedPlayer = new PlayerPickerWin();
+            if (pickedPlayer.ShowDialog() == true)
+            {
+                _playerId = pickedPlayer.AnswerOne;
+                _playerName = pickedPlayer.AnswerTwo;
+                PlayerLabel.Content = "Selected Player: " + _playerName;
+                LoadSavedGames();
+                EnableAllButtons();
+                handler.SetupPlayer(_playerId);
+            }
+        }
+
+        private void aboutButton_Click(object sender, RoutedEventArgs e)
+        {
+            AboutGolWin aboutGol = new AboutGolWin();
+            aboutGol.ShowDialog();
         }
     }
 }
