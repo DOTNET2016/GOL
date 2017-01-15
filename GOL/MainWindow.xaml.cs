@@ -419,6 +419,7 @@ namespace GOL
             await Task.Run(new Action(handler.SaveToDatabase));
             MessageBox.Show("Sucessfully saved to database");
             EnableAllButtons();
+            LoadSavedGames();
         }
 
         private void comboBoxSavedGames_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -444,7 +445,6 @@ namespace GOL
             genNumber = 0;
             currentGenlabel.Content = "Gen: 0";
             aliveCellLabel.Content = "Alive Cells: 0";
-            comboxBoxSavedGames.Items.Refresh();
             EnableAllButtons();
             if (TimerIsOn = TimerIsOn)
             {
