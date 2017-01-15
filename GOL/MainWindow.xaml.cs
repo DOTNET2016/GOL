@@ -380,7 +380,7 @@ namespace GOL
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void StartTimer_Click(object sender, RoutedEventArgs e)
+        private void buttonStartTimer_Click(object sender, RoutedEventArgs e)
         {
             TimerIsOn = !TimerIsOn;
             if (TimerIsOn)
@@ -399,7 +399,6 @@ namespace GOL
             {
                 clearMe = false;
                 replaySavedGame();
-                //aliveCellLabel.;
             }
             if (!ReplayOn)
             {
@@ -422,29 +421,14 @@ namespace GOL
             LoadSavedGames();
         }
 
-        private void comboBoxSavedGames_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            dynamic itemSelected = comboxBoxSavedGames.SelectedItem;
-            if (itemSelected != null)
-            {
-                SavedGame = itemSelected;
-                buttonReplay.IsHitTestVisible = true;
-                buttonReplay.Foreground = Brushes.Black;
-                buttonDelete.Foreground = Brushes.Black;
-                buttonDelete.IsHitTestVisible = true;
-            }
-            else
-                comboxBoxSavedGames.ItemsSource = null;
-        }
-
         private void buttonClear_Click(object sender, RoutedEventArgs e)
         {
-            //TODO: fix so it actually resets the game
             resetGameBoard();
             initializeGameBoard();
             genNumber = 0;
             currentGenlabel.Content = "Gen: 0";
             aliveCellLabel.Content = "Alive Cells: 0";
+            comboxBoxSavedGames.SelectedItem = null;
             EnableAllButtons();
             if (TimerIsOn = TimerIsOn)
             {
@@ -467,7 +451,7 @@ namespace GOL
             }
         }
 
-        private void aboutButton_Click(object sender, RoutedEventArgs e)
+        private void buttonAbout_Click(object sender, RoutedEventArgs e)
         {
             AboutGolWin aboutGol = new AboutGolWin();
             aboutGol.ShowDialog();
@@ -478,6 +462,29 @@ namespace GOL
             Application.Current.Shutdown();
         }
 
+        private async void buttonDelete_Click(object sender, RoutedEventArgs e)
+        {
+            DisableButtons();
+            await Task.Run(() => handler.DeleteSavedGame(SavedGame));
+            LoadSavedGames();
+            MessageBox.Show("Successfully deleted");
+        }
+
+        private void comboBoxSavedGames_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            dynamic itemSelected = comboxBoxSavedGames.SelectedItem;
+            if (itemSelected != null)
+            {
+                SavedGame = itemSelected;
+                buttonReplay.IsHitTestVisible = true;
+                buttonReplay.Foreground = Brushes.Black;
+                buttonDelete.Foreground = Brushes.Black;
+                buttonDelete.IsHitTestVisible = true;
+            }
+            else
+                comboxBoxSavedGames.ItemsSource = null;
+        }
+
         private void sliderTimerSpeed_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             timer.Interval = new TimeSpan(0, 0, 0, 0, (int)e.NewValue);
@@ -486,14 +493,6 @@ namespace GOL
             {
                 labelTimerSpeed.Content = String.Format("Timer Speed: {0} ms", timer.Interval.TotalMilliseconds);
             }
-        }
-
-        private async void buttonDelete_Click(object sender, RoutedEventArgs e)
-        {
-            DisableButtons();
-            await Task.Run(() => handler.DeleteSavedGame(SavedGame));
-            LoadSavedGames();
-            MessageBox.Show("Successfully deleted");
         }
     }
 }

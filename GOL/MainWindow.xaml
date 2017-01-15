@@ -19,7 +19,7 @@
             </Canvas.Background>
         </Canvas>
         <Button x:Name="buttonGetNxtGen" Content="Next Generation" HorizontalAlignment="Left" Margin="861,274,0,0" VerticalAlignment="Top" Width="144" Height="39" Click="buttonGetNxtGen_Click"/>
-        <Button x:Name="buttonStartTimer" Content="Start Timer" HorizontalAlignment="Left" Margin="860,214,0,0" VerticalAlignment="Top" Width="144" Height="39" Click="StartTimer_Click"/>
+        <Button x:Name="buttonStartTimer" Content="Start Timer" HorizontalAlignment="Left" Margin="860,214,0,0" VerticalAlignment="Top" Width="144" Height="39" Click="buttonStartTimer_Click"/>
         <Button x:Name="buttonReplay" Content="Replay" HorizontalAlignment="Left" Margin="840,85,0,0" VerticalAlignment="Top" Width="120" Height="39" Click="buttonReplay_Click"/>
         <ComboBox x:Name="comboxBoxSavedGames" HorizontalAlignment="Left" Margin="840,58,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="comboBoxSavedGames_SelectionChanged"/>
         <Button x:Name="buttonSaveGame" Content="Save Game" HorizontalAlignment="Left" Margin="861,336,0,0" VerticalAlignment="Top" Width="144" Height="39" Click="buttonSaveGame_Click"/>
@@ -28,7 +28,7 @@
         <Label x:Name="currentGenlabel" Content="Gen: 0" HorizontalAlignment="Center" Margin="821,479,49,150" VerticalAlignment="Center" Height="62" Width="413" FontSize="48" Background="{x:Null}" Panel.ZIndex="2" FontWeight="Bold" FontStretch="Expanded" Foreground="Black"/>
         <Label x:Name="labelSaveGame" Content="Saved Games" HorizontalAlignment="Left" Margin="860,32,0,0" VerticalAlignment="Top" Foreground="White"/>
         <Button x:Name="buttonPicker" Content="Select Player" HorizontalAlignment="Left" Margin="1062,336,0,0" VerticalAlignment="Top" Width="144" Height="39" Click="buttonPicker_Click"/>
-        <Button x:Name="aboutButton" Content="About GoL" HorizontalAlignment="Left" Margin="1039,620,0,0" VerticalAlignment="Top" Width="86" Height="49" Click="aboutButton_Click"/>
+        <Button x:Name="aboutButton" Content="About GoL" HorizontalAlignment="Left" Margin="1039,620,0,0" VerticalAlignment="Top" Width="86" Height="49" Click="buttonAbout_Click"/>
         <Label x:Name="PlayerLabel" Content="SELECT PLAYER TO BEGIN" HorizontalAlignment="Left" Margin="815,422,0,0" VerticalAlignment="Top" Height="57" Width="468" FontSize="24" FontWeight="Bold"/>
         <Label x:Name="aliveCellLabel" Content="Alive Cells: 0" HorizontalAlignment="Left" Margin="821,520,0,0" VerticalAlignment="Top" FontSize="48" FontWeight="Bold" Width="433"/>
         <Slider x:Name="sliderTimerSpeed" HorizontalAlignment="Left" Margin="861,180,0,0" VerticalAlignment="Top" Width="143" ValueChanged="sliderTimerSpeed_ValueChanged" Minimum="200" Maximum="3000" TickFrequency="100" LargeChange="200" TickPlacement="Both" Cursor="Hand" IsDirectionReversed="True" Value="1500" SmallChange="100"/>
