@@ -437,7 +437,7 @@ namespace GOL
             }
         }
 
-        private void buttonPicker_Click(object sender, RoutedEventArgs e)
+        private void buttonPickPlayer_Click(object sender, RoutedEventArgs e)
         {
             PlayerPickerWin pickedPlayer = new PlayerPickerWin();
             if (pickedPlayer.ShowDialog() == true)
