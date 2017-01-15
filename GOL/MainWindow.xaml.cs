@@ -31,6 +31,8 @@ namespace GOL
         private int genNumber = 0;
         private string _playerName;
         private bool clearMe = false;
+        private bool GameBoardIsPressed = false;
+        int[,] gameBoard;
 
         public int SavedGame { get; set; }
 
@@ -88,7 +90,7 @@ namespace GOL
         /// </summary>
         private void initializeGameBoard()
         {
-            int[,] gameBoard = new int[800, 600];
+            gameBoard = new int[800, 600];
 
             #region LoopThroughTheCanvas
             for (int i = 0; i < 800; i += 10)
@@ -329,40 +331,65 @@ namespace GOL
             GetNextGeneration();
         }
 
+        private async void buttonIsPressed(MouseButtonEventArgs e)
+        {
+            int X = 0;
+            int Y = 0;
+            try
+            {
+                while (GameBoardIsPressed == true)
+                {
+
+                    //Clear the canvas before updating it.
+                    // Taking the position from the cursor.
+                    Y = (int)e.GetPosition(gameBoardCanvas).Y;
+                    X = (int)e.GetPosition(gameBoardCanvas).X;
+
+                    //Substract the radius value so it will be the center point.
+                    X -= 5;
+                    Y -= 5;
+
+                    //Rounds it to the nearest 10.
+                    X = ((int)Math.Round(X / 10.0));
+                    Y = ((int)Math.Round(Y / 10.0));
+
+                    
+
+                    switch (handler.ClickKillOrMakeCell(X, Y))
+                    {
+                        case true:
+                            {
+                                PrintCell(X, Y, true);
+                                break;
+                            }
+                        case false:
+                            {
+                                PrintCell(X, Y, false);
+                                break;
+                            }
+                    }
+                    await Task.Delay(200);
+                }
+            }
+            catch
+            {
+                GameBoardIsPressed = false;
+            }
+        }
+
         /// <summary>
         /// Method for Choose the Cells you want alive or not before you save and get the next Generation.
         /// </summary>
         /// <param name="sender"></param>        /// <param name="e"></param>
         private void gameBoardCanvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            //Clear the canvas before updating it.
-            // Taking the position from the cursor.
-            double tempY = e.GetPosition(gameBoardCanvas).Y;
-            double tempX = e.GetPosition(gameBoardCanvas).X;
-            int X = (int)tempX;
-            int Y = (int)tempY;
+            GameBoardIsPressed = true;
+            buttonIsPressed(e);
+        }
 
-            //Substract the radius value so it will be the center point.
-            X -= 5;
-            Y -= 5;
-
-            //Rounds it to the nearest 10.
-            X = ((int)Math.Round(X / 10.0));
-            Y = ((int)Math.Round(Y / 10.0));
-
-            switch (handler.ClickKillOrMakeCell(X, Y))
-            {
-                case true:
-                    {
-                        PrintCell(X, Y, true);
-                        break;
-                    }
-                case false:
-                    {
-                        PrintCell(X, Y, false);
-                        break;
-                    }
-            }
+        private void gameBoardCanvas_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            GameBoardIsPressed = false;
         }
 
         /// <summary>
@@ -495,6 +522,8 @@ namespace GOL
             LoadSavedGames();
             MessageBox.Show("Successfully deleted");
         }
+
+
     }
 }
 

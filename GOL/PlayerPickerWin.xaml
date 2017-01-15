@@ -10,7 +10,14 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="280" VerticalAlignment="Top" Width="380"/>
+        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="280" VerticalAlignment="Top" Width="380">
+            <Border.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black" Offset="0"/>
+                    <GradientStop Color="#FFE68321" Offset="0.703"/>
+                </LinearGradientBrush>
+            </Border.Background>
+        </Border>
 
         <Button x:Name="buttonStartGame" Content="Load and Start" HorizontalAlignment="Left" Margin="81,166,0,0" VerticalAlignment="Top" Width="101" Click="buttonStartGame_Click" Height="32"/>
         <Label x:Name="label1EnterYourName" Content="Please pick a player" HorizontalAlignment="Left" Margin="67,94,0,0" VerticalAlignment="Top" Width="142" Height="26"/>
