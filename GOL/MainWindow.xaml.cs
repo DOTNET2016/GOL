@@ -23,7 +23,6 @@ namespace GOL
     /// </summary>
     public partial class MainWindow : Window
     {
-        //Fields
         GOLHandler handler;
         DispatcherTimer timer;
         private bool _IsOn;
@@ -35,8 +34,6 @@ namespace GOL
 
         public int SavedGame { get; set; }
 
-
-        //Properties
         private bool TimerIsOn
         {
             get
@@ -49,6 +46,7 @@ namespace GOL
                 buttonStartTimer.Content = _IsOn ? "Stop Timer" : "Start Timer";
             }
         }
+
         private bool ReplayOn
         {
             get
@@ -62,6 +60,15 @@ namespace GOL
             }
         }
 
+        private bool CheckClearButtonState()
+        {
+            if (clearMe)
+            {
+                return true;
+            }
+            else
+                return false;
+        }
 
         public MainWindow()
         {
@@ -165,16 +172,6 @@ namespace GOL
             buttonClear.IsHitTestVisible = false;
         }
 
-        private bool CheckClearButtonState()
-        {
-            if (clearMe)
-            {
-                return true;
-            }
-            else
-                return false;
-        }
-
         /// <summary>
         /// Method for Set and update Canvas with a Dead or Alive Cell, It will multiplicate the X and Y with then and get the Canvas Coordinates to Draw the Rectangle.
         /// If you send true it will draw a rectangle 10x10 black. If you send false it will draw a rewctangle 8x8 WhiteSmoke.
@@ -209,8 +206,6 @@ namespace GOL
                 gameBoardCanvas.Children.Add(r);
             }
             #endregion
-
-
         }
         private void LoadSavedGames()
         {
@@ -218,7 +213,6 @@ namespace GOL
             using (GContext db = new GContext())
             {
                 var SavedGames = db.SavedGames.Where(x => x.Player_id == _playerId);
-
                 foreach (var SavedGame_id in SavedGames)
                 {
                     comboxBoxSavedGames.Items.Add(SavedGame_id.id);
@@ -233,7 +227,6 @@ namespace GOL
             var generations = handler.LoadGenFromDatabase();
             int numberOfGenerations = (from gen in generations
                                        select gen.GenNumber).Distinct().Count() - 1;
-
             foreach (var gen in generations)
             {
 
@@ -245,7 +238,6 @@ namespace GOL
                     }
                     PrintCell(gen.Cell_X, gen.Cell_Y, true);
                     currentGenlabel.Content = "Gen: " + genNumber + " of " + numberOfGenerations + ".";
-
                 }
                 else if (gen.GenNumber == genNumber + 1 && CheckClearButtonState() == false)
                 {
@@ -270,9 +262,7 @@ namespace GOL
             handler.CalculateNextGeneration();
             //An Temporary holder for the NextGeneration Array from the handler.
             var arrayToUpdateFrom = handler.GetNextGeneration();
-
             //Loops through all the Cells from the Array, So we can populate the Canvas with the Next Generation. 
-
             for (int i = 0; i < arrayToUpdateFrom.GetLength(0); i++)
             {
                 for (int j = 0; j < arrayToUpdateFrom.GetLength(1); j++)
@@ -283,8 +273,6 @@ namespace GOL
                     {
                         handler.AddGeneration(new Cell(i, j, true), genNumber);
                     }
-
-
                     switch (handler.CheckIfHaveToChange(i, j, tempAliveOrNot))
                     {
                         case true:
@@ -310,7 +298,6 @@ namespace GOL
             genNumber++;
             currentGenlabel.Content = "Gen: " + genNumber;
             aliveCellLabel.Content = "Alive Cells: " + handler.CurrentAliveCells();
-
         }
 
         private void stopTimer()
@@ -333,14 +320,12 @@ namespace GOL
         /// Method for Choose the Cells you want alive or not before you save and get the next Generation.
         /// </summary>
         /// <param name="sender"></param>        /// <param name="e"></param>
-
         private void gameBoardCanvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             //Clear the canvas before updating it.
             // Taking the position from the cursor.
             double tempY = e.GetPosition(gameBoardCanvas).Y;
             double tempX = e.GetPosition(gameBoardCanvas).X;
-
             int X = (int)tempX;
             int Y = (int)tempY;
 
@@ -364,10 +349,8 @@ namespace GOL
                         PrintCell(X, Y, false);
                         break;
                     }
-
             }
         }
-
 
         /// <summary>
         /// Handler for the NextGenerationButton.
