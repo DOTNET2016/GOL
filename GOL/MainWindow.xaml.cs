@@ -366,8 +366,8 @@ namespace GOL
             ReplayOn = !ReplayOn;
             if (ReplayOn)
             {
+                handler.setSavedGameId(SavedGameId);
                 timer.Start();
-                
             }
             if (!ReplayOn)
             {
@@ -425,7 +425,6 @@ namespace GOL
             {
                 
                 SavedGameId = itemSelected;
-                handler.setSavedGameId(SavedGameId);
                 handler.ResetGenNumber();
                 handler.LoadGenFromDatabase();
                 buttonReplay.IsHitTestVisible = true;
