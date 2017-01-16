@@ -302,7 +302,7 @@ namespace GOL
 
         private void Timer_Tick(object sender, EventArgs e)
         {
-
+            currentGenlabel.Content = "Gen: " + handler.UpdateLabels().x1;
             labelTimerSpeed.Content = String.Format("Timer Speed: {0} ms", timer.Interval.TotalMilliseconds);
 
             //If the combobox has a savedgame selected we enter in here.
@@ -315,7 +315,7 @@ namespace GOL
                 {
                     PrintCell(g.X, g.Y, true);
                 }
-                currentGenlabel.Content = "Gen: " + handler.UpdateLabels().x1;
+                
                 aliveCellLabel.Content = "Alive Cells: " + handler.UpdateLabels().x2;
             }
             //if there is no selected savedgame we run the getnextgeneration as usual.
