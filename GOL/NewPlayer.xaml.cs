@@ -22,10 +22,12 @@ namespace GOL
         public NewPlayer(string question, string defaultAnswer = "")
         {
             InitializeComponent();
+            //sets some default values given when the dialog was opened
             PlayerName.Content = question;
             NameInput.Text = defaultAnswer;
         }
 
+        //return the userInput to PickPlayerWin
         private void btnDialogOk_Click(object sender, RoutedEventArgs e)
         {
             this.DialogResult = true;
@@ -37,7 +39,8 @@ namespace GOL
             NameInput.Focus();
         }
 
-        public string Answer
+        //returns the name the user inserted in the textInput
+        public string InsertedPlayerName
         {
             get { return NameInput.Text; }
         }

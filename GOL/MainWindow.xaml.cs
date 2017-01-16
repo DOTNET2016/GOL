@@ -531,8 +531,8 @@ namespace GOL
             PickPlayerWin pickedPlayer = new PickPlayerWin();
             if (pickedPlayer.ShowDialog() == true)
             {
-                _playerId = pickedPlayer.AnswerOne;
-                _playerName = pickedPlayer.AnswerTwo;
+                _playerId = pickedPlayer.PlayerId;
+                _playerName = pickedPlayer.ActivePlayerName;
                 PlayerLabel.Content = "Name: " + _playerName;
                 LoadSavedGames();
                 EnableAllButtons();

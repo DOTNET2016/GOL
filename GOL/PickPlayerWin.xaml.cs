@@ -31,18 +31,21 @@ namespace GOL
             loadPlayers();
         }
 
-        public int AnswerOne
+        //returns the playerId to MainWindow
+        public int PlayerId
         {
             get { return playerId; }
         }
 
-        public string AnswerTwo
+        //returns the playerName to Main
+        public string ActivePlayerName
         {
             get { return CurrentPlayerName; }
         }
 
         private void buttonStartGame_Click(object sender, RoutedEventArgs e)
         {
+            //prevents the user from slecting both player and creating a new
             if (PlayerName == null && NewPlayerName == null)
                 MessageBox.Show("Error, you have not picked a name. or made a new player");
             else if (PlayerName != null && NewPlayerName != null)
@@ -52,7 +55,7 @@ namespace GOL
                 }
             else if(PlayerName != null)
                 {
-                    PickPlayer();
+                    PickedPlayer();
                     this.DialogResult = true;
                 }
             else if (NewPlayerName != null)
@@ -76,7 +79,10 @@ namespace GOL
             }
         }
 
-        //Saves the players name to the player table and gives them an id_number & Adds the players id to the SavedGames Table
+        /// <summary>
+        /// if a new player have been made then then it will take the name and store it to the database
+        /// and then check the database for the last inserted playerid, and store the name
+        /// </summary>
         private void AddPlayer()
         {
             using (GContext db = new GContext())
@@ -91,7 +97,11 @@ namespace GOL
             CurrentPlayerName = NewPlayerName;
         }
 
-        private void PickPlayer()
+        /// <summary>
+        /// when a player have been picked from the combobox it will compare the name with the 
+        /// database and also check for the playername.
+        /// </summary>
+        private void PickedPlayer()
         {
             using (GContext db = new GContext())
             {
@@ -109,6 +119,11 @@ namespace GOL
             this.DialogResult = false;
         }
 
+        /// <summary>
+        /// sets the player the user selected in the combobox and store it in PlayerName for use later
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void comboBoxPlayers_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             NewPlayerButton.IsHitTestVisible = false;
@@ -116,13 +131,18 @@ namespace GOL
             PlayerName = itemSelected;
         }
 
+        /// <summary>
+        /// Opens up a new window where the user is promted to ender a player name, and is then returned to
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void New_Player_Click(object sender, RoutedEventArgs e)
         {
-            NewPlayer newPlayer = new NewPlayer("Please enter your name:", "Adam");
+            NewPlayer newPlayer = new NewPlayer("Please enter your name:", "");
             comboBoxPlayers.IsHitTestVisible = true;
             if (newPlayer.ShowDialog() == true)
             {
-                NewPlayerName = newPlayer.Answer;
+                NewPlayerName = newPlayer.InsertedPlayerName;
                 comboBoxPlayers.IsHitTestVisible = false;
             }
         }
