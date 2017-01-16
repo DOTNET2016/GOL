@@ -253,8 +253,8 @@ namespace GOL
                     handler.setupActualGeneration(new Cell(i, j, tempAliveOrNot, genNumber));
                 }
             }
-            genNumber++;
             currentGenlabel.Content = "Gen: " + genNumber;
+            genNumber++;
             aliveCellLabel.Content = "Alive Cells: " + countCellsAlive;
         }
 
@@ -269,6 +269,8 @@ namespace GOL
                 {
                     PrintCell(g.X, g.Y, true);
                 }
+                currentGenlabel.Content = "Gen: " + handler.UpdateLabels().x1;
+                aliveCellLabel.Content = "Alive Cells: " + handler.UpdateLabels().x2;
             }
             else
             {

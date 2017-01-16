@@ -19,7 +19,7 @@ namespace GOL
         private Player activePlayer;
         private SavedGames savedGame;
         int generationNumber = 0;
-
+        int currentAliveCells = 0;
 
         public GOLHandler()
         {
@@ -131,6 +131,14 @@ namespace GOL
             return neighbours;
         }
 
+        public dynamic UpdateLabels()
+        {
+            dynamic temp = new System.Dynamic.ExpandoObject();
+            temp.x1 = generationNumber;
+            temp.y1 = currentAliveCells;
+            return temp;
+        }
+
         public Cell[,] GetNextGeneration()
         {
             return NextGeneration;
@@ -177,7 +185,6 @@ namespace GOL
             {
                 generationNumber = 0;
             }
-            
             return GenerationToReturn;
         }
 
@@ -233,11 +240,6 @@ namespace GOL
         public void AddGeneration(Cell generationToSave, int _genNumber)
         {
             AliveCells.Add(new Cell(generationToSave.X, generationToSave.Y, true, _genNumber));
-        }
-
-        public void ClearCellsAlive()
-        {
-            AliveCells.Clear();
         }
 
         public void SaveToDatabase()
