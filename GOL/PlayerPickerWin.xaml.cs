@@ -43,8 +43,6 @@ namespace GOL
 
         private void buttonStartGame_Click(object sender, RoutedEventArgs e)
         {
-
-
             if (PlayerName == null && NewPlayerName == null)
                 MessageBox.Show("Error, you have not picked a name. or made a new player");
             else if (PlayerName != null && NewPlayerName != null)

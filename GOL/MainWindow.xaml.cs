@@ -74,7 +74,6 @@ namespace GOL
 
         public MainWindow()
         {
-            //TODO add a current player label on main
             timer = new DispatcherTimer();
             InitializeComponent();
             gameBoardCanvas.Background = Brushes.Black;
@@ -117,10 +116,6 @@ namespace GOL
                     #endregion
                 }
                 DisableButtons();
-                buttonReplay.IsHitTestVisible = false;
-                buttonReplay.Foreground = Brushes.Gray;
-                buttonDelete.Foreground = Brushes.Gray;
-                buttonDelete.IsHitTestVisible = false;
             }
         }
 
@@ -164,18 +159,20 @@ namespace GOL
 
         private void DisableButtons()
         {
-            buttonDelete.Foreground = Brushes.Gray;
             buttonGetNxtGen.Foreground = Brushes.Gray;
             buttonStartTimer.Foreground = Brushes.Gray;
             buttonSaveGame.Foreground = Brushes.Gray;
             buttonClear.Foreground = Brushes.Gray;
 
-            buttonDelete.IsHitTestVisible = false;
             buttonGetNxtGen.IsHitTestVisible = false;
             buttonStartTimer.IsHitTestVisible = false;
             buttonSaveGame.IsHitTestVisible = false;
             comboxBoxSavedGames.IsHitTestVisible = false;
             buttonClear.IsHitTestVisible = false;
+            buttonReplay.IsHitTestVisible = false;
+            buttonReplay.Foreground = Brushes.Gray;
+            buttonDelete.Foreground = Brushes.Gray;
+            buttonDelete.IsHitTestVisible = false;
         }
 
         /// <summary>
@@ -513,7 +510,7 @@ namespace GOL
             {
                 _playerId = pickedPlayer.AnswerOne;
                 _playerName = pickedPlayer.AnswerTwo;
-                PlayerLabel.Content = "Selected Player: " + _playerName;
+                PlayerLabel.Content = "Name: " + _playerName;
                 LoadSavedGames();
                 EnableAllButtons();
                 handler.SetupPlayer(_playerId);
