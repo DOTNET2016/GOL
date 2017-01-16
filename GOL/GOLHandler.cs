@@ -12,59 +12,77 @@ namespace GOL
 {
     public class GOLHandler
     {
-        //Fields
-        private Cell[,] ActualGeneration = new Cell[80, 60];
-        private Cell[,] NextGeneration = new Cell[80, 60];
-        private List<Cell> AliveCells = new List<Cell>();
+        #region Fields
+        private Cell[,] ActualGeneration;
+        private Cell[,] NextGeneration;
+        private List<Cell> AliveCells;
         private Player activePlayer;
         private SavedGames savedGame;
         int generationNumber = 0;
         int currentAliveCells = 0;
-
+        #endregion
         public GOLHandler()
         {
-
+            ActualGeneration = new Cell[80, 60];
+            NextGeneration = new Cell[80, 60];
+            AliveCells = new List<Cell>();
         }
 
+        /// <summary>
+        /// Method that returns the actualgeneration.
+        /// </summary>
+        /// <returns></returns>
        public Cell[,] GetActualGeneration()
         {
             return ActualGeneration;
         }
+
+        /// <summary>
+        /// After the nextgeneration is calculated and printed you can transfer the cells to the actualgeneration with this method.
+        /// </summary>
+        /// <param name="cell"></param>
         public void setupActualGeneration(Cell cell)
         {
             ActualGeneration.SetValue(cell, cell.X, cell.Y);
         }
 
-        public void CalculateNextGeneration()
+        /// <summary>
+        /// Calculates and setting the nextgeneration everytime this method runs.
+        /// </summary>
+        private void CalculateNextGeneration()
         {
             for (int i = 0; i < ActualGeneration.GetLength(0); i++)
             {
                 for (int j = 0; j < ActualGeneration.GetLength(1); j++)
                 {
                     //Method for count how many neighboor every cell has and then throw it into the switch.
-                    int neighboors = CheckLivingNeighboors(i, j);
+                    int neighbours = CheckLivingNeighboors(i, j);
 
                     #region SwitchOnAllTheCells
-                    switch (neighboors)
+                    switch (neighbours)
                     {
                         case 0:
                             {
+                                //If it has 0 neighbour add a dead cell to nextgeneration.
                                 NextGeneration.SetValue(new Cell(i, j), i, j);
                                 break;
                             }
                         case 1:
                             {
+                                //If it has 1 neighbour add a dead cell in the nextgeneration.
                                 NextGeneration.SetValue(new Cell(i, j), i, j);
                                 break;
                             }
                         case 2:
                             {
+                                //If the cell is alive and has 2 neighbour add the cell as alive in the nextgeneration.
                                 if (ActualGeneration[i, j].IsAlive)
                                 {
                                     NextGeneration.SetValue(new Cell(i, j), i, j);
                                     NextGeneration[i, j].IsAlive = true;
                                     break;
                                 }
+                                //If it's dead and has 2 neighbour add the cell as dead in the nextgeneration.
                                 else
                                 {
                                     NextGeneration.SetValue(new Cell(i, j), i, j);
@@ -73,12 +91,14 @@ namespace GOL
                             }
                         case 3:
                             {
+                                //If it has 3 neighbour we add the cell as alive in the nextgeneration.
                                 NextGeneration.SetValue(new Cell(i, j), i, j);
                                 NextGeneration[i, j].IsAlive = true;
                                 break;
                             }
                         default:
                             {
+                                //If it has more then 3 neighbour add the cell as dead in the nextgeneration.
                                 NextGeneration.SetValue(new Cell(i, j), i, j);
                                 break;
                             }
@@ -88,6 +108,12 @@ namespace GOL
             }
         }
 
+        /// <summary>
+        /// Method that's checking how many neighbour the cell have.
+        /// </summary>
+        /// <param name="x">The X coord of the cell.</param>
+        /// <param name="y">The Y coord of the cell.</param>
+        /// <returns></returns>
         private int CheckLivingNeighboors(int x, int y)
         {
             //take the length of X and Y from ActualGeneration.
@@ -143,16 +169,26 @@ namespace GOL
             return temp;
         }
 
+        /// <summary>
+        /// Method that returns the nextgeneration. 
+        /// </summary>
+        /// <returns></returns>
         public Cell[,] GetNextGeneration()
         {
+            CalculateNextGeneration();
             return NextGeneration;
         }
 
+        /// <summary>
+        /// Method that checking if the cells is alive or dead in the actualgeneration. It's only for changing when you click our the cells in the canvas.
+        /// If you click one cell as alive and then click it again it's change to dead again with this method.
+        /// </summary>
+        /// <param name="X">The X coord of the cell.</param>
+        /// <param name="Y">The Y coord of the cell.</param>
+        /// <returns>It returns false if cell in the actualgeneration is true and then change it to false. Else it change the cell to alive and returns true. </returns>
         public bool ClickKillOrMakeCell(int X, int Y)
         {
-            //Casting the values to an int.
-
-
+            
             //Kill or make the cell alive.
             if (ActualGeneration[X, Y].IsAlive == true)
             {
@@ -166,8 +202,13 @@ namespace GOL
             }
         }
 
+        /// <summary>
+        /// Method that returns one generation from the savedgame that you have choosed before.
+        /// </summary>
+        /// <returns></returns>
         public List<Cell> GetNextGenerationLoadedFromDB()
         {
+            //Looking what is the highest generation in this savedgame.
             int MaxGen = (from gen in AliveCells
                           select gen.GenNumber).Distinct().Count();
 
@@ -184,6 +225,7 @@ namespace GOL
             }
             generationNumber++;
 
+            //if the generation is same as the maxGen it set the generationNumber to 0 and start all over again.
             if (generationNumber == MaxGen)
             {
                 generationNumber = 0;
@@ -192,6 +234,13 @@ namespace GOL
             return GenerationToReturn;
         }
 
+        /// <summary>
+        /// Method that checking if you have to change the cell or not in the nextgeneration. 
+        /// </summary>
+        /// <param name="_X">The X coord of the cell.</param>
+        /// <param name="_Y">The Y coord of the cell.</param>
+        /// <param name="AliveOrNot">true if alive</param>
+        /// <returns>Returns true if the Cell already has the correct condition. else false and then you have to change it in the canvas</returns>
         public bool CheckIfHaveToChange(int _X, int _Y, bool AliveOrNot)
         {
             if (ActualGeneration[_X, _Y].IsAlive == AliveOrNot)
@@ -205,6 +254,10 @@ namespace GOL
             }
         }
 
+        /// <summary>
+        /// Method for setting the SavedGameId and add it to the ActivePlayerId.
+        /// </summary>
+        /// <param name="savedGameId"></param>
         public void setSavedGameId(int savedGameId)
         {
             savedGame = new SavedGames();
@@ -212,6 +265,10 @@ namespace GOL
             savedGame.Player_id = activePlayer.id;
         }
 
+        /// <summary>
+        /// Method for setup a new player. 
+        /// </summary>
+        /// <param name="playerId">The playerId if it has one already.</param>
         public void SetupPlayer(int playerId)
         {
             activePlayer = new Player();
@@ -230,28 +287,33 @@ namespace GOL
             }
         }
 
+        //Method for reset the GenerationNumber.
         public void ResetGenNumber()
         {
             generationNumber = 0;
 
         }
 
-        public void ResetAliveCellCount()
-        {
-            currentAliveCells = 0;
-        }
-
+        //Method for a new savedgame.
         private void newSavedGame()
         {
             savedGame = new SavedGames();
             savedGame.Player_id = activePlayer.id;
         }
 
+        /// <summary>
+        /// Method for adding the cells that are alive and you want to save to the database when you runt SaveToDatabase Method.
+        /// </summary>
+        /// <param name="generationToSave">The cell.</param>
+        /// <param name="_genNumber">The generationNumber to add with the cell.</param>
         public void AddGeneration(Cell generationToSave, int _genNumber)
         {
             AliveCells.Add(new Cell(generationToSave.X, generationToSave.Y, true, _genNumber));
         }
 
+        /// <summary>
+        /// Method for saving all the generations to the Database.
+        /// </summary>
         public void SaveToDatabase()
         {
             using (GContext db = new GContext())
@@ -271,6 +333,10 @@ namespace GOL
             }
         }
 
+        /// <summary>
+        /// Method for delete the selected SavedGame.
+        /// </summary>
+        /// <param name="savedGame"></param>
         public void DeleteSavedGame(int savedGame)
         {
             using (var context = new GContext())
@@ -284,6 +350,9 @@ namespace GOL
             }
         }
 
+        /// <summary>
+        /// Method for load all the generations belonging to the Activeplayer and the choosed savedGameId.
+        /// </summary>
         public void LoadGenFromDatabase()
         {
             AliveCells.Clear();

@@ -17,7 +17,7 @@ namespace GOL
     /// <summary>
     /// Interaction logic for PlayerNameIntro.xaml
     /// </summary>
-    public partial class PlayerPickerWin : Window
+    public partial class PickPlayerWin : Window
     {
         int playerId;
         public string PlayerName { get; set; }
@@ -25,7 +25,7 @@ namespace GOL
 
         public string CurrentPlayerName { get; set; }
 
-        public PlayerPickerWin()
+        public PickPlayerWin()
         {
             InitializeComponent();
             loadPlayers();

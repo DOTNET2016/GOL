@@ -85,8 +85,8 @@
     </Compile>
     <Compile Include="Player.cs" />
     <Compile Include="SavedGames.cs" />
-    <Compile Include="PlayerPickerWin.xaml.cs">
-      <DependentUpon>PlayerPickerWin.xaml</DependentUpon>
+    <Compile Include="PickPlayerWin.xaml.cs">
+      <DependentUpon>PickPlayerWin.xaml</DependentUpon>
     </Compile>
     <Compile Include="ShowDB.xaml.cs">
       <DependentUpon>ShowDB.xaml</DependentUpon>
@@ -113,7 +113,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="PlayerPickerWin.xaml">
+    <Page Include="PickPlayerWin.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

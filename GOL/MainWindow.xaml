@@ -23,9 +23,9 @@
         <ComboBox x:Name="comboxBoxSavedGames" HorizontalAlignment="Left" Margin="830,373,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="comboBoxSavedGames_SelectionChanged"/>
         <Button x:Name="buttonSaveGame" Content="Save Game" HorizontalAlignment="Left" Margin="822,303,0,0" VerticalAlignment="Top" Width="144" Height="39" Click="buttonSaveGame_Click"/>
         <Button x:Name="buttonExit" Content="Exit" HorizontalAlignment="Left" Margin="1134,571,0,0" VerticalAlignment="Top" Width="120" Height="39" Click="buttonExit_Click"/>
-        <Button x:Name="buttonClear" Content="Reset Board" HorizontalAlignment="Left" Margin="824,571,0,0" VerticalAlignment="Top" Width="96" Height="39" Click="buttonClear_Click"/>
+        <Button x:Name="buttonResetBoard" Content="Reset Board" HorizontalAlignment="Left" Margin="824,571,0,0" VerticalAlignment="Top" Width="96" Height="39" Click="buttonResetBoard_Click"/>
         <Label x:Name="labelSaveGame" Content="Saved Games" HorizontalAlignment="Left" Margin="850,347,0,0" VerticalAlignment="Top" Foreground="White"/>
-        <Button x:Name="buttonPickerPlayer" Content="Select Player" HorizontalAlignment="Left" Margin="821,72,0,0" VerticalAlignment="Top" Width="144" Height="39" Click="buttonPickerPlayer_Click"/>
+        <Button x:Name="buttonPickPlayer" Content="Select Player" HorizontalAlignment="Left" Margin="821,72,0,0" VerticalAlignment="Top" Width="144" Height="39" Click="buttonPickPlayer_Click"/>
         <Button x:Name="aboutButton" Content="About GoL" HorizontalAlignment="Left" Margin="1045,571,0,0" VerticalAlignment="Top" Width="86" Height="39" Click="aboutButton_Click"/>
         <Label x:Name="PlayerLabel" Content="Name: SELECT PLAYER TO BEGIN" HorizontalAlignment="Left" Margin="821,10,-6,0" VerticalAlignment="Top" Height="57" Width="468" FontSize="24" FontWeight="Bold" Foreground="White"/>
         <Slider x:Name="sliderTimerSpeed" HorizontalAlignment="Left" Margin="822,147,0,0" VerticalAlignment="Top" Width="143" ValueChanged="sliderTimerSpeed_ValueChanged" Minimum="200" Maximum="3000" TickFrequency="100" LargeChange="200" TickPlacement="Both" Cursor="Hand" IsDirectionReversed="True" Value="1500" SmallChange="100"/>

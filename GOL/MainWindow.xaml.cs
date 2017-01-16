@@ -23,6 +23,7 @@ namespace GOL
     /// </summary>
     public partial class MainWindow : Window
     {
+        #region Fields
         GOLHandler handler;
         DispatcherTimer timer;
         private bool _IsOn;
@@ -32,7 +33,9 @@ namespace GOL
         private string _playerName;
         private bool GameBoardIsPressed = false;
         int[,] gameBoard;
+        #endregion
 
+        #region Properties
         public int SavedGameId { get; set; }
 
         private bool TimerIsOn
@@ -60,7 +63,7 @@ namespace GOL
                 buttonReplay.Content = _ReplayIsOn ? "Stop Replay" : "Replay";
             }
         }
-
+        #endregion
         public MainWindow()
         {
             timer = new DispatcherTimer();
@@ -137,13 +140,13 @@ namespace GOL
             buttonGetNxtGen.Foreground = Brushes.Black;
             buttonStartTimer.Foreground = Brushes.Black;
             buttonSaveGame.Foreground = Brushes.Black;
-            buttonClear.Foreground = Brushes.Black;
+            buttonResetBoard.Foreground = Brushes.Black;
 
             buttonGetNxtGen.IsHitTestVisible = true;
             buttonStartTimer.IsHitTestVisible = true;
             buttonSaveGame.IsHitTestVisible = true;
             comboxBoxSavedGames.IsHitTestVisible = true;
-            buttonClear.IsHitTestVisible = true;
+            buttonResetBoard.IsHitTestVisible = true;
         }
 
         private void DisableButtons()
@@ -151,13 +154,13 @@ namespace GOL
             buttonGetNxtGen.Foreground = Brushes.Gray;
             buttonStartTimer.Foreground = Brushes.Gray;
             buttonSaveGame.Foreground = Brushes.Gray;
-            buttonClear.Foreground = Brushes.Gray;
+            buttonResetBoard.Foreground = Brushes.Gray;
 
             buttonGetNxtGen.IsHitTestVisible = false;
             buttonStartTimer.IsHitTestVisible = false;
             buttonSaveGame.IsHitTestVisible = false;
             comboxBoxSavedGames.IsHitTestVisible = false;
-            buttonClear.IsHitTestVisible = false;
+            buttonResetBoard.IsHitTestVisible = false;
             buttonReplay.IsHitTestVisible = false;
             buttonReplay.Foreground = Brushes.Gray;
             buttonDelete.Foreground = Brushes.Gray;
@@ -165,7 +168,7 @@ namespace GOL
         }
 
         /// <summary>
-        /// Method for Set and update Canvas with a Dead or Alive Cell, It will multiplicate the X and Y with then and get the Canvas Coordinates to Draw the Rectangle.
+        /// Method for set and update the Canvas with a Dead or Alive Cell, It will multiplicate the X and Y with 10 and get the Canvas Coordinates to Draw the Rectangle.
         /// If you send true it will draw a rectangle 10x10 black. If you send false it will draw a rewctangle 8x8 WhiteSmoke.
         /// </summary>
         /// <param name="x">Send the Cell.X Propertie.</param>
@@ -199,6 +202,10 @@ namespace GOL
             }
             #endregion
         }
+
+        /// <summary>
+        /// Method for fill up the combobox with the activeplayer savedgames.
+        /// </summary>
         private void LoadSavedGames()
         {
             comboxBoxSavedGames.IsHitTestVisible = true;
@@ -213,12 +220,13 @@ namespace GOL
             }
         }
 
+
         private void GetNextGeneration()
         {
             int countCellsAlive = 0;
-            
-            //An Temporary holder for the NextGeneration Array from the handler.
 
+            //Adds the first generation only the first time you run this method when genNumber is zero.
+            #region AddTheFirstGenerationToSave
             if (genNumber == 0)
             {
                 var firstGeneration = handler.GetActualGeneration();
@@ -237,34 +245,44 @@ namespace GOL
                 countCellsAlive = 0;
                 genNumber++;
             }
+            #endregion
 
-            handler.CalculateNextGeneration();
+            //Load the nextGeneration.
             var arrayToUpdateFrom = handler.GetNextGeneration();
 
             //Loops through all the Cells from the Array, So we can populate the Canvas with the Next Generation. 
+            #region Print out and calculates The NextGeneration
             for (int i = 0; i < arrayToUpdateFrom.GetLength(0); i++)
             {
                 for (int j = 0; j < arrayToUpdateFrom.GetLength(1); j++)
                 {
+                    //temp bool to use when looks if the cell is dead or alive.
                     bool tempAliveOrNot = arrayToUpdateFrom[i, j].IsAlive;
 
                     if (tempAliveOrNot == true)
                     {
+                        //Add the cell to the List in handler that we will save to Database when press save game.
                         handler.AddGeneration(new Cell(i, j, true), genNumber);
                         countCellsAlive++;
                     }
+
+                    // A Switch where we looking if we have to change the cell in the canvas or not for this new generation.
                     switch (handler.CheckIfHaveToChange(i, j, tempAliveOrNot))
                     {
+                        //If it's true we not do anything it's already printed the right condition.
                         case true:
                             {
                                 break;
                             }
+                            //if it's false we have to change it in the canvas.
                         case false:
                             {
+                                //if it's true we print it alive.
                                 if (tempAliveOrNot)
                                 {
                                     PrintCell(i, j, true);
                                 }
+                                //else we print it dead.
                                 else
                                 {
                                     PrintCell(i, j, false);
@@ -272,10 +290,11 @@ namespace GOL
                                 break;
                             }
                     }
+                    //And last of all the actualgeneration gets the cells from this new generation.
                     handler.setupActualGeneration(new Cell(i, j, tempAliveOrNot, genNumber));
                 }
             }
-            
+            #endregion
             currentGenlabel.Content = "Gen: " + genNumber;
             genNumber++;
             aliveCellLabel.Content = "Alive Cells: " + countCellsAlive;
@@ -285,30 +304,38 @@ namespace GOL
         {
 
             labelTimerSpeed.Content = String.Format("Timer Speed: {0} ms", timer.Interval.TotalMilliseconds);
+
+            //If the combobox has a savedgame selected we enter in here.
             if (comboxBoxSavedGames.SelectedItem != null)
             {
                 resetGameBoard();
-                
+
+                //Print out all the cells, and print out next generation in the next tick until it's printed all generations. And then it start from generation 0 again.
                 foreach (var g in handler.GetNextGenerationLoadedFromDB())
                 {
                     PrintCell(g.X, g.Y, true);
                 }
                 currentGenlabel.Content = "Gen: " + handler.UpdateLabels().x1;
-                //handler.ResetAliveCellCount();
                 aliveCellLabel.Content = "Alive Cells: " + handler.UpdateLabels().x2;
             }
+            //if there is no selected savedgame we run the getnextgeneration as usual.
             else
             {
                 GetNextGeneration();
             }
         }
 
+        /// <summary>
+        /// When the left button is pressed this method runs every 200 milliseconds and then you can painting out the cells instantly.
+        /// </summary>
+        /// <param name="e"></param>
         private async void buttonIsPressed(MouseButtonEventArgs e)
         {
             int X = 0;
             int Y = 0;
             try
             {
+                //runs this loop until the left button is up again and the GameBoardIsPressed changes to false.
                 while (GameBoardIsPressed == true)
                 {
 
@@ -323,15 +350,18 @@ namespace GOL
 
                     //Rounds it to the nearest 10.
                     X = ((int)Math.Round(X / 10.0));
-                    Y = ((int)Math.Round(Y / 10.0));      
+                    Y = ((int)Math.Round(Y / 10.0));
 
+                    //A switch that looks if we have to change the cell or not in the canvas, depends on if it's alive or dead.
                     switch (handler.ClickKillOrMakeCell(X, Y))
                     {
+                        //If it's true we have to print it as alive
                         case true:
                             {
                                 PrintCell(X, Y, true);
                                 break;
                             }
+                            //If it's false we have to print it as dead.
                         case false:
                             {
                                 PrintCell(X, Y, false);
@@ -341,6 +371,7 @@ namespace GOL
                     await Task.Delay(200);
                 }
             }
+            //If the user keep the button pressed and goes outside of the canvas range you will get to this catch and we stop collecting the coordinates.
             catch
             {
                 GameBoardIsPressed = false;
@@ -348,9 +379,10 @@ namespace GOL
         }
 
         /// <summary>
-        /// Method for Choose the Cells you want alive or not before you save and get the next Generation.
+        /// When this event fires it sends the MouseButtonEventArgs with the coordinates to the ButtonIsPressed method.
         /// </summary>
-        /// <param name="sender"></param>        /// <param name="e"></param>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void gameBoardCanvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             GameBoardIsPressed = true;
@@ -362,21 +394,11 @@ namespace GOL
             GameBoardIsPressed = false;
         }
 
-        /// <summary>
-        /// Handler for the NextGenerationButton.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void buttonGetNxtGen_Click(object sender, RoutedEventArgs e)
         {
             GetNextGeneration();
         }
 
-        /// <summary>
-        /// Handler for start or stop the timer in the handler class.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void buttonStartTimer_Click(object sender, RoutedEventArgs e)
         {
             TimerIsOn = !TimerIsOn;
@@ -387,9 +409,14 @@ namespace GOL
                 timer.Stop();
         }
 
+        /// <summary>
+        /// Eventhandler that runs when you want to replay a savedgame from the database.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void buttonReplay_Click(object sender, RoutedEventArgs e)
         {
-          
+
             ReplayOn = !ReplayOn;
             if (ReplayOn)
             {
@@ -403,8 +430,8 @@ namespace GOL
             if (!ReplayOn)
             {
                 timer.Stop();
-                buttonClear.Foreground = Brushes.Black;
-                buttonClear.IsHitTestVisible = true;
+                buttonResetBoard.Foreground = Brushes.Black;
+                buttonResetBoard.IsHitTestVisible = true;
                 buttonDelete.Foreground = Brushes.Black;
                 buttonDelete.IsHitTestVisible = true;
                 comboxBoxSavedGames.IsHitTestVisible = true;
@@ -421,7 +448,7 @@ namespace GOL
             LoadSavedGames();
         }
 
-        private void buttonClear_Click(object sender, RoutedEventArgs e)
+        private void buttonResetBoard_Click(object sender, RoutedEventArgs e)
         {
             resetGameBoard();
             initializeGameBoard();
@@ -445,6 +472,7 @@ namespace GOL
         private async void buttonDelete_Click(object sender, RoutedEventArgs e)
         {
             DisableButtons();
+            //Lambda expression for making a Action Delegate that runs an method with one parameter.
             await Task.Run(() => handler.DeleteSavedGame(SavedGameId));
             LoadSavedGames();
             MessageBox.Show("Successfully deleted");
@@ -485,9 +513,9 @@ namespace GOL
             showDB.ShowDialog();
         }
 
-        private void buttonPickerPlayer_Click(object sender, RoutedEventArgs e)
+        private void buttonPickPlayer_Click(object sender, RoutedEventArgs e)
         {
-            PlayerPickerWin pickedPlayer = new PlayerPickerWin();
+            PickPlayerWin pickedPlayer = new PickPlayerWin();
             if (pickedPlayer.ShowDialog() == true)
             {
                 _playerId = pickedPlayer.AnswerOne;
