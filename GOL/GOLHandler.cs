@@ -312,6 +312,13 @@ namespace GOL
         }
 
         /// <summary>
+        /// Method for clear the list from cells when you want to reset.
+        /// </summary>
+        public void ClearAliveCellsList()
+        {
+            AliveCells.Clear();
+        }
+        /// <summary>
         /// Method for saving all the generations to the Database.
         /// </summary>
         public void SaveToDatabase()
