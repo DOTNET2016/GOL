@@ -265,18 +265,13 @@ namespace GOL
             using (GContext db = new GContext())
             {
                 var currentGen = db.Generation.Where(x => x.SavedGames.Player_id == activePlayer.id);
-                try
+
+                foreach (var gen in currentGen)
                 {
-                    foreach (var gen in currentGen)
-                    {
-                        AliveCells.Add(new Cell(gen.Cell_X, gen.Cell_Y, true, gen.GenNumber));
-                    }
-                }
-                catch (Exception)
-                {
-                    MessageBox.Show("That didn't work", "Warning!");
+                    generationsToReturn.Add(gen);
                 }
             }
-        } 
+            return generationsToReturn;
+        }      
     }
 }

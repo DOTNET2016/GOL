@@ -339,9 +339,7 @@ namespace GOL
 
                     //Rounds it to the nearest 10.
                     X = ((int)Math.Round(X / 10.0));
-                    Y = ((int)Math.Round(Y / 10.0));
-
-                    
+                    Y = ((int)Math.Round(Y / 10.0));      
 
                     switch (handler.ClickKillOrMakeCell(X, Y))
                     {
