@@ -18,6 +18,7 @@ namespace GOL
         private List<Cell> AliveCells = new List<Cell>();
         private Player activePlayer;
         private SavedGames savedGame;
+        int generationNumber = 0;
 
 
         public GOLHandler()
@@ -153,10 +154,31 @@ namespace GOL
             }
         }
 
-        //public List<Cell>GetNextGenerationLoadedFromDB()
-        //{
+        public List<Cell> GetNextGenerationLoadedFromDB()
+        {
+            int MaxGen = (from gen in AliveCells
+                                       select gen.GenNumber).Distinct().Count() - 1;
+            
 
-        //}
+            List<Cell> GenerationToReturn = new List<Cell>();
+
+            foreach (var gen in AliveCells)
+            {
+                if(gen.GenNumber == generationNumber)
+                {
+                    GenerationToReturn.Add(gen);
+                }
+            }
+
+            int ActualGenNumber = (from g in GenerationToReturn
+                                   select g.GenNumber).FirstOrDefault();
+            if (ActualGenNumber == MaxGen)
+            {
+                generationNumber = 0;
+            }
+            generationNumber++;
+            return GenerationToReturn;
+        }
 
         public bool CheckIfHaveToChange(int _X, int _Y, bool AliveOrNot)
         {
@@ -237,9 +259,9 @@ namespace GOL
             }
         }
 
-        public List<Generation> LoadGenFromDatabase()
+        public void LoadGenFromDatabase()
         {
-            List<Generation> generationsToReturn = new List<Generation>();
+            AliveCells.Clear();
             using (GContext db = new GContext())
             {
                 var currentGen = db.Generation.Where(x => x.SavedGames.Player_id == activePlayer.id);
@@ -247,7 +269,7 @@ namespace GOL
                 {
                     foreach (var gen in currentGen)
                     {
-                        generationsToReturn.Add(gen);
+                        AliveCells.Add(new Cell(gen.Cell_X, gen.Cell_Y, true, gen.GenNumber));
                     }
                 }
                 catch (Exception)
@@ -255,7 +277,6 @@ namespace GOL
                     MessageBox.Show("That didn't work", "Warning!");
                 }
             }
-            return generationsToReturn;
         } 
     }
 }

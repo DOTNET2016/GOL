@@ -30,7 +30,6 @@ namespace GOL
         private int _playerId;
         private int genNumber = 0;
         private string _playerName;
-        private bool clearMe = false;
         private bool GameBoardIsPressed = false;
         int[,] gameBoard;
 
@@ -60,16 +59,6 @@ namespace GOL
                 _ReplayIsOn = value;
                 buttonReplay.Content = _ReplayIsOn ? "Stop Replay" : "Replay";
             }
-        }
-
-        private bool CheckClearButtonState()
-        {
-            if (clearMe)
-            {
-                return true;
-            }
-            else
-                return false;
         }
 
         public MainWindow()
@@ -224,48 +213,48 @@ namespace GOL
             }
         }
 
-        private async void replaySavedGame()
-        {
-            int countCellsAlive = 0;
-            DisableButtons();
-            Cell tempCell = null;
-            var generations = handler.LoadGenFromDatabase();
-            int numberOfGenerations = (from gen in generations
-                                       select gen.GenNumber).Distinct().Count() - 1;
-            foreach (var gen in generations)
-            {
+        //private async void replaySavedGame()
+        //{
+        //    int countCellsAlive = 0;
+        //    DisableButtons();
+        //    Cell tempCell = null;
+        //    var generations = handler.LoadGenFromDatabase();
+        //    int numberOfGenerations = (from gen in generations
+        //                               select gen.GenNumber).Distinct().Count() - 1;
+        //    foreach (var gen in generations)
+        //    {
 
-                if (gen.GenNumber == genNumber && CheckClearButtonState() == false)
-                {
-                    if (tempCell != null)
-                    {
-                        countCellsAlive++;
-                        PrintCell(tempCell.X, tempCell.Y, true);
-                    }
-                    countCellsAlive++;
-                    PrintCell(gen.Cell_X, gen.Cell_Y, true);
-                    currentGenlabel.Content = "Gen: " + genNumber + " of " + numberOfGenerations + ".";
-                }
-                else if (gen.GenNumber == genNumber + 1 && CheckClearButtonState() == false)
-                {
-                    tempCell = new Cell(gen.Cell_X, gen.Cell_Y, true, gen.GenNumber);
-                    genNumber++;
-                    aliveCellLabel.Content = "Alive Cells:" + countCellsAlive;
-                    await Task.Delay(300);
-                    if (CheckClearButtonState() == false)
-                    {
-                        resetGameBoard();
-                        countCellsAlive = 0;
-                    }
-                }
-                if (CheckClearButtonState() == true)
-                {
-                    currentGenlabel.Content = "Gen: 0";
-                    aliveCellLabel.Content = "Alive Cells: 0";
-                    break;
-                }
-            }
-        }
+        //        if (gen.GenNumber == genNumber && CheckClearButtonState() == false)
+        //        {
+        //            if (tempCell != null)
+        //            {
+        //                countCellsAlive++;
+        //                PrintCell(tempCell.X, tempCell.Y, true);
+        //            }
+        //            countCellsAlive++;
+        //            PrintCell(gen.Cell_X, gen.Cell_Y, true);
+        //            currentGenlabel.Content = "Gen: " + genNumber + " of " + numberOfGenerations + ".";
+        //        }
+        //        else if (gen.GenNumber == genNumber + 1 && CheckClearButtonState() == false)
+        //        {
+        //            tempCell = new Cell(gen.Cell_X, gen.Cell_Y, true, gen.GenNumber);
+        //            genNumber++;
+        //            aliveCellLabel.Content = "Alive Cells:" + countCellsAlive;
+        //            await Task.Delay(300);
+        //            if (CheckClearButtonState() == false)
+        //            {
+        //                resetGameBoard();
+        //                countCellsAlive = 0;
+        //            }
+        //        }
+        //        if (CheckClearButtonState() == true)
+        //        {
+        //            currentGenlabel.Content = "Gen: 0";
+        //            aliveCellLabel.Content = "Alive Cells: 0";
+        //            break;
+        //        }
+        //    }
+        //}
 
         private void GetNextGeneration()
         {
@@ -312,20 +301,22 @@ namespace GOL
             aliveCellLabel.Content = "Alive Cells: " + countCellsAlive;
         }
 
-        private void stopTimer()
-        {
-            timer.Stop();
-        }
-
-        private void startTimer()
-        {
-            labelTimerSpeed.Content = String.Format("Timer Speed: {0} ms", timer.Interval.TotalMilliseconds);
-            timer.Start();
-        }
-
         private void Timer_Tick(object sender, EventArgs e)
         {
-            GetNextGeneration();
+            labelTimerSpeed.Content = String.Format("Timer Speed: {0} ms", timer.Interval.TotalMilliseconds);
+            if (ReplayOn)
+            {
+                resetGameBoard();
+                
+                foreach (var g in handler.GetNextGenerationLoadedFromDB())
+                {
+                    PrintCell(g.X, g.Y, true);
+                }
+            }
+            else
+            {
+                GetNextGeneration();
+            }
         }
 
         private async void buttonIsPressed(MouseButtonEventArgs e)
@@ -408,26 +399,25 @@ namespace GOL
         {
             TimerIsOn = !TimerIsOn;
             if (TimerIsOn)
-                startTimer();
+                timer.Start();
 
             if (!TimerIsOn)
-                stopTimer();
+                timer.Stop();
         }
 
         private void buttonReplay_Click(object sender, RoutedEventArgs e)
         {
-            resetGameBoard();
-            genNumber = 0;
+          
             ReplayOn = !ReplayOn;
             if (ReplayOn)
             {
-                clearMe = false;
-                replaySavedGame();
+                handler.LoadGenFromDatabase();
+                timer.Start();
+                
             }
             if (!ReplayOn)
             {
-                LoadSavedGames();
-                clearMe = true;
+                timer.Stop();
                 buttonClear.Foreground = Brushes.Black;
                 buttonClear.IsHitTestVisible = true;
                 buttonDelete.Foreground = Brushes.Black;
@@ -457,7 +447,7 @@ namespace GOL
             if (TimerIsOn = TimerIsOn)
             {
                 TimerIsOn = !TimerIsOn;
-                stopTimer();
+                timer.Stop();
             }
         }
 
