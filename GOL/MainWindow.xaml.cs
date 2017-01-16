@@ -463,6 +463,8 @@ namespace GOL
 
         private void buttonResetBoard_Click(object sender, RoutedEventArgs e)
         {
+            handler.ClearAliveCellsList();
+            handler.ResetGenNumber();
             resetGameBoard();
             initializeGameBoard();
             genNumber = 0;
