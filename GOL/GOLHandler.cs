@@ -139,7 +139,7 @@ namespace GOL
         {
             dynamic temp = new System.Dynamic.ExpandoObject();
             temp.x1 = generationNumber;
-            temp.y1 = currentAliveCells;
+            temp.x2 = currentAliveCells;
             return temp;
         }
 
@@ -168,19 +168,18 @@ namespace GOL
 
         public List<Cell> GetNextGenerationLoadedFromDB()
         {
-
-
             int MaxGen = (from gen in AliveCells
                           select gen.GenNumber).Distinct().Count();
 
 
             List<Cell> GenerationToReturn = new List<Cell>();
-
+            currentAliveCells = 0;
             foreach (var gen in AliveCells)
             {
                 if (gen.GenNumber == generationNumber)
                 {
                     GenerationToReturn.Add(gen);
+                    currentAliveCells++;
                 }
             }
             generationNumber++;
@@ -189,6 +188,7 @@ namespace GOL
             {
                 generationNumber = 0;
             }
+
             return GenerationToReturn;
         }
 
@@ -233,6 +233,12 @@ namespace GOL
         public void ResetGenNumber()
         {
             generationNumber = 0;
+
+        }
+
+        public void ResetAliveCellCount()
+        {
+            currentAliveCells = 0;
         }
 
         private void newSavedGame()

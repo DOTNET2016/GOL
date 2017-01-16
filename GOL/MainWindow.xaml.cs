@@ -283,6 +283,7 @@ namespace GOL
 
         private void Timer_Tick(object sender, EventArgs e)
         {
+
             labelTimerSpeed.Content = String.Format("Timer Speed: {0} ms", timer.Interval.TotalMilliseconds);
             if (comboxBoxSavedGames.SelectedItem != null)
             {
@@ -293,6 +294,7 @@ namespace GOL
                     PrintCell(g.X, g.Y, true);
                 }
                 currentGenlabel.Content = "Gen: " + handler.UpdateLabels().x1;
+                //handler.ResetAliveCellCount();
                 aliveCellLabel.Content = "Alive Cells: " + handler.UpdateLabels().x2;
             }
             else
