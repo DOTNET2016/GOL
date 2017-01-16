@@ -261,7 +261,7 @@ namespace GOL
         private void Timer_Tick(object sender, EventArgs e)
         {
             labelTimerSpeed.Content = String.Format("Timer Speed: {0} ms", timer.Interval.TotalMilliseconds);
-            if (ReplayOn)
+            if (comboxBoxSavedGames.SelectedItem != null)
             {
                 resetGameBoard();
                 
@@ -366,7 +366,7 @@ namespace GOL
             ReplayOn = !ReplayOn;
             if (ReplayOn)
             {
-                handler.setSavedGameId(SavedGameId);
+                handler.LoadGenFromDatabase();
                 timer.Start();
             }
             if (!ReplayOn)
@@ -425,7 +425,7 @@ namespace GOL
             {
                 SavedGameId = itemSelected;
                 handler.ResetGenNumber();
-                handler.LoadGenFromDatabase();
+                handler.setSavedGameId(SavedGameId);
                 buttonReplay.IsHitTestVisible = true;
                 buttonReplay.Foreground = Brushes.Black;
                 buttonDelete.Foreground = Brushes.Black;
