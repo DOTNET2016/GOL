@@ -268,10 +268,9 @@ namespace GOL
 
                 foreach (var gen in currentGen)
                 {
-                    generationsToReturn.Add(gen);
+                    AliveCells.Add(new Cell(gen.Cell_X,gen.Cell_Y,true,gen.GenNumber));
                 }
             }
-            return generationsToReturn;
         }      
     }
 }
