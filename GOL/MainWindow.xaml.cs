@@ -216,9 +216,31 @@ namespace GOL
         private void GetNextGeneration()
         {
             int countCellsAlive = 0;
-            handler.CalculateNextGeneration();
+            
             //An Temporary holder for the NextGeneration Array from the handler.
+
+            if (genNumber == 0)
+            {
+                var firstGeneration = handler.GetActualGeneration();
+                for (int i = 0; i < firstGeneration.GetLength(0); i++)
+                {
+                    for (int j = 0; j < firstGeneration.GetLength(1); j++)
+                    {
+                        if (firstGeneration[i, j].IsAlive)
+                        {
+                            countCellsAlive++;
+                            handler.AddGeneration(new Cell(i, j, true), genNumber);
+                        }
+                    }
+                }
+                aliveCellLabel.Content = "Alive Cells: " + countCellsAlive;
+                countCellsAlive = 0;
+                genNumber++;
+            }
+
+            handler.CalculateNextGeneration();
             var arrayToUpdateFrom = handler.GetNextGeneration();
+
             //Loops through all the Cells from the Array, So we can populate the Canvas with the Next Generation. 
             for (int i = 0; i < arrayToUpdateFrom.GetLength(0); i++)
             {
@@ -253,6 +275,7 @@ namespace GOL
                     handler.setupActualGeneration(new Cell(i, j, tempAliveOrNot, genNumber));
                 }
             }
+            
             currentGenlabel.Content = "Gen: " + genNumber;
             genNumber++;
             aliveCellLabel.Content = "Alive Cells: " + countCellsAlive;
