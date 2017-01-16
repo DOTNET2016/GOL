@@ -23,9 +23,13 @@ namespace GOL
 
         public GOLHandler()
         {
-           
+
         }
 
+       public Cell[,] GetActualGeneration()
+        {
+            return ActualGeneration;
+        }
         public void setupActualGeneration(Cell cell)
         {
             ActualGeneration.SetValue(cell, cell.X, cell.Y);
@@ -156,17 +160,17 @@ namespace GOL
 
         public List<Cell> GetNextGenerationLoadedFromDB()
         {
-            
+
 
             int MaxGen = (from gen in AliveCells
-                                       select gen.GenNumber).Distinct().Count();
-            
+                          select gen.GenNumber).Distinct().Count();
+
 
             List<Cell> GenerationToReturn = new List<Cell>();
 
             foreach (var gen in AliveCells)
             {
-                if(gen.GenNumber == generationNumber)
+                if (gen.GenNumber == generationNumber)
                 {
                     GenerationToReturn.Add(gen);
                 }
@@ -177,7 +181,7 @@ namespace GOL
             {
                 generationNumber = 0;
             }
-            
+
             return GenerationToReturn;
         }
 
@@ -277,13 +281,13 @@ namespace GOL
             AliveCells.Clear();
             using (GContext db = new GContext())
             {
-                var currentGen = db.Generation.Where(x => x.SavedGames.Player_id == activePlayer.id).Where(y=>y.SavedGame_id == savedGame.id);
+                var currentGen = db.Generation.Where(x => x.SavedGames.Player_id == activePlayer.id).Where(y => y.SavedGame_id == savedGame.id);
 
                 foreach (var gen in currentGen)
                 {
-                        AliveCells.Add(new Cell(gen.Cell_X, gen.Cell_Y, true, gen.GenNumber));
+                    AliveCells.Add(new Cell(gen.Cell_X, gen.Cell_Y, true, gen.GenNumber));
                 }
             }
-        }      
+        }
     }
 }
