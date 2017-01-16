@@ -5,14 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GOL"
         mc:Ignorable="d"
-        Title="ShowDB" Height="342" Width="814" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" WindowStyle="None">
+        Title="ShowDB" Height="342" Width="814" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded">
     <Window.Resources>
         <local:GameOfLifeEFDataSet x:Key="gameOfLifeEFDataSet"/>
         <CollectionViewSource x:Key="generationViewSource" Source="{Binding Generation, Source={StaticResource gameOfLifeEFDataSet}}"/>
         <CollectionViewSource x:Key="playerViewSource" Source="{Binding Player, Source={StaticResource gameOfLifeEFDataSet}}"/>
         <CollectionViewSource x:Key="savedGamesViewSource" Source="{Binding SavedGames, Source={StaticResource gameOfLifeEFDataSet}}"/>
     </Window.Resources>
-    <Grid DataContext="{StaticResource generationViewSource}" Background="#FFFB3D00">
+    <Grid DataContext="{StaticResource generationViewSource}" Background="#FFFB3D00" Margin="0,0,2,0">
         <DataGrid x:Name="generationDataGrid" AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding}" Margin="0,40,523,10" RowDetailsVisibilityMode="VisibleWhenSelected">
             <DataGrid.Columns>
                 <DataGridTextColumn x:Name="idColumn" Binding="{Binding id}" Header="id" IsReadOnly="True" Width="SizeToHeader"/>

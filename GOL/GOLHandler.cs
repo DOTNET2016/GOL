@@ -30,11 +30,6 @@ namespace GOL
             ActualGeneration.SetValue(cell, cell.X, cell.Y);
         }
 
-        public Cell[,] GetActualGeneration()
-        {
-            return ActualGeneration;
-        }
-
         public void CalculateNextGeneration()
         {
             for (int i = 0; i < ActualGeneration.GetLength(0); i++)
@@ -215,7 +210,6 @@ namespace GOL
             using (GContext db = new GContext())
             {
                 db.SavedGames.Add(savedGame);
-
                 foreach (var item in AliveCells)
                 {
                     Generation g = new Generation();
@@ -224,7 +218,6 @@ namespace GOL
                     g.Cell_X = item.X;
                     g.Cell_Y = item.Y;
                     db.Generation.Add(g);
-
                 }
                 db.SaveChanges();
                 AliveCells.Clear();
@@ -239,12 +232,9 @@ namespace GOL
                 context.Generation.RemoveRange(from g in context.Generation
                                                where g.SavedGame_id == savedGame
                                                select g);
-
-
                 context.SavedGames.Remove(savedGameToDelete);
                 context.SaveChanges();
             }
-
         }
 
         public List<Generation> LoadGenFromDatabase()
@@ -253,7 +243,6 @@ namespace GOL
             using (GContext db = new GContext())
             {
                 var currentGen = db.Generation.Where(x => x.SavedGames.Player_id == activePlayer.id);
-
                 try
                 {
                     foreach (var gen in currentGen)
@@ -263,14 +252,10 @@ namespace GOL
                 }
                 catch (Exception)
                 {
-
                     MessageBox.Show("That didn't work", "Warning!");
                 }
-
             }
             return generationsToReturn;
-        }
-
-        
+        } 
     }
 }
