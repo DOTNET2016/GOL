@@ -213,13 +213,19 @@ namespace GOL
             using (GContext db = new GContext())
             {
                 var SavedGames = db.SavedGames.Where(x => x.Player_id == _playerId);
-                foreach (var SavedGame_id in SavedGames)
+                if (SavedGames != null)
                 {
-                    comboxBoxSavedGames.Items.Add(SavedGame_id.id);
+                    foreach (var SavedGame_id in SavedGames)
+                    {
+                        comboxBoxSavedGames.Items.Add(SavedGame_id.id);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Wops! Something went wrong, please slect a player again.");
                 }
             }
         }
-
 
         private void GetNextGeneration()
         {
