@@ -200,6 +200,7 @@ namespace GOL
             savedGame.id = savedGameId;
             savedGame.Player_id = activePlayer.id;
         }
+
         public void SetupPlayer(int playerId)
         {
             activePlayer = new Player();

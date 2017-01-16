@@ -369,6 +369,9 @@ namespace GOL
                 handler.LoadGenFromDatabase();
                 timer.Start();
                 comboxBoxSavedGames.IsHitTestVisible = false;
+                DisableButtons();
+                buttonReplay.Foreground = Brushes.Black;
+                buttonReplay.IsHitTestVisible = true;
             }
             if (!ReplayOn)
             {
@@ -384,6 +387,7 @@ namespace GOL
         private async void buttonSaveGame_Click(object sender, RoutedEventArgs e)
         {
             DisableButtons();
+            handler.SetupPlayer(_playerId);
             await Task.Run(new Action(handler.SaveToDatabase));
             MessageBox.Show("Sucessfully saved to database");
             EnableAllButtons();
