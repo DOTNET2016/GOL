@@ -249,23 +249,12 @@ namespace GOL
             {
                 var currentGen = db.Generation.Where(x => x.SavedGames.Player_id == activePlayer.id);
 
-                try
+                foreach (var gen in currentGen)
                 {
-                    foreach (var gen in currentGen)
-                    {
-                        generationsToReturn.Add(gen);
-                    }
+                    generationsToReturn.Add(gen);
                 }
-                catch (Exception)
-                {
-
-                    MessageBox.Show("That didn't work", "Warning!");
-                }
-
             }
             return generationsToReturn;
-        }
-
-        
+        }      
     }
 }
