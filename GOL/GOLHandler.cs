@@ -156,8 +156,10 @@ namespace GOL
 
         public List<Cell> GetNextGenerationLoadedFromDB()
         {
+            
+
             int MaxGen = (from gen in AliveCells
-                                       select gen.GenNumber).Distinct().Count() - 1;
+                                       select gen.GenNumber).Distinct().Count();
             
 
             List<Cell> GenerationToReturn = new List<Cell>();
@@ -169,14 +171,13 @@ namespace GOL
                     GenerationToReturn.Add(gen);
                 }
             }
+            generationNumber++;
 
-            int ActualGenNumber = (from g in GenerationToReturn
-                                   select g.GenNumber).FirstOrDefault();
-            if (ActualGenNumber == MaxGen)
+            if (generationNumber == MaxGen)
             {
                 generationNumber = 0;
             }
-            generationNumber++;
+            
             return GenerationToReturn;
         }
 
@@ -193,6 +194,12 @@ namespace GOL
             }
         }
 
+        public void setSavedGameId(int savedGameId)
+        {
+            savedGame = new SavedGames();
+            savedGame.id = savedGameId;
+            savedGame.Player_id = activePlayer.id;
+        }
         public void SetupPlayer(int playerId)
         {
             activePlayer = new Player();
@@ -209,6 +216,11 @@ namespace GOL
                     }
                 }
             }
+        }
+
+        public void ResetGenNumber()
+        {
+            generationNumber = 0;
         }
 
         private void newSavedGame()
@@ -264,11 +276,11 @@ namespace GOL
             AliveCells.Clear();
             using (GContext db = new GContext())
             {
-                var currentGen = db.Generation.Where(x => x.SavedGames.Player_id == activePlayer.id);
+                var currentGen = db.Generation.Where(x => x.SavedGames.Player_id == activePlayer.id).Where(y=>y.SavedGame_id == savedGame.id);
 
                 foreach (var gen in currentGen)
                 {
-                    AliveCells.Add(new Cell(gen.Cell_X,gen.Cell_Y,true,gen.GenNumber));
+                        AliveCells.Add(new Cell(gen.Cell_X, gen.Cell_Y, true, gen.GenNumber));
                 }
             }
         }      
