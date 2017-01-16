@@ -423,7 +423,6 @@ namespace GOL
             dynamic itemSelected = comboxBoxSavedGames.SelectedItem;
             if (itemSelected != null)
             {
-                
                 SavedGameId = itemSelected;
                 handler.setSavedGameId(SavedGameId);
                 handler.ResetGenNumber();
@@ -432,6 +431,8 @@ namespace GOL
                 buttonReplay.Foreground = Brushes.Black;
                 buttonDelete.Foreground = Brushes.Black;
                 buttonDelete.IsHitTestVisible = true;
+                buttonSaveGame.IsHitTestVisible = false;
+                buttonSaveGame.Foreground = Brushes.Gray;
             }
             else
                 comboxBoxSavedGames.ItemsSource = null;
