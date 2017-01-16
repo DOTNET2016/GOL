@@ -158,6 +158,11 @@ namespace GOL
             }
         }
 
+        //public List<Cell>GetNextGenerationLoadedFromDB()
+        //{
+
+        //}
+
         public bool CheckIfHaveToChange(int _X, int _Y, bool AliveOrNot)
         {
             if (ActualGeneration[_X, _Y].IsAlive == AliveOrNot)
