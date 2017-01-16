@@ -368,6 +368,7 @@ namespace GOL
             {
                 handler.LoadGenFromDatabase();
                 timer.Start();
+                comboxBoxSavedGames.IsHitTestVisible = false;
             }
             if (!ReplayOn)
             {
