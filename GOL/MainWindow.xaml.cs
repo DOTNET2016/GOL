@@ -440,12 +440,19 @@ namespace GOL
 
         private async void buttonSaveGame_Click(object sender, RoutedEventArgs e)
         {
-            DisableButtons();
-            handler.SetupPlayer(_playerId);
-            await Task.Run(new Action(handler.SaveToDatabase));
-            MessageBox.Show("Sucessfully saved to database");
-            EnableAllButtons();
-            LoadSavedGames();
+            if (handler.CheckIfHaveGenerationsToSaveToDB())
+            {
+                DisableButtons();
+                handler.SetupPlayer(_playerId);
+                await Task.Run(new Action(handler.SaveToDatabase));
+                MessageBox.Show("Sucessfully saved to database");
+                EnableAllButtons();
+                LoadSavedGames();
+            }
+            else
+            {
+                MessageBox.Show("There is nothing to save. Please run some generations first.");
+            }
         }
 
         private void buttonResetBoard_Click(object sender, RoutedEventArgs e)

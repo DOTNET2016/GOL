@@ -334,6 +334,22 @@ namespace GOL
         }
 
         /// <summary>
+        /// Method that checking if there is anything to save. 
+        /// </summary>
+        /// <returns>returns true if there is generations To Save</returns>
+        public bool CheckIfHaveGenerationsToSaveToDB()
+        {
+            if(AliveCells.Count > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Method for delete the selected SavedGame.
         /// </summary>
         /// <param name="savedGame"></param>
