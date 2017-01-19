@@ -15,6 +15,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using System.Speech;
+using System.Speech.Synthesis;
 
 namespace GOL
 {
@@ -33,6 +35,7 @@ namespace GOL
         private string _playerName;
         private bool GameBoardIsPressed = false;
         int[,] gameBoard;
+        SpeechSynthesizer speaker;
         #endregion
 
         #region Properties
@@ -70,8 +73,11 @@ namespace GOL
             InitializeComponent();
             gameBoardCanvas.Background = Brushes.Black;
             handler = new GOLHandler();
+            speaker = new SpeechSynthesizer();
+            speaker.SelectVoiceByHints(VoiceGender.Male, VoiceAge.Adult);
             initializeGameBoard();
             timer.Tick += Timer_Tick;
+
         }
 
         /// <summary>
@@ -81,6 +87,7 @@ namespace GOL
         /// </summary>
         private void initializeGameBoard()
         {
+
             gameBoard = new int[800, 600];
 
             #region LoopThroughTheCanvas
@@ -109,6 +116,19 @@ namespace GOL
                 }
                 DisableButtons();
             }
+            MessageWelcome();
+        }
+        private void MessageDeleteGame()
+        {
+            speaker.SpeakAsync("The game was sucessfully deleted.");
+        }
+        private void MessageSaveGame()
+        {
+            speaker.SpeakAsync("The game has been saved sucessfully.");
+        }
+        private void MessageWelcome()
+        {
+            speaker.SpeakAsync("Welcome To Gol, The Game Of Life you bastard!");
         }
 
         private void resetGameBoard()
@@ -224,6 +244,7 @@ namespace GOL
                 {
                     MessageBox.Show("Wops! Something went wrong, please slect a player again.");
                 }
+
             }
         }
 
@@ -280,7 +301,7 @@ namespace GOL
                             {
                                 break;
                             }
-                            //if it's false we have to change it in the canvas.
+                        //if it's false we have to change it in the canvas.
                         case false:
                             {
                                 //if it's true we print it alive.
@@ -321,7 +342,7 @@ namespace GOL
                 {
                     PrintCell(g.X, g.Y, true);
                 }
-                
+
                 aliveCellLabel.Content = "Alive Cells: " + handler.UpdateLabels().x2;
             }
             //if there is no selected savedgame we run the getnextgeneration as usual.
@@ -367,7 +388,7 @@ namespace GOL
                                 PrintCell(X, Y, true);
                                 break;
                             }
-                            //If it's false we have to print it as dead.
+                        //If it's false we have to print it as dead.
                         case false:
                             {
                                 PrintCell(X, Y, false);
@@ -454,6 +475,7 @@ namespace GOL
                 MessageBox.Show("Sucessfully saved to database");
                 EnableAllButtons();
                 LoadSavedGames();
+                MessageSaveGame();
             }
             else
             {
@@ -491,6 +513,7 @@ namespace GOL
             await Task.Run(() => handler.DeleteSavedGame(SavedGameId));
             LoadSavedGames();
             MessageBox.Show("Successfully deleted");
+            MessageDeleteGame();
         }
 
         private void comboBoxSavedGames_SelectionChanged(object sender, SelectionChangedEventArgs e)

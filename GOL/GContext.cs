@@ -8,7 +8,7 @@ namespace GOL
     public partial class GContext : DbContext
     {
         public GContext()
-            : base("name=GContext")
+            : base("GOL")
         {
         }
 
