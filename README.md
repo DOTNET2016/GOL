@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/DOTNET2016/GOL.png?label=ready&title=Ready)](https://waffle.io/DOTNET2016/GOL)
 # GOL
 Game Of Life
 
